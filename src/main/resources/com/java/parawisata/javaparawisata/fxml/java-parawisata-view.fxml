@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<?import io.github.palexdev.mfxresources.fonts.MFXFontIcon?>-->
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="817.0" styleClass="rootPane" stylesheets="@../css/Dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.JavaParawisataController">
+   <children>
+      <AnchorPane layoutX="2.0" layoutY="69.0" prefHeight="467.0" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="70.0">
+         <children>
+            <VBox alignment="TOP_CENTER" layoutX="50.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
+               <children>
+                  <HBox fx:id="btnDashboard" alignment="CENTER_LEFT" onMouseClicked="#onBtnDashboardClick" prefHeight="50.0" prefWidth="200.0" spacing="10.0" styleClass="menus">
+                     <children>
+                        <AnchorPane prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <children>
+                              <FontAwesomeIconView glyphName="DASHBOARD" layoutX="6.0" layoutY="32.0" size="20" styleClass="fntAwesome" />
+                           </children>
+                        </AnchorPane>
+                        <Label styleClass="lblMenus" text="Dashboard" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </HBox>
+                  <HBox fx:id="btnOrderBus" alignment="CENTER_LEFT" onMouseClicked="#onBtnOrderBusClick" prefHeight="50.0" prefWidth="200.0" spacing="10.0" styleClass="menus">
+                     <children>
+                        <AnchorPane prefWidth="30.0">
+                           <children>
+                              <FontAwesomeIconView fill="#454559" glyphName="MAP" layoutX="6.0" layoutY="32.0" size="20" styleClass="fntAwesome" />
+                           </children>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </AnchorPane>
+                        <Label styleClass="lblMenus" text="Order Bus" textFill="#454559" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </HBox>
+                  <HBox fx:id="btnHistoryOrder" alignment="CENTER_LEFT" onMouseClicked="#onBtnHistoryOrderClick" prefHeight="50.0" prefWidth="200.0" spacing="10.0" styleClass="menus">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <children>
+                        <AnchorPane prefWidth="30.0">
+                           <children>
+                              <FontAwesomeIconView fill="#454559" glyphName="HISTORY" layoutX="6.0" layoutY="32.0" size="20" styleClass="fntAwesome" />
+                           </children>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </AnchorPane>
+                        <Label styleClass="lblMenus" text="History Order" textFill="#454559" />
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </HBox>
+               </children>
+            </VBox>
+            <AnchorPane layoutX="20.0" layoutY="386.0" prefWidth="160.0" styleClass="logoffBtn" AnchorPane.bottomAnchor="20.0">
+               <children>
+                  <HBox fx:id="btnSignOut" alignment="CENTER" onMouseClicked="#onBtnSignOutClick" prefHeight="30.0" prefWidth="160.0" spacing="10.0">
+                     <children>
+                        <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="20" />
+                        <Label text="Sign Out" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="2.0" prefHeight="70.0" prefWidth="817.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="70.0" prefWidth="617.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0" spacing="10.0" AnchorPane.rightAnchor="20.0">
+                     <children>
+                        <FontAwesomeIconView fx:id="btnNotification" fill="#ff9b29" glyphName="BELL" onMouseClicked="#onBtnNotificationClick" size="20">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></FontAwesomeIconView>
+                        <FontAwesomeIconView fx:id="btnSetting" glyphName="GEAR" onMouseClicked="#onBtnSettingClick" size="20">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></FontAwesomeIconView>
+                        <Line endY="20.0" strokeLineCap="ROUND" strokeWidth="2.0" />
+                        <Label fx:id="lblUsername" text="muhammad.gunawan">
+                           <font>
+                              <Font name="System Italic" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label fx:id="lblHeader" layoutX="14.0" layoutY="14.0" text="Dashboard" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #389AE7;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="27.0" text="Java Parawisata" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <FontAwesomeIconView fill="WHITE" glyphName="BUS" layoutX="121.0" layoutY="42.0" size="20" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="contentPane" layoutX="200.0" layoutY="70.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0" />
+   </children>
+</AnchorPane>

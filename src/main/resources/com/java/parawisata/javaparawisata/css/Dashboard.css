@@ -1,0 +1,66 @@
+@import '../fonts/Fonts.css';
+@import 'MFXColors.css';
+
+/*
+==========================================
+ROOT PANE CSS
+==========================================
+*/
+.rootPane {
+	-fx-background-color: white;
+}
+
+/*
+==========================================
+SIDE BAR CSS
+==========================================
+*/
+.rootPane .sidebar {
+    -fx-background-color: '#02011A';
+}
+
+.rootPane .sidebar .menus:hover {
+    -fx-background-color: '#272549';
+    -fx-background-radius: 10;
+}
+
+.rootPane .sidebar .menus .lblMenus {
+    -fx-text-fill: '#454559';
+}
+
+.rootPane .sidebar .menus:hover .lblMenus {
+    -fx-text-fill: white;
+}
+
+.rootPane .sidebar .menus .fntAwesome {
+    -fx-font-family: FontAwesome;
+    -fx-fill: '#454559';
+}
+
+.rootPane .sidebar .menus:hover .fntAwesome {
+    -fx-font-family: FontAwesome;
+    -fx-fill: white;
+}
+
+.rootPane .sidebar .logoffBtn {
+    -fx-background-color: '#389AE7';
+    -fx-background-radius: 10;
+}
+
+/*
+==========================================
+HEADER CSS
+==========================================
+*/
+.rootPane .header {
+    -fx-font-family: 'Roboto';
+}
+
+/*
+==========================================
+PIE CHART
+==========================================
+*/
+.content1 {
+    -fx-background-color: '#D6D5EA'
+}

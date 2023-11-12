@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="526.0" prefWidth="747.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.DashboardController">
+   <children>
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="295.0" prefHeight="254.0" prefWidth="719.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D2FEED;">
+               <children>
+                  <AnchorPane prefHeight="60.0" prefWidth="166.0" style="-fx-background-color: #58ECB4;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #A2D1EB;">
+               <children>
+                  <AnchorPane prefHeight="60.0" prefWidth="166.0" style="-fx-background-color: #58B8EC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
+            <AnchorPane prefHeight="216.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXTableView fx:id="tableNextSchedule" layoutX="14.0" layoutY="14.0" prefHeight="156.0" prefWidth="330.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <AnchorPane layoutY="27.0" prefHeight="217.0" prefWidth="747.0" styleClass="content1" stylesheets="@../css/Dashboard.css" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <PieChart fx:id="diagReview" prefHeight="256.0" prefWidth="391.0" title="Review Trip" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

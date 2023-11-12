@@ -1,5 +1,7 @@
 package com.java.parawisata.javaparawisata.Utils.ControlMessage;
 
+import java.util.List;
+
 public class AdditionalMessage {
     public MessageType type;
     public String Message;
