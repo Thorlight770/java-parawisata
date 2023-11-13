@@ -1,25 +1,48 @@
 package com.java.parawisata.javaparawisata.Controller;
 
 import com.java.parawisata.javaparawisata.Entity.Schedule;
-import io.github.palexdev.materialfx.controls.MFXTableColumn;
-import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
-import io.github.palexdev.materialfx.filter.StringFilter;
+import io.github.palexdev.materialfx.controls.MFXProgressSpinner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import javafx.scene.chart.PieChart;
-import io.github.palexdev.materialfx.controls.MFXTableView;
 
 public class DashboardController implements Initializable {
     @FXML
     public PieChart diagReview;
 
     @FXML
-    public MFXTableView<Schedule> tableNextSchedule;
+    public TableColumn<Schedule, Date> colBookedDate;
+
+    @FXML
+    public TableColumn<Schedule, String> colDestination;
+
+    @FXML
+    public TableColumn<Schedule, String> colPickUpPoint;
+
+    @FXML
+    public TableView<Schedule> tableSchedule;
+
+    @FXML
+    public Label lblTotalPendingTrip;
+
+    @FXML
+    public Label lblTotalTrip;
+
+    @FXML
+    public MFXProgressSpinner progressTotalTrip;
+
+    @FXML
+    public MFXProgressSpinner ProgressTotalPendingTrip;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -36,14 +59,8 @@ public class DashboardController implements Initializable {
     }
 
     private void setUpTableSchedule() {
-        MFXTableColumn<Schedule> dateColumn =new MFXTableColumn<>("Date", true);
-        MFXTableColumn<Schedule> pickUpPointColumn =new MFXTableColumn<>("Pick Up Point", true);
-        MFXTableColumn<Schedule> destinationColumn =new MFXTableColumn<>("Destination Point", true);
-
-        dateColumn.setRowCellFactory(schedule -> new MFXTableRowCell<>(Schedule::getScheduleDate));
-        pickUpPointColumn.setRowCellFactory(schedule -> new MFXTableRowCell<>(Schedule::getPickUpPoint));
-        destinationColumn.setRowCellFactory(schedule -> new MFXTableRowCell<>(Schedule::getDestinationTour));
-
-        this.tableNextSchedule.getTableColumns().addAll(dateColumn, pickUpPointColumn, destinationColumn);
+        colBookedDate.setCellValueFactory(new PropertyValueFactory<Schedule, Date>("scheduleDate"));
+        colPickUpPoint.setCellValueFactory(new PropertyValueFactory<Schedule, String>("pickUpPoint"));
+        colDestination.setCellValueFactory(new PropertyValueFactory<Schedule, String>("destinationTour"));
     }
 }

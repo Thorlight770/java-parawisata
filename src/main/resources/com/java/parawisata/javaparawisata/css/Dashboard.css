@@ -1,5 +1,6 @@
 @import '../fonts/Fonts.css';
 @import 'MFXColors.css';
+@import 'MFXProgressSpinner.css'
 
 /*
 ==========================================
@@ -64,3 +65,13 @@ PIE CHART
 .content1 {
     -fx-background-color: '#D6D5EA'
 }
+
+/*
+==========================================
+PROGRESS BAR
+==========================================
+*/
+.mfx-progress-spinner .track {
+    -fx-background-color: black;
+}
+

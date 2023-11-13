@@ -1,30 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<?import io.github.palexdev.materialfx.controls.MFXProgressSpinner?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="526.0" prefWidth="747.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.DashboardController">
+<AnchorPane prefHeight="526.0" prefWidth="747.0" stylesheets="@../css/Dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.DashboardController">
    <children>
       <HBox alignment="CENTER" layoutX="14.0" layoutY="295.0" prefHeight="254.0" prefWidth="719.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D2FEED;">
                <children>
-                  <AnchorPane prefHeight="60.0" prefWidth="166.0" style="-fx-background-color: #58ECB4;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane prefHeight="60.0" prefWidth="166.0" style="-fx-background-color: #58ECB4;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label alignment="CENTER" layoutX="71.0" layoutY="22.0" text="Total Trip" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+                  <MFXProgressSpinner fx:id="progressTotalTrip" layoutX="34.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.46" startingAngle="90.0" style="-fx-border-color: #74d3a2; -fx-border-radius: 100%; -fx-border-width: 3;" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
+                     <color4>
+                        <Color red="0.062745101749897" green="0.6117647290229797" blue="0.33725491166114807" />
+                     </color4>
+                  </MFXProgressSpinner>
+                  <Label fx:id="lblTotalTrip" alignment="CENTER" layoutX="71.0" layoutY="194.0" text="34" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #A2D1EB;">
                <children>
-                  <AnchorPane prefHeight="60.0" prefWidth="166.0" style="-fx-background-color: #58B8EC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane prefHeight="60.0" prefWidth="166.0" style="-fx-background-color: #58B8EC;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label alignment="CENTER" layoutX="71.0" layoutY="22.0" text="Total Pending Trip" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+                  <MFXProgressSpinner fx:id="ProgressTotalPendingTrip" layoutX="35.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.14" startingAngle="90.0" style="-fx-border-color: #82adee; -fx-border-radius: 100%; -fx-border-width: 3;" styleClass="track" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
+                     <color4>
+                        <Color green="0.3843137323856354" blue="1.0" />
+                     </color4>
+                     <color1>
+                        <Color red="0.5098039507865906" green="0.6784313917160034" blue="0.9333333373069763" />
+                     </color1>
+                     <color2>
+                        <Color green="0.3843137323856354" blue="1.0" />
+                     </color2>
+                     <color3>
+                        <Color green="0.3843137323856354" blue="1.0" />
+                     </color3>
+                  </MFXProgressSpinner>
+                  <Label fx:id="lblTotalPendingTrip" alignment="CENTER" layoutX="72.0" layoutY="195.0" text="5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
             <AnchorPane prefHeight="216.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <MFXTableView fx:id="tableNextSchedule" layoutX="14.0" layoutY="14.0" prefHeight="156.0" prefWidth="330.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
+               <children>
+                  <TableView fx:id="tableSchedule" layoutX="28.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/Table.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn fx:id="colBookedDate" prefWidth="75.0" text="BOOKED DATE" />
+                      <TableColumn fx:id="colPickUpPoint" prefWidth="75.0" text="PICK UP POINT" />
+                        <TableColumn fx:id="colDestination" prefWidth="75.0" text="DESTINATION" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
             </AnchorPane>
          </children>
       </HBox>

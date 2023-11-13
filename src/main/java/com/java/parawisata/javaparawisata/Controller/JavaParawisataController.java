@@ -60,6 +60,8 @@ public class JavaParawisataController implements Initializable {
     @FXML
     public void onBtnHistoryOrderClick(MouseEvent event) {
         this.lblHeader.setText("History Order");
+        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/history-order-view.fxml"));
+        this.contentPane.autosize();
     }
 
     @FXML
