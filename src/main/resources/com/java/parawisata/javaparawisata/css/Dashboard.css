@@ -1,6 +1,5 @@
 @import '../fonts/Fonts.css';
 @import 'MFXColors.css';
-@import 'MFXProgressSpinner.css'
 
 /*
 ==========================================
@@ -20,7 +19,12 @@ SIDE BAR CSS
     -fx-background-color: '#02011A';
 }
 
-.rootPane .sidebar .menus:hover {
+.menus:hover {
+    -fx-background-color: '#272549';
+    -fx-background-radius: 10;
+}
+
+.rootPane .sidebar .menusActive {
     -fx-background-color: '#272549';
     -fx-background-radius: 10;
 }
@@ -30,6 +34,10 @@ SIDE BAR CSS
 }
 
 .rootPane .sidebar .menus:hover .lblMenus {
+    -fx-text-fill: white;
+}
+
+.rootPane .sidebar .menus .lblMenusActive {
     -fx-text-fill: white;
 }
 
@@ -43,8 +51,13 @@ SIDE BAR CSS
     -fx-fill: white;
 }
 
+.rootPane .sidebar .menusActive .fntAwesomeActive{
+    -fx-font-family: FontAwesome;
+    -fx-fill: white;
+}
+
 .rootPane .sidebar .logoffBtn {
-    -fx-background-color: '#389AE7';
+    -fx-background-color: '#7A0ED9';
     -fx-background-radius: 10;
 }
 
@@ -64,14 +77,5 @@ PIE CHART
 */
 .content1 {
     -fx-background-color: '#D6D5EA'
-}
-
-/*
-==========================================
-PROGRESS BAR
-==========================================
-*/
-.mfx-progress-spinner .track {
-    -fx-background-color: black;
 }
 

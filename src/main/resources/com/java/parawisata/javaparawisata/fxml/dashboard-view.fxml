@@ -25,7 +25,7 @@
                            </font>
                         </Label>
                      </children></AnchorPane>
-                  <MFXProgressSpinner fx:id="progressTotalTrip" layoutX="34.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.46" startingAngle="90.0" style="-fx-border-color: #74d3a2; -fx-border-radius: 100%; -fx-border-width: 3;" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
+                  <MFXProgressSpinner fx:id="progressTotalTrip" layoutX="34.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.46" startingAngle="90.0" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
                      <color4>
                         <Color red="0.062745101749897" green="0.6117647290229797" blue="0.33725491166114807" />
                      </color4>
@@ -46,7 +46,7 @@
                            </font>
                         </Label>
                      </children></AnchorPane>
-                  <MFXProgressSpinner fx:id="ProgressTotalPendingTrip" layoutX="35.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.14" startingAngle="90.0" style="-fx-border-color: #82adee; -fx-border-radius: 100%; -fx-border-width: 3;" styleClass="track" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
+                  <MFXProgressSpinner fx:id="ProgressTotalPendingTrip" layoutX="35.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.14" startingAngle="90.0" styleClass="track" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
                      <color4>
                         <Color green="0.3843137323856354" blue="1.0" />
                      </color4>
@@ -85,7 +85,7 @@
             </AnchorPane>
          </children>
       </HBox>
-      <AnchorPane layoutY="27.0" prefHeight="217.0" prefWidth="747.0" styleClass="content1" stylesheets="@../css/Dashboard.css" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+      <AnchorPane layoutY="27.0" prefHeight="217.0" prefWidth="747.0" styleClass="content1" AnchorPane.bottomAnchor="285.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
          <children>
             <PieChart fx:id="diagReview" prefHeight="256.0" prefWidth="391.0" title="Review Trip" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0" />
          </children>

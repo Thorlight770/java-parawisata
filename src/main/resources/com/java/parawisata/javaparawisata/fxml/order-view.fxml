@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXStepper?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="rootStepper" stylesheets="@../css/Order.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.OrderController">
+   <children>
+      <MFXStepper fx:id="stepperPane" altColor="#389ae7" baseColor="#389ae7" layoutX="-11.0" layoutY="27.0" minHeight="304.0" prefHeight="306.0" prefWidth="600.0" progressBarBackground="#389ae7" progressColor="#389ae7" styleClass="mfx-stepper" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
+</AnchorPane>
