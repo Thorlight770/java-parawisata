@@ -15,7 +15,7 @@ public class AdditionalMessage {
     }
 
     public MessageType getType() {
-        return type;
+        return (type != null) ? type : MessageType.DEFAULT;
     }
 
     public void setType(MessageType type) {

@@ -1,7 +1,6 @@
 package com.java.parawisata.javaparawisata.Utils.ControlMessage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ControlMessage<T> {
     public T data;
@@ -64,5 +63,12 @@ public class ControlMessage<T> {
 
     public void setMessages(List<AdditionalMessage> messages) {
         this.messages = messages;
+    }
+
+    public MessageType getMaxMessageType() {
+        if (messages.isEmpty())
+            return MessageType.DEFAULT;
+        else return Collections.max(messages, (a, b) ->
+                a.getType().compare(b.getType())).getType();
     }
 }

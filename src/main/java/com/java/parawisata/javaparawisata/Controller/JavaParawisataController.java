@@ -2,7 +2,12 @@ package com.java.parawisata.javaparawisata.Controller;
 
 import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
 import com.java.parawisata.javaparawisata.JavaParawisataApp;
+import com.java.parawisata.javaparawisata.Repository.IParamRepository;
+import com.java.parawisata.javaparawisata.Repository.Impl.ParamRepositoryImpl;
+import com.java.parawisata.javaparawisata.Service.IParamService;
+import com.java.parawisata.javaparawisata.Service.Impl.ParamServiceImpl;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,10 +25,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseAdapter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.IntStream;
 
 public class JavaParawisataController implements Initializable {
     @FXML
@@ -56,24 +64,38 @@ public class JavaParawisataController implements Initializable {
     @FXML
     public VBox rootMenus;
 
+    private IParamRepository paramRepository;
+    private IParamService paramService;
+    private GlobalParameter menuRequest = new GlobalParameter();
+
+    public JavaParawisataController() {
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        this.rootMenus.getChildren().addAll(
-//                generateMenus(List.of(
-//                        new GlobalParameter("Menus", "Customer", "DASHBOARD", "Dashboard", "", "", 1L),
-//                        new GlobalParameter("Menus", "Customer", "MAP", "Order Bus", "", "", 1L),
-//                        new GlobalParameter("Menus", "Customer", "HISTORY", "History Order", "", "", 1L)
-//                        ))
-//        );
-        this.rootMenus.getChildren().addAll(
-                generateMenus(List.of(
-                        new GlobalParameter("Menus", "Administrator", "ADDRESS_BOOK", "Customer Maintenance", "", "", 1L),
-                        new GlobalParameter("Menus", "Administrator", "BUS", "Bus Maintenance", "", "", 1L),
-                        new GlobalParameter("Menus", "Administrator", "HOURGLASS_1", "Order Approval", "", "", 1L)
-                ))
-        );
-        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/dashboard-view.fxml"));
-        this.contentPane.autosize();
+
+    }
+
+    public void setMenus(String role, String username) {
+        lblUsername.setText(username);
+        menuRequest.setGroup("Menus");
+        menuRequest.setCriteria(role);
+        this.rootMenus.getChildren().addAll(generateMenus(this.getMenus(menuRequest).data));
+
+        if (menuRequest.getCriteria().equals("Administrator")) {
+            this.lblHeader.setText("Customer Maintenance");
+            this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/customer-maint-view.fxml"));
+            this.contentPane.autosize();
+        } else if (menuRequest.getCriteria().equals("Customer")) {
+            this.lblHeader.setText("Dashboard");
+            this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/dashboard-view.fxml"));
+            this.contentPane.autosize();
+        }
+    }
+    public ControlMessage<List<GlobalParameter>> getMenus(GlobalParameter data) {
+        paramRepository = new ParamRepositoryImpl();
+        paramService = new ParamServiceImpl(paramRepository);
+        return paramService.InquiryGlobalParam(data);
     }
 
     //<editor-fold desc="Customer Menus FXML">
@@ -99,7 +121,6 @@ public class JavaParawisataController implements Initializable {
     //<editor-folding desc="Global Button">
     @FXML
     public void onBtnNotificationClick(MouseEvent event) {
-
     }
 
     @FXML
@@ -108,20 +129,33 @@ public class JavaParawisataController implements Initializable {
     }
 
     @FXML
-    public void onBtnSignOutClick(MouseEvent event) {
+    public void onBtnSignOutClick(MouseEvent event) throws IOException {
+        ((Node) (event.getSource())).getScene().getWindow().hide();
 
+        FXMLLoader fxmlLoader = new FXMLLoader(JavaParawisataApp.class.getResource("fxml/login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
     }
     //</editor-fold>
 
     //<editor-fold desc="Administrator Menus FXML">
     public void onBtnCustomerMaintenanceClick(MouseEvent event) {
         this.lblHeader.setText("Customer Maintenance");
+        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/customer-maint-view.fxml"));
+        this.contentPane.autosize();
     }
     public void onBtnBusMaintenanceClick(MouseEvent event) {
         this.lblHeader.setText("Bus Maintenance");
+        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/bus-maint-view.fxml"));
+        this.contentPane.autosize();
     }
     public void onBtnOrderApprovalClick(MouseEvent event) {
         this.lblHeader.setText("Order Approval");
+        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/order-approval-view.fxml"));
+        this.contentPane.autosize();
     }
     //</editor-fold>
 
@@ -130,7 +164,8 @@ public class JavaParawisataController implements Initializable {
         List<HBox> response = new ArrayList<HBox>();
         try {
             if (!listMenu.isEmpty()) {
-                listMenu.forEach(x -> {
+                IntStream.range(0, listMenu.size()).forEach(index -> {
+                    GlobalParameter x = listMenu.get(index);
                     HBox menu = new HBox();
                     menu.setSpacing(10);
                     menu.setPrefSize(200, 50);

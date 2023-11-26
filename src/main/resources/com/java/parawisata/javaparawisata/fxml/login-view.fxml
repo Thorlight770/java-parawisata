@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="445.0" prefWidth="717.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.LoginController">
+   <children>
+      <HBox alignment="CENTER_RIGHT" layoutX="27.0" layoutY="62.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane maxHeight="445.0" maxWidth="357.0" minHeight="445.0" minWidth="357.0" prefHeight="445.0" prefWidth="357.0" style="-fx-background-color: #7a0ed9;" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER" layoutX="130.0" layoutY="123.0" prefHeight="200.0" prefWidth="179.0" spacing="10.0" style="-fx-border-color: white; -fx-border-width: 8; -fx-border-radius: 10;" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+                     <children>
+                        <FontAwesomeIconView fill="WHITE" glyphName="MAP_MARKER" size="100" />
+                        <Label text="Perfoma Trans" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="445.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutX="129.0" layoutY="104.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                     <children>
+                        <AnchorPane prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="85.0" prefWidth="217.0" spacing="5.0">
+                                 <children>
+                                    <FontAwesomeIconView fill="#070707" glyphName="MAP_MARKER" size="25" text="" />
+                                    <GridPane prefHeight="44.0" prefWidth="202.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="17.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="Welcome Back,">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Sign in to continue" GridPane.rowIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <padding>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <MFXTextField fx:id="username" alignment="BOTTOM_LEFT" floatMode="BORDER" floatingText="Username" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="277.0">
+                           <VBox.margin>
+                              <Insets top="70.0" />
+                           </VBox.margin>
+                        </MFXTextField>
+                        <MFXPasswordField fx:id="password" alignment="BOTTOM_LEFT" minHeight="20.0" prefHeight="30.0" prefWidth="277.0">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </MFXPasswordField>
+                        <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="277.0" text="Forgot Password?">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                        <MFXCheckbox fx:id="isAdmin" gap="-200.0" prefHeight="12.0" prefWidth="277.0" text="Admin">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </MFXCheckbox>
+                        <MFXButton buttonType="RAISED" onAction="#onBtnLogin" prefHeight="38.0" prefWidth="277.0" style="-fx-background-color: #7a0ed9;" text="Login" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </MFXButton>
+                        <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0" spacing="5.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label text="New User?">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label text="SignUp" textFill="#7a0ed9">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

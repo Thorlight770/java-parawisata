@@ -33,7 +33,7 @@
                         <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <MFXComboBox fx:id="comboPoint" allowEdit="true" floatMode="DISABLED" floatingText="Keberangkatan" minHeight="40.0" minWidth="349.0" prefHeight="40.0" prefWidth="349.0" />
+                        <MFXComboBox fx:id="comboPoint" allowEdit="true" floatingText="Keberangkatan" minHeight="40.0" minWidth="349.0" prefHeight="40.0" prefWidth="349.0" />
                         <MFXComboBox fx:id="comboDestination" allowEdit="true" floatMode="DISABLED" floatingText="Tujuan" minHeight="40.0" minWidth="349.0" prefHeight="40.0" prefWidth="349.0" GridPane.rowIndex="1" />
                         <MFXCheckbox fx:id="isOneDay" text="1 Hari Perjalanan" GridPane.rowIndex="3">
                            <GridPane.margin>

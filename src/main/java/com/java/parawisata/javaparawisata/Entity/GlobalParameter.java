@@ -77,4 +77,17 @@ public class GlobalParameter {
     public void setSort(Long sort) {
         this.sort = sort;
     }
+
+    @Override
+    public String toString() {
+        return "GlobalParameter{" +
+                "group='" + group + '\'' +
+                ", criteria='" + criteria + '\'' +
+                ", value='" + value + '\'' +
+                ", Text='" + Text + '\'' +
+                ", info01='" + info01 + '\'' +
+                ", info02='" + info02 + '\'' +
+                ", sort=" + sort +
+                '}';
+    }
 }

@@ -17,9 +17,9 @@
    <children>
       <AnchorPane layoutX="2.0" layoutY="69.0" prefHeight="467.0" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="70.0">
          <children>
-            <AnchorPane layoutX="20.0" layoutY="386.0" prefWidth="160.0" styleClass="logoffBtn" AnchorPane.bottomAnchor="20.0">
+            <AnchorPane layoutX="20.0" layoutY="386.0" onMouseClicked="#onBtnSignOutClick" prefWidth="160.0" styleClass="logoffBtn" AnchorPane.bottomAnchor="20.0">
                <children>
-                  <HBox fx:id="btnSignOut" alignment="CENTER" onMouseClicked="#onBtnSignOutClick" prefHeight="30.0" prefWidth="160.0" spacing="10.0">
+                  <HBox fx:id="btnSignOut" alignment="CENTER" prefHeight="30.0" prefWidth="160.0" spacing="10.0">
                      <children>
                         <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="20" />
                         <Label text="Sign Out" textFill="WHITE">
@@ -28,6 +28,9 @@
                            </HBox.margin>
                         </Label>
                      </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </HBox>
                </children>
                <cursor>

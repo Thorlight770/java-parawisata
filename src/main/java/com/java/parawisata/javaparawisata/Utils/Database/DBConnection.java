@@ -1,10 +1,9 @@
 package com.java.parawisata.javaparawisata.Utils.Database;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 
@@ -14,8 +13,8 @@ public class DBConnection {
     public static Connection GetConnection() {
         try {
             String urlString =
-                    String.format("jdbc:sqlserver://%s;database=%s;user=%s;password=%s",
-                            "KELAS-MUHAMMADG", "user_po", "Testing1");
+                    String.format("jdbc:sqlserver://%s;encrypt=true;trustServerCertificate=true;database=%s;user=%s;password=%s",
+                            "localhost:1433", "SQL_JavaParawisata","user_po", "Testing1");
 
             DriverManager.registerDriver(new SQLServerDriver());
             connection = DriverManager.getConnection(urlString);
@@ -26,22 +25,75 @@ public class DBConnection {
         return connection;
     }
 
-    public static ResultSet ExecuteQuery(String query) throws SQLException {
-        ResultSet response = null;
+    public static Boolean ExecuteQuery(String query) {
+        Boolean response = false;
         try {
             connection = GetConnection();
             connection.setAutoCommit(true);
-            Statement statement = connection.createStatement();
-            statement.executeQuery(query);
-            statement.close();
+            Statement statement = connection.createStatement(
+            );
+
+            response = statement.execute(query);
         } catch (Exception ex) {
-            connection.rollback();
-        } finally {
-            connection.close();
+            ex.printStackTrace();
         }
         return response;
     }
+    public static List<List<Object>> MappingStatement(boolean result, Statement statement, List<Class> listMapping) throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        List<List<Object>> response = new ArrayList<>();
+        try {
+            int classCounter = 0;
+            do {
+                if (result) {
+                    ResultSet resultSet = statement.getResultSet();
+                    response.add(MappingResultSet(resultSet, listMapping.get(classCounter)));
+                    classCounter++;
+                }
+                result = statement.getMoreResults();
+            } while (result) ;
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return response;
+    }
+    public static List<List<Object>> ExecuteQuery(String query, List<Class> listClassMapping) throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        List<List<Object>> response = new ArrayList<>();
+        try {
+            connection = GetConnection();
+            connection.setAutoCommit(false);
+            Statement statement = connection.createStatement(
+            );
 
+            boolean result = statement.execute(query);
+            int classCounter = 0;
+            do {
+                if (result) {
+                    ResultSet resultSet = statement.getResultSet();
+                    response.add(MappingResultSet(resultSet, listClassMapping.get(classCounter)));
+                    classCounter++;
+                }
+                result = statement.getMoreResults();
+            } while (result);
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return response;
+    }
+    public static List<List<Object>> ExecuteQuery(String query, Map<String, Object> listParameter, List<Class> listClassMapping) throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        List<List<Object>> response = new ArrayList<>();
+        try {
+            // <editor-fold desc="replace query">
+            for (Map.Entry<String, Object> entry : listParameter.entrySet()) {
+                query = query.replace(entry.getKey(), entry.getValue().toString());
+            }
+            // </editor-fold>
+
+            response = ExecuteQuery(query, listClassMapping);
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return response;
+    }
     public static <T> List<T> MappingResultSet(ResultSet resultSet, Class<T> type) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<Field> fields = Arrays.asList(type.getDeclaredFields());
         fields.forEach(x -> x.setAccessible(true));
