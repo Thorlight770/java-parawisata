@@ -1,5 +1,7 @@
 package com.java.parawisata.javaparawisata.Utils.Components;
 
+import com.java.parawisata.javaparawisata.Controller.OrderController;
+import com.java.parawisata.javaparawisata.Controller.OrderStep1Controller;
 import com.java.parawisata.javaparawisata.JavaParawisataApp;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
@@ -21,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +45,17 @@ public class ServiceGlobalComponents {
         }
         return response;
     }
-
+    public static <T> LoaderComponents<T> generateLoaderFXMLPage(String resource) throws IOException {
+        LoaderComponents<T> response = new LoaderComponents<>();
+        FXMLLoader fxmlLoader = new FXMLLoader(JavaParawisataApp.class.getResource(resource));
+        response.setAnchorPane(fxmlLoader.load());
+        response.setController(fxmlLoader.getController());
+        AnchorPane.setTopAnchor(response.getAnchorPane(), 0.0);
+        AnchorPane.setBottomAnchor(response.getAnchorPane(), 0.0);
+        AnchorPane.setLeftAnchor(response.getAnchorPane(), 0.0);
+        AnchorPane.setRightAnchor(response.getAnchorPane(), 0.0);
+        return response;
+    }
     public static void setAnchorConstraints(Node node, Double aDouble) {
         AnchorPane.setLeftAnchor(node, aDouble);
         AnchorPane.setRightAnchor(node, aDouble);

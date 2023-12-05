@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXStepper?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="rootStepper" stylesheets="@../css/Order.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.OrderController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="623.0" styleClass="rootStepper" stylesheets="@../css/Order.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.OrderController">
    <children>
-      <MFXStepper fx:id="stepperPane" altColor="#389ae7" baseColor="#389ae7" layoutX="-11.0" layoutY="27.0" minHeight="304.0" prefHeight="306.0" prefWidth="600.0" progressBarBackground="#389ae7" progressColor="#389ae7" styleClass="mfx-stepper" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <VBox layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="200.0" spacing="3.0">
+               <children>
+                  <Line fx:id="pLv1" endX="100.0" startX="-100.0" stroke="#01e419" strokeType="OUTSIDE" strokeWidth="2.0" HBox.hgrow="ALWAYS" />
+                  <FontAwesomeIconView fx:id="icnCalendar" fill="#01e419" glyphName="CALENDAR" size="24" />
+                  <Line fx:id="pLv2" endX="50.0" stroke="#01e419" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" HBox.hgrow="ALWAYS" />
+                  <FontAwesomeIconView fx:id="icnBus" fill="#d4cbd7" glyphName="BUS" size="24" />
+                  <Line fx:id="pLv3" endX="50.0" stroke="#d4cbd7" strokeType="OUTSIDE" strokeWidth="2.0" HBox.hgrow="ALWAYS" />
+                  <FontAwesomeIconView fx:id="icnGlass" fill="#d4cbd7" glyphName="HOURGLASS_HALF" size="24" />
+                  <Line fx:id="pLv4" endX="100.0" startX="-100.0" stroke="#d4cbd7" strokeType="OUTSIDE" strokeWidth="2.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <AnchorPane fx:id="orderContent" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

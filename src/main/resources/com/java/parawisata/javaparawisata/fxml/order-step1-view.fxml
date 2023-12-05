@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -29,20 +27,14 @@
                         <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="59.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="117.0" minHeight="0.0" prefHeight="58.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="50.0" valignment="TOP" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="103.0" minHeight="10.0" prefHeight="89.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <MFXComboBox fx:id="comboPoint" allowEdit="true" floatingText="Keberangkatan" minHeight="40.0" minWidth="349.0" prefHeight="40.0" prefWidth="349.0" />
-                        <MFXComboBox fx:id="comboDestination" allowEdit="true" floatMode="DISABLED" floatingText="Tujuan" minHeight="40.0" minWidth="349.0" prefHeight="40.0" prefWidth="349.0" GridPane.rowIndex="1" />
-                        <MFXCheckbox fx:id="isOneDay" text="1 Hari Perjalanan" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets bottom="20.0" left="10.0" />
-                           </GridPane.margin>
-                        </MFXCheckbox>
-                        <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                        <MFXComboBox fx:id="comboPoint" allowEdit="true" floatingText="Pick Up Point" minHeight="40.0" minWidth="349.0" prefHeight="40.0" prefWidth="349.0" />
+                        <MFXComboBox fx:id="comboDestination" allowEdit="true" floatingText="Destination" minHeight="40.0" minWidth="349.0" prefHeight="40.0" prefWidth="349.0" GridPane.rowIndex="1" />
+                        <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                            <children>
-                              <MFXButton fx:id="submit" buttonType="RAISED" prefHeight="34.0" prefWidth="71.0" rippleAnimateShadow="true" style="-fx-background-color: #7a0ed9;" text="Submit" textFill="WHITE">
+                              <MFXButton fx:id="submit" buttonType="RAISED" onAction="#onBtnSubmitClick" prefHeight="34.0" prefWidth="71.0" rippleAnimateShadow="true" style="-fx-background-color: #7a0ed9;" text="Submit" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>

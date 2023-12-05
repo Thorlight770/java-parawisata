@@ -1,10 +1,13 @@
 package com.java.parawisata.javaparawisata.Entity;
 
 import java.sql.Date;
+import java.time.temporal.Temporal;
 
 public class Order {
     private String orderID;
     private Date ordateDate;
+    private Date dateFrom;
+    private Date dateTo;
     private String customerID;
     private String busID;
     private String driverID;
@@ -19,9 +22,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(String orderID, Date ordateDate, String customerID, String busID, String driverID, String pickUpPoint, String destination, Boolean status, Integer review, String reviewDesc, Date createdDate, Date updateDate) {
+    public Order(String orderID, Date ordateDate, Date dateFrom, Date dateTo, String customerID, String busID, String driverID, String pickUpPoint, String destination, Boolean status, Integer review, String reviewDesc, Date createdDate, Date updateDate) {
         this.orderID = orderID;
         this.ordateDate = ordateDate;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
         this.customerID = customerID;
         this.busID = busID;
         this.driverID = driverID;
@@ -48,6 +53,22 @@ public class Order {
 
     public void setOrdateDate(Date ordateDate) {
         this.ordateDate = ordateDate;
+    }
+
+    public Temporal getDateFrom() {
+        return (Temporal) dateFrom;
+    }
+
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
+    }
+
+    public Temporal getDateTo() {
+        return (Temporal) dateTo;
+    }
+
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
     }
 
     public String getCustomerID() {

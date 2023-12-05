@@ -21,9 +21,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class OrderStep2Controller implements Initializable {
-    private OrderController orderController;
     @FXML
     public VBox vboxBus;
+
+    private OrderController orderController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -152,5 +153,10 @@ public class OrderStep2Controller implements Initializable {
             ex.printStackTrace();
         }
         return response;
+    }
+
+    public void setParentController(OrderController controller) {
+        this.orderController = controller;
+        this.orderController.print();
     }
 }

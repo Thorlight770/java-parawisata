@@ -1,46 +1,59 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.JavaParawisataApp;
+import com.java.parawisata.javaparawisata.Utils.Components.LoaderComponents;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
-import io.github.palexdev.materialfx.controls.MFXStepper;
-import io.github.palexdev.materialfx.controls.MFXStepperToggle;
-import io.github.palexdev.materialfx.font.MFXFontIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class OrderController implements Initializable {
     @FXML
-    public MFXStepper stepperPane;
+    public FontAwesomeIconView icnBus;
+
+    @FXML
+    public FontAwesomeIconView icnCalendar;
+
+    @FXML
+    public FontAwesomeIconView icnGlass;
+
+    @FXML
+    public AnchorPane orderContent;
+
+    @FXML
+    public Line pLv1;
+
+    @FXML
+    public Line pLv2;
+
+    @FXML
+    public Line pLv3;
+
+    @FXML
+    public Line pLv4;
+
+    private OrderStep1Controller step1Controller;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<MFXStepperToggle> stepperToggleList = createSteps();
-        this.stepperPane.getStepperToggles().addAll(stepperToggleList);
+        try {
+            LoaderComponents<OrderStep1Controller> loaderStep1 = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/order-step1-view.fxml");
+            this.orderContent.getChildren().addAll(loaderStep1.getAnchorPane());
+            this.step1Controller = loaderStep1.getController();
+            this.step1Controller.setParentController(this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private List<MFXStepperToggle> createSteps() {
-        MFXStepperToggle step1 = new MFXStepperToggle("Step 1", new MFXFontIcon("mfx-map", 16, Color.web("#f1c40f")));
-        step1.setContent(ServiceGlobalComponents.generateFXMLPage("fxml/order-step1-view.fxml"));
-        ServiceGlobalComponents.setAnchorConstraints(step1, 0.0);
-
-        MFXStepperToggle step2 = new MFXStepperToggle("Step 2", new MFXFontIcon("mfx-calendars", 16, Color.web("#49a6d7")));
-        step2.setContent(ServiceGlobalComponents.generateFXMLPage("fxml/order-step2-view.fxml"));
-        ServiceGlobalComponents.setAnchorConstraints(step2, 0.0);
-
-        MFXStepperToggle step3 = new MFXStepperToggle("Step 3", new MFXFontIcon("mfx-variant5-mark", 16, Color.web("#85CB33")));
-        step3.setContent(ServiceGlobalComponents.generateFXMLPage("fxml/order-step3-view.fxml"));
-        ServiceGlobalComponents.setAnchorConstraints(step3, 0.0);
-
-        return List.of(step1, step2, step3);
-    }
-
-    public void regenerateStepper() {
-        this.stepperPane.getStepperToggles().removeAll();
-        this.stepperPane.getStepperToggles().get(1).setContent(ServiceGlobalComponents.generateFXMLPage("fxml/order-step2-view.fxml"));
+    public void print() {
+        System.out.println("PRINT PARENT");
     }
 }

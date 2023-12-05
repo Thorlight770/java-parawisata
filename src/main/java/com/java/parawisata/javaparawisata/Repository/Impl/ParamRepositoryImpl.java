@@ -39,7 +39,9 @@ public class ParamRepositoryImpl implements IParamRepository {
                         RAISERROR('Parameter Not Exists !', 16, 1)
                     END
                     
-                    SELECT * FROM JavaParawisataParam_TR
+                    SELECT [Group] AS [group], Criteria AS criteria, [value] AS value, [Text] AS [text],
+                    Info01 AS info01, Info02 AS info02, [Sort] AS sort
+                    FROM JavaParawisataParam_TR
                     WHERE (ISNULL(@Group, '') = '' OR @Group = [Group])
                     AND (ISNULL(@Criteria, '') = '' OR @Criteria = Criteria)
                     ORDER BY [Criteria], [Sort]
@@ -54,7 +56,7 @@ public class ParamRepositoryImpl implements IParamRepository {
 
             if (result && !resultObj.isEmpty()) {
                 resultObj.get(0).forEach(x -> {
-                   response.data.add(GlobalParameter.class.cast(x));
+                   response.data.add((GlobalParameter) x);
                 });
                 response.isSuccess = true;
             } else response.isSuccess = false;
@@ -74,7 +76,7 @@ public class ParamRepositoryImpl implements IParamRepository {
         try {
             // <editor-fold desc="Query">
             String query = """
-                    SELECT DISTINCT a.[Destination] AS [Value], a.[Destination] AS [Text]
+                    SELECT DISTINCT a.[Destination] AS [value], a.[Destination] AS [text], a.Duration AS info01
                     FROM BusPrice_TR a
                     """;
             // </editor-fold>

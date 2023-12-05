@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.*;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
+import com.microsoft.sqlserver.jdbc.SQLServerResultSet;
 
 public class DBConnection {
     private static Connection connection;
@@ -101,16 +102,20 @@ public class DBConnection {
         List<T> response = new ArrayList<>();
         while (resultSet.next()) {
             T dto = type.getConstructor().newInstance();
-            fields.forEach(x -> {
+            for (Field x : fields) {
                 String name = x.getName();
                 try {
-                    String value = resultSet.getString(name);
-                    x.set(dto, x.getType().getConstructor(String.class).newInstance(value));
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                        if (metaData.getColumnName(i).equalsIgnoreCase(name)) {
+                            String value = resultSet.getString(name) == null ? "" : resultSet.getString(name);
+                            x.set(dto, x.getType().getConstructor(String.class).newInstance(value));
+                        }
+                    }
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    throw new RuntimeException(ex);
                 }
-            });
-
+            }
             response.add(dto);
         }
         return response;
