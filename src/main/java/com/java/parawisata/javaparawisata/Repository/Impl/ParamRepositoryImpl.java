@@ -118,7 +118,7 @@ public class ParamRepositoryImpl implements IParamRepository {
                     
                     SET @Criteria = CONCAT('%', @Criteria, '%')
                                      
-                    SELECT b.[Value], a.[Destination] AS [Text], a.Price AS Info01, b.Info02
+                    SELECT a.BusPriceID AS [Value], b.[Value] AS [Text], a.Price AS Info01, b.Info02
                     FROM BusPrice_TR a
                     JOIN JavaParawisataParam_TR b
                     ON a.BusName = b.[Value]

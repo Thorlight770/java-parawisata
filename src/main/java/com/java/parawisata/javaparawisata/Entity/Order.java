@@ -5,7 +5,7 @@ import java.time.temporal.Temporal;
 
 public class Order {
     private String orderID;
-    private Date ordateDate;
+    private Date orderDate;
     private Date dateFrom;
     private Date dateTo;
     private String customerID;
@@ -24,7 +24,7 @@ public class Order {
 
     public Order(String orderID, Date ordateDate, Date dateFrom, Date dateTo, String customerID, String busID, String driverID, String pickUpPoint, String destination, Boolean status, Integer review, String reviewDesc, Date createdDate, Date updateDate) {
         this.orderID = orderID;
-        this.ordateDate = ordateDate;
+        this.orderDate = ordateDate;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.customerID = customerID;
@@ -45,14 +45,6 @@ public class Order {
 
     public void setOrderID(String orderID) {
         this.orderID = orderID;
-    }
-
-    public Date getOrdateDate() {
-        return ordateDate;
-    }
-
-    public void setOrdateDate(Date ordateDate) {
-        this.ordateDate = ordateDate;
     }
 
     public Date getDateFrom() {
@@ -151,11 +143,19 @@ public class Order {
         this.updateDate = updateDate;
     }
 
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "orderID='" + orderID + '\'' +
-                ", ordateDate=" + ordateDate +
+                ", orderDate=" + orderDate +
                 ", dateFrom=" + dateFrom +
                 ", dateTo=" + dateTo +
                 ", customerID='" + customerID + '\'' +

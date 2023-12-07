@@ -6,6 +6,7 @@ import com.java.parawisata.javaparawisata.Repository.IParamRepository;
 import com.java.parawisata.javaparawisata.Repository.Impl.ParamRepositoryImpl;
 import com.java.parawisata.javaparawisata.Service.IParamService;
 import com.java.parawisata.javaparawisata.Service.Impl.ParamServiceImpl;
+import com.java.parawisata.javaparawisata.Utils.Components.LoaderComponents;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
@@ -17,6 +18,7 @@ import io.github.palexdev.materialfx.effects.DepthLevel;
 import io.github.palexdev.materialfx.enums.ButtonType;
 import javafx.fxml.Initializable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -34,6 +37,7 @@ public class OrderStep2Controller implements Initializable {
     public VBox vboxBus;
 
     private OrderController orderController;
+    private OrderStep3Controller step3Controller;
 
     private IParamRepository paramRepository;
     private IParamService paramService;
@@ -85,7 +89,7 @@ public class OrderStep2Controller implements Initializable {
                     fsBus.setSize("40");
 
                     // Create Label
-                    Label labelBus = new Label(x.getValue());
+                    Label labelBus = new Label(x.getText());
                     labelBus.setMinSize(100, 60);
                     labelBus.setMaxSize(100, 60);
                     labelBus.setWrapText(true);
@@ -159,8 +163,13 @@ public class OrderStep2Controller implements Initializable {
                     btnPesan.setTextFill(Color.web("WHITE"));
                     btnPesan.setButtonType(ButtonType.RAISED);
                     btnPesan.setDepthLevel(DepthLevel.LEVEL2);
+                    btnPesan.setCursor(Cursor.HAND);
                     btnPesan.setOnAction(event -> {
-                        System.out.println(x.getValue());
+                        try {
+                            this.onBtnChooseBusAction(x.getValue());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     });
 
                     // Set Child HBox
@@ -186,5 +195,14 @@ public class OrderStep2Controller implements Initializable {
 
     public void setParentOrderData(Order data) {
         this.orderData = data;
+    }
+
+    public void onBtnChooseBusAction(String busIDPrice) throws IOException {
+        this.orderData.setBusID(busIDPrice);
+        LoaderComponents<OrderStep3Controller> loaderStep3 = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/order-step3-view.fxml");
+        this.orderController.icnBus.setFill(Color.web("#01e419"));
+        this.orderController.pLv3.setStroke(Color.web("#01e419"));
+        this.orderController.orderContent.getChildren().setAll(loaderStep3.getAnchorPane());
+        this.step3Controller = loaderStep3.getController();
     }
 }
