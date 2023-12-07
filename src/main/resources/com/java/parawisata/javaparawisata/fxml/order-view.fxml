@@ -13,8 +13,8 @@
             <HBox alignment="CENTER" prefHeight="75.0" prefWidth="200.0" spacing="3.0">
                <children>
                   <Line fx:id="pLv1" endX="100.0" startX="-100.0" stroke="#01e419" strokeType="OUTSIDE" strokeWidth="2.0" HBox.hgrow="ALWAYS" />
-                  <FontAwesomeIconView fx:id="icnCalendar" fill="#01e419" glyphName="CALENDAR" size="24" />
-                  <Line fx:id="pLv2" endX="50.0" stroke="#01e419" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" HBox.hgrow="ALWAYS" />
+                  <FontAwesomeIconView fx:id="icnCalendar" fill="#d4cbd7" glyphName="CALENDAR" size="24" />
+                  <Line fx:id="pLv2" endX="50.0" stroke="#d4cbd7" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" HBox.hgrow="ALWAYS" />
                   <FontAwesomeIconView fx:id="icnBus" fill="#d4cbd7" glyphName="BUS" size="24" />
                   <Line fx:id="pLv3" endX="50.0" stroke="#d4cbd7" strokeType="OUTSIDE" strokeWidth="2.0" HBox.hgrow="ALWAYS" />
                   <FontAwesomeIconView fx:id="icnGlass" fill="#d4cbd7" glyphName="HOURGLASS_HALF" size="24" />

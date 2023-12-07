@@ -26,6 +26,9 @@ public class ParamServiceImpl implements IParamService {
                 case "Destination":
                     response = paramRepository.InquiryDestinationParam(data);
                     break;
+                case "Bus":
+                    response = paramRepository.InquiryBusListParam(data);
+                    break;
                 default:
                     response = paramRepository.InquiryGlobalParam(data);
                     break;

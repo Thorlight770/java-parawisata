@@ -55,16 +55,16 @@ public class Order {
         this.ordateDate = ordateDate;
     }
 
-    public Temporal getDateFrom() {
-        return (Temporal) dateFrom;
+    public Date getDateFrom() {
+        return dateFrom;
     }
 
     public void setDateFrom(Date dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public Temporal getDateTo() {
-        return (Temporal) dateTo;
+    public Date getDateTo() {
+        return dateTo;
     }
 
     public void setDateTo(Date dateTo) {
@@ -149,5 +149,25 @@ public class Order {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderID='" + orderID + '\'' +
+                ", ordateDate=" + ordateDate +
+                ", dateFrom=" + dateFrom +
+                ", dateTo=" + dateTo +
+                ", customerID='" + customerID + '\'' +
+                ", busID='" + busID + '\'' +
+                ", driverID='" + driverID + '\'' +
+                ", pickUpPoint='" + pickUpPoint + '\'' +
+                ", destination='" + destination + '\'' +
+                ", status=" + status +
+                ", review=" + review +
+                ", reviewDesc='" + reviewDesc + '\'' +
+                ", createdDate=" + createdDate +
+                ", updateDate=" + updateDate +
+                '}';
     }
 }

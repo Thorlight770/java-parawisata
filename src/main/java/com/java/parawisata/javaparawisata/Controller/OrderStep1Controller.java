@@ -27,9 +27,14 @@ import javafx.fxml.Initializable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
+
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -63,7 +68,7 @@ public class OrderStep1Controller implements Initializable {
 
     private IOrderRepository orderRepository;
 
-    private Order orderData;
+    private Order orderData = new Order();
 
     private OrderController orderController;
 
@@ -77,19 +82,46 @@ public class OrderStep1Controller implements Initializable {
         this.getAllParam();
     }
 
+    public ControlMessage step1Validate() {
+        ControlMessage response = new ControlMessage();
+        try {
+            if (this.orderData.getPickUpPoint() == null || this.orderData.getPickUpPoint().isEmpty() || this.orderData.getPickUpPoint().isBlank())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Pick Up Point Tidak Boleh Kosong !"));
+
+            if (this.orderData.getDestination() == null || this.orderData.getDestination().isEmpty() || this.orderData.getDestination().isBlank())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Destination Point Tidak Boleh Kosong !"));
+
+            if (this.orderData.getDateFrom() == null)
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Kosong !"));
+
+            if (this.orderData.getDateTo() == null)
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date To Tidak Boleh Kosong !"));
+
+            if (response.getMaxMessageType().getValue() == MessageType.ERROR.getValue()) response.isSuccess = false;
+            else response.isSuccess = true;
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
+    }
     @FXML
     public void onBtnSubmitClick(ActionEvent event) throws IOException {
-//        this.orderRepository = new OrderRepositoryImpl();
-//        this.paramRepository = new ParamRepositoryImpl();
-//        IOrderService orderService = new OrderServiceImpl(this.orderRepository, this.paramRepository);
-//        ControlMessage<Order> response = orderService.onAddOrder(orderData);
-//        ServiceGlobalComponents.showAlertDialog(response);
-//        if (response.isSuccess) {
-        LoaderComponents<OrderStep2Controller> loaderStep2 = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/order-step2-view.fxml");
-        this.orderController.orderContent.getChildren().setAll(loaderStep2.getAnchorPane());
-        this.step2Controller = loaderStep2.getController();
-        this.step2Controller.setParentController(this.orderController);
-//        }
+        this.onSetData();
+
+        ControlMessage validateProc = this.step1Validate();
+        if (validateProc.isSuccess) {
+            LoaderComponents<OrderStep2Controller> loaderStep2 = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/order-step2-view.fxml");
+            this.orderController.icnCalendar.setFill(Color.web("#01e419"));
+            this.orderController.pLv2.setStroke(Color.web("#01e419"));
+            this.orderController.orderContent.getChildren().setAll(loaderStep2.getAnchorPane());
+            this.step2Controller = loaderStep2.getController();
+            this.step2Controller.setParentController(this.orderController);
+            this.step2Controller.setParentOrderData(this.orderData);
+            this.step2Controller.getAllListBus(this.orderData.getDestination());
+        } else {
+            ServiceGlobalComponents.showAlertDialog(validateProc);
+        }
     }
 
     public void getAllParam() {
@@ -134,6 +166,18 @@ public class OrderStep1Controller implements Initializable {
 
     public void setParentController(OrderController orderController) {
         this.orderController = orderController;
-        System.out.println(this.orderController);
     }
+
+    // <editor-folds desc="onChangeAction">
+    public void onSetData() {
+        this.orderData = new Order();
+        this.orderData.setOrderID(String.valueOf(UUID.randomUUID()));
+        if (dateTo.isValid() && dateTo.getValue() != null)
+            this.orderData.setDateTo(Date.valueOf(dateTo.getValue()));
+        if (dateFrom.isValid() && dateFrom.getValue() != null)
+            this.orderData.setDateFrom(Date.valueOf(dateFrom.getValue()));
+        this.orderData.setPickUpPoint(comboPoint.getSelectedItem());
+        this.orderData.setDestination(comboDestination.getSelectedItem());
+    }
+    // </editor-folds>
 }

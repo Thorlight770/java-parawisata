@@ -11,6 +11,7 @@ import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
 
 import java.time.Duration;
+import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,7 +64,7 @@ public class OrderServiceImpl implements IOrderService {
             else {
                 destinationList.data.forEach(x -> {
                     if (x.getValue().equals(data.getDestination())) {
-                        long duration = Duration.between(data.getDateFrom(), data.getDateTo()).toDays();
+                        long duration = Duration.between((Temporal) data.getDateFrom(), (Temporal) data.getDateTo()).toDays();
                         if (duration > Long.parseLong(x.getInfo01())) {
                             response.messages.add(new AdditionalMessage(MessageType.ERROR, "Durasi Tur Lebih Besar Dari Durasi Sewa Bus !"));
                         }

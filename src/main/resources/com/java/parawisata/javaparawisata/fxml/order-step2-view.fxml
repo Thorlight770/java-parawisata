@@ -1,74 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 
 <AnchorPane prefHeight="434.0" prefWidth="701.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.OrderStep2Controller">
    <children>
       <VBox alignment="CENTER" layoutX="77.0" layoutY="10.0" prefHeight="414.0" prefWidth="683.0" stylesheets="@../css/Order.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="10.0">
          <children>
-            <MFXScrollPane fitToWidth="true" prefHeight="384.0" prefWidth="594.0" vbarPolicy="ALWAYS">
-               <content>
-                  <VBox fx:id="vboxBus" prefWidth="500.0" spacing="50.0" styleClass="vboxDynamic" translateX="10.0" translateY="10.0">
-                     <children>
-                        <AnchorPane prefHeight="70.0" styleClass="contentBus">
-                           <children>
-                              <HBox alignment="CENTER_RIGHT" layoutY="-21.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <FontAwesomeIconView glyphName="BUS" size="40" />
-                                    <Label minWidth="100.0" prefHeight="60.0" prefWidth="100.0" text="Big Bus Pariwisata" />
-                                    <Line endY="50.0" strokeWidth="3.0" />
-                                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="70.0" prefWidth="98.0">
-                                       <children>
-                                          <Label text="Fasilitas:" />
-                                          <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-                                             <children>
-                                                <FontAwesomeIconView glyphName="RSS" size="20" />
-                                                <FontAwesomeIconView glyphName="PLUG" size="20" />
-                                                <FontAwesomeIconView glyphName="MICROPHONE" size="20" />
-                                                <FontAwesomeIconView glyphName="THERMOMETER_QUARTER" size="20" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                       <padding>
-                                          <Insets top="10.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox prefHeight="70.0" prefWidth="119.0">
-                                       <children>
-                                          <Label text="Harga Sewa:" />
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <Label text="Rp: 1,800,000,-" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                       <padding>
-                                          <Insets top="10.0" />
-                                       </padding>
-                                    </VBox>
-                                    <MFXButton buttonType="RAISED" prefHeight="46.0" prefWidth="85.0" style="-fx-background-color: #7a0ed9; -fx-background-radius: 10;" text="Pesan" textFill="#eee7e7" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </VBox>
-               </content>
-            </MFXScrollPane>
+            <MFXScrollPane fitToWidth="true" prefHeight="384.0" prefWidth="594.0" vbarPolicy="ALWAYS" />
          </children>
       </VBox>
    </children>

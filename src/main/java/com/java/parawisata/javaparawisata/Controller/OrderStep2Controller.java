@@ -1,7 +1,16 @@
 package com.java.parawisata.javaparawisata.Controller;
 
 import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
+import com.java.parawisata.javaparawisata.Entity.Order;
+import com.java.parawisata.javaparawisata.Repository.IParamRepository;
+import com.java.parawisata.javaparawisata.Repository.Impl.ParamRepositoryImpl;
+import com.java.parawisata.javaparawisata.Service.IParamService;
+import com.java.parawisata.javaparawisata.Service.Impl.ParamServiceImpl;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
+import com.java.parawisata.javaparawisata.Utils.Helper.Helper;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.effects.DepthLevel;
@@ -26,28 +35,38 @@ public class OrderStep2Controller implements Initializable {
 
     private OrderController orderController;
 
+    private IParamRepository paramRepository;
+    private IParamService paramService;
+    private Order orderData;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        vboxBus.getChildren().addAll(this.generateListBusPane(List.of(
-                new GlobalParameter("", "", "Bus Besar", "Bus Besar Text", "Rp.1,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus VIP Class", "Rp.3,500,000,-", "Wifi|Speaker|Eat", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|Eat|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|Eat|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L),
-                new GlobalParameter("", "", "Bus Besar", "Bus PLATINUM Class", "Rp.4,500,000,-", "Wifi|SPEAKER|CHARGE|Ac", 1L)
-        )));
+        // this.getAllListBus();
     }
 
-    public List<AnchorPane> generateListBusPane(List<GlobalParameter> listBus) {
-        List<AnchorPane> response = new ArrayList<AnchorPane>();
+    public void getAllListBus(String destination) {
+        this.paramRepository = new ParamRepositoryImpl();
+        this.paramService = new ParamServiceImpl(this.paramRepository);
+        GlobalParameter paramReq = new GlobalParameter();
+        paramReq.setGroup("Bus");
+        paramReq.setCriteria(destination);
+        ControlMessage<List<GlobalParameter>> response =  this.paramService.InquiryGlobalParam(paramReq);
+        if (response.isSuccess) {
+            ControlMessage<List<AnchorPane>> anchors = this.generateListBusPane(response.getData());
+            if (anchors.isSuccess) {
+                this.vboxBus.getChildren().addAll(anchors.getData());
+            } else {
+                ServiceGlobalComponents.showAlertDialog(anchors);
+            }
+        } else {
+            ServiceGlobalComponents.showAlertDialog(response);
+        }
+    }
+
+    public ControlMessage<List<AnchorPane>> generateListBusPane(List<GlobalParameter> listBus) {
+        ControlMessage<List<AnchorPane>> response = new ControlMessage<>();
+        response.data = new ArrayList<>();
+        response.isSuccess = true;
         try {
             if (!listBus.isEmpty()) {
                 listBus.forEach(x -> {
@@ -66,7 +85,7 @@ public class OrderStep2Controller implements Initializable {
                     fsBus.setSize("40");
 
                     // Create Label
-                    Label labelBus = new Label(x.getText());
+                    Label labelBus = new Label(x.getValue());
                     labelBus.setMinSize(100, 60);
                     labelBus.setMaxSize(100, 60);
                     labelBus.setWrapText(true);
@@ -77,9 +96,9 @@ public class OrderStep2Controller implements Initializable {
 
                     // Create VBox Fasilitas
                     VBox vBoxFasilitas = new VBox();
-                    vBoxFasilitas.setMinSize(98, 70);
+                    vBoxFasilitas.setMinSize(150, 70);
                     vBoxFasilitas.setPadding(new Insets(10, 0, 0, 0));
-                    vBoxFasilitas.setMaxSize(98, 70);
+                    vBoxFasilitas.setMaxSize(150, 70);
 
                     Label labelFasilitas = new Label("Fasilitas:");
                     vBoxFasilitas.getChildren().add(labelFasilitas);
@@ -129,7 +148,8 @@ public class OrderStep2Controller implements Initializable {
                     hboxHarga.setAlignment(Pos.CENTER_LEFT);
                     hboxHarga.setPadding(new Insets(10, 0, 0, 0));
 
-                    Label labelPrice = new Label(x.getInfo01());
+                    String textPrice = "Rp. ".concat(Helper.thousandsSeparator(x.getInfo01()));
+                    Label labelPrice = new Label(textPrice);
                     hboxHarga.getChildren().add(labelPrice);
                     vBoxHarga.getChildren().add(hboxHarga);
 
@@ -139,6 +159,9 @@ public class OrderStep2Controller implements Initializable {
                     btnPesan.setTextFill(Color.web("WHITE"));
                     btnPesan.setButtonType(ButtonType.RAISED);
                     btnPesan.setDepthLevel(DepthLevel.LEVEL2);
+                    btnPesan.setOnAction(event -> {
+                        System.out.println(x.getValue());
+                    });
 
                     // Set Child HBox
                     hBox.getChildren().addAll(List.of(fsBus, labelBus, line, vBoxFasilitas, vBoxHarga, btnPesan));
@@ -146,17 +169,22 @@ public class OrderStep2Controller implements Initializable {
                     // Set Child AnchorPane
                     root.getChildren().add(hBox);
 
-                    response.add(root);
+                    response.getData().add(root);
                 });
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            response.isSuccess = false;
+            response.data = null;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
         }
         return response;
     }
 
     public void setParentController(OrderController controller) {
         this.orderController = controller;
-        this.orderController.print();
+    }
+
+    public void setParentOrderData(Order data) {
+        this.orderData = data;
     }
 }
