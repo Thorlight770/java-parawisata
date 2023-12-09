@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="547.0" prefWidth="700.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.OrderStep3Controller">
    <children>
@@ -28,7 +28,7 @@
                            </font>
                         </Label>
                         <Label text="Keteranagan Trasfer" />
-                        <Label text="BUSX1234" underline="true" />
+                        <Label fx:id="lblKet" text="BUSX1234" underline="true" />
                      </children>
                   </VBox>
                </children>
@@ -94,8 +94,15 @@
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <MFXButton buttonType="RAISED" prefHeight="35.0" prefWidth="75.0" style="-fx-background-radius: 10;" text="Cancle" />
-                        <MFXButton buttonType="RAISED" prefHeight="35.0" prefWidth="75.0" style="-fx-background-radius: 10;" text="Upload" />
+                        <MFXButton fx:id="cancelBtn" buttonType="RAISED" onAction="#onCancelOrder" prefHeight="35.0" prefWidth="75.0" style="-fx-background-radius: 10; -fx-background-color: red;" text="Cancel" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXButton>
+                        <MFXButton fx:id="uploadBtn" buttonType="RAISED" onAction="#onUploadOrder" prefHeight="35.0" prefWidth="75.0" style="-fx-background-radius: 10; -fx-background-color: green;" text="Upload" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXButton>
+                        <MFXButton fx:id="saveBtn" buttonType="RAISED" onAction="#onSaveOrder" prefHeight="35.0" prefWidth="75.0" style="-fx-background-color: GREEN; -fx-background-radius: 10;" text="Save" textFill="WHITE" />
                      </children>
                      <padding>
                         <Insets right="20.0" />

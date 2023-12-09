@@ -20,6 +20,8 @@ import javafx.fxml.Initializable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -204,5 +206,8 @@ public class OrderStep2Controller implements Initializable {
         this.orderController.pLv3.setStroke(Color.web("#01e419"));
         this.orderController.orderContent.getChildren().setAll(loaderStep3.getAnchorPane());
         this.step3Controller = loaderStep3.getController();
+        this.step3Controller.setParentController(this.orderController);
+        this.step3Controller.onSetData(this.orderData);
+        this.step3Controller.lblKet.setText(this.orderData.getBusID().substring(0, 4).concat(String.valueOf(Date.valueOf(LocalDate.now().toString()))));
     }
 }

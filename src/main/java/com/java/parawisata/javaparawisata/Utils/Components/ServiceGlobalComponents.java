@@ -1,7 +1,6 @@
 package com.java.parawisata.javaparawisata.Utils.Components;
 
-import com.java.parawisata.javaparawisata.Controller.OrderController;
-import com.java.parawisata.javaparawisata.Controller.OrderStep1Controller;
+import com.google.common.io.Files;
 import com.java.parawisata.javaparawisata.JavaParawisataApp;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
@@ -23,13 +22,23 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ServiceGlobalComponents {
     private static MFXGenericDialog dialogContent;
     private static MFXStageDialog dialog;
+
+    private static  MFXGenericDialog dialogContentConfirm;
+    private static MFXStageDialog dialogConfirm;
 
     public static AnchorPane generateFXMLPage(String resource) {
         AnchorPane response = new AnchorPane();
@@ -87,7 +96,7 @@ public class ServiceGlobalComponents {
     }
 
     public static void showAlertDialog(ControlMessage response) {
-        if (response.getMaxMessageType().getName().equals("DEFAULT"))
+        if (response.getMaxMessageType().getName().equals("DEFAULT") || response.getMaxMessageType().getName().equals("SUCCESS"))
             showAlertDialog("Success", response);
         else if (response.getMaxMessageType().getValue() == 4)
             showAlertDialog("Error", response);
@@ -139,8 +148,56 @@ public class ServiceGlobalComponents {
 
             dialog.showDialog();
         });
+
+
     }
 
+    public static AtomicBoolean showConfirmationDialog(String headerText, String bodyText) {
+        AtomicBoolean response = new AtomicBoolean(false);
+        dialogContentConfirm = MFXGenericDialogBuilder.build()
+                .setContentText("\n\t".concat(bodyText))
+                .makeScrollable(true)
+                .get();
+
+        dialogConfirm = MFXGenericDialogBuilder.build(dialogContentConfirm)
+                .toStageDialogBuilder()
+                .initModality(Modality.APPLICATION_MODAL)
+                .setDraggable(true)
+                .setTitle("Dialog Preview")
+                .setScrimPriority(ScrimPriority.WINDOW)
+                .setScrimOwner(true)
+                .get();
+
+        MFXButton okBtn = new MFXButton("Confirm");
+        okBtn.setCursor(Cursor.HAND);
+        okBtn.setTextFill(Color.WHITE);
+        okBtn.setStyle("-fx-background-color: GREEN");
+
+        MFXButton cancelBtn = new MFXButton("Cancel");
+        cancelBtn.setCursor(Cursor.HAND);
+        cancelBtn.setTextFill(Color.WHITE);
+        cancelBtn.setStyle("-fx-background-color: RED");
+
+        dialogContentConfirm.addActions(
+                Map.entry(okBtn, mouseEvent -> {
+                    response.set(true);
+                    dialogConfirm.close();
+                }),
+                Map.entry(cancelBtn,mouseEvent -> dialogConfirm.close())
+        );
+
+        MFXFontIcon warnIcon = new MFXFontIcon("mfx-info-circle", 24);
+        warnIcon.setColor(Color.YELLOW);
+        dialogContentConfirm.setHeaderIcon(warnIcon);
+
+        dialogContentConfirm.setHeaderText(headerText);
+
+        dialogContentConfirm.setMaxSize(400, 200);
+
+        dialogConfirm.showAndWait();
+
+        return response;
+    }
     public static String generateMessage(List<AdditionalMessage> listMessage) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
@@ -150,5 +207,44 @@ public class ServiceGlobalComponents {
             });
         } else sb.append("\t" + "Success");
         return sb.toString();
+    }
+
+    public static ControlMessage<Boolean> uploadFileChooser(File sourceFile, String fileName) {
+        ControlMessage<Boolean> response = new ControlMessage<>();
+        response.isSuccess = true;
+        response.data = true;
+        try {
+            if (sourceFile != null) {
+                if (!sourceFile.exists()) {
+                    response.messages.add(new AdditionalMessage(MessageType.ERROR, "File Not Exists !"));
+                }
+
+                Path path = Paths.get("src/main/resources/com/java/parawisata/javaparawisata/fileTransfer/".concat(fileName)).toAbsolutePath();
+                File destFile = new File(String.valueOf(path));
+
+                if (!destFile.exists()) {
+                    Files.touch(destFile);
+                }
+
+                FileChannel source = null;
+                FileChannel destination = null;
+                source = new FileInputStream(sourceFile).getChannel();
+                destination = new FileOutputStream(destFile).getChannel();
+                if (destination != null && source != null) {
+                    destination.transferFrom(source, 0, source.size());
+                }
+                if (source != null) {
+                    source.close();
+                }
+                if (destination != null) {
+                    destination.close();
+                }
+            }
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.data = false;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
     }
 }

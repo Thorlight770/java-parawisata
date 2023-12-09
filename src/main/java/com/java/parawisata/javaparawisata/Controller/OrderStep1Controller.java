@@ -77,6 +77,7 @@ public class OrderStep1Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.dateFrom.setPopupAlignment(new Alignment(HPos.CENTER, VPos.TOP));
+        this.dateFrom.setValue(LocalDate.now());
         this.dateFrom.setClosePopupOnChange(true);
         this.dateTo.setPopupAlignment(new Alignment(HPos.CENTER, VPos.TOP));
         this.getAllParam();

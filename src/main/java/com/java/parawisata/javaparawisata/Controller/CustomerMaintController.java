@@ -4,7 +4,7 @@ import com.java.parawisata.javaparawisata.Entity.Customer;
 import com.java.parawisata.javaparawisata.Repository.ICustomerRepository;
 import com.java.parawisata.javaparawisata.Service.Impl.CustomerServiceImpl;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
-import com.lib.common.GenerateFilePDF;
+//import com.lib.common.GenerateFilePDF;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
@@ -158,9 +158,9 @@ public class CustomerMaintController implements Initializable {
 
     @FXML
     public void onBtnPrintProcess(ActionEvent event) throws IOException {
-        GenerateFilePDF generateFilePDF = new GenerateFilePDF();
-        generateFilePDF.generateFileHTML(Paths.get("fileReportDependency.html"), generateHTML());
-        generateFilePDF.generateFilePDF(Paths.get("fileReportDependency.pdf"), Paths.get("fileReportDependency.html"));
+//        GenerateFilePDF generateFilePDF = new GenerateFilePDF();
+//        generateFilePDF.generateFileHTML(Paths.get("fileReportDependency.html"), generateHTML());
+//        generateFilePDF.generateFilePDF(Paths.get("fileReportDependency.pdf"), Paths.get("fileReportDependency.html"));
     }
 
     private String generateHTML() {
