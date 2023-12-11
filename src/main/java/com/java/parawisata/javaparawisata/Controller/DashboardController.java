@@ -1,5 +1,6 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.Schedule;
 import io.github.palexdev.materialfx.controls.MFXProgressSpinner;
 import javafx.collections.FXCollections;
@@ -44,6 +45,8 @@ public class DashboardController implements Initializable {
     @FXML
     public MFXProgressSpinner ProgressTotalPendingTrip;
 
+    private Auth globalUser = new Auth();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<PieChart.Data> datas = FXCollections.observableArrayList(
@@ -62,5 +65,9 @@ public class DashboardController implements Initializable {
         colBookedDate.setCellValueFactory(new PropertyValueFactory<Schedule, Date>("scheduleDate"));
         colPickUpPoint.setCellValueFactory(new PropertyValueFactory<Schedule, String>("pickUpPoint"));
         colDestination.setCellValueFactory(new PropertyValueFactory<Schedule, String>("destinationTour"));
+    }
+
+    public void onSetAuth(Auth user) {
+        this.globalUser = user;
     }
 }

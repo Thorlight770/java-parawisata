@@ -1,5 +1,6 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
 import com.java.parawisata.javaparawisata.Entity.Order;
 import com.java.parawisata.javaparawisata.Repository.IParamRepository;
@@ -25,6 +26,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,6 +47,7 @@ public class OrderStep2Controller implements Initializable {
     private IParamRepository paramRepository;
     private IParamService paramService;
     private Order orderData;
+    private Auth globalUser = new Auth();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -206,8 +210,13 @@ public class OrderStep2Controller implements Initializable {
         this.orderController.pLv3.setStroke(Color.web("#01e419"));
         this.orderController.orderContent.getChildren().setAll(loaderStep3.getAnchorPane());
         this.step3Controller = loaderStep3.getController();
+        this.step3Controller.onSetAuth(this.globalUser);
         this.step3Controller.setParentController(this.orderController);
         this.step3Controller.onSetData(this.orderData);
-        this.step3Controller.lblKet.setText(this.orderData.getBusID().substring(0, 4).concat(String.valueOf(Date.valueOf(LocalDate.now().toString()))));
+        this.step3Controller.lblKet.setText(String.valueOf(UUID.randomUUID()).substring(0, 6));
+    }
+
+    public void onSetAuth(Auth user){
+        this.globalUser = user;
     }
 }

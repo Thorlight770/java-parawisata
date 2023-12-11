@@ -1,5 +1,6 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.HistoryOrder;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.ObservableList;
@@ -41,6 +42,8 @@ public class HistoryOrderController implements Initializable {
 
     @FXML
     public TableView<HistoryOrder> tableHistoryOrder;
+
+    private Auth globalUser = new Auth();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,5 +90,9 @@ public class HistoryOrderController implements Initializable {
 
     private void updateHistoryOrder() {
         System.out.println("Masuk Method");
+    }
+
+    public void onSetAuth(Auth user) {
+        this.globalUser = user;
     }
 }

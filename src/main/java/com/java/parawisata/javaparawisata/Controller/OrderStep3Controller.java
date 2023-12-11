@@ -1,8 +1,11 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.Order;
 import com.java.parawisata.javaparawisata.Repository.IOrderRepository;
+import com.java.parawisata.javaparawisata.Repository.IParamRepository;
 import com.java.parawisata.javaparawisata.Repository.Impl.OrderRepositoryImpl;
+import com.java.parawisata.javaparawisata.Repository.Impl.ParamRepositoryImpl;
 import com.java.parawisata.javaparawisata.Service.IOrderService;
 import com.java.parawisata.javaparawisata.Service.Impl.OrderServiceImpl;
 import com.java.parawisata.javaparawisata.Utils.Components.LoaderComponents;
@@ -29,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OrderStep3Controller implements Initializable {
@@ -47,9 +51,11 @@ public class OrderStep3Controller implements Initializable {
     private OrderStep1Controller step1Controller;
     private Order orderData;
     private boolean isUpload;
+    private Auth globalUser = new Auth();
 
     private IOrderRepository orderRepository;
     private IOrderService orderService;
+    private IParamRepository paramRepository;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -89,14 +95,24 @@ public class OrderStep3Controller implements Initializable {
             uploadFile.messages.add(new AdditionalMessage(MessageType.SUCCESS, "Upload File Order !"));
             ServiceGlobalComponents.showAlertDialog(uploadFile);
             this.saveBtn.setDisable(false);
+            this.isUpload = true;
         }
     }
 
     @FXML
     public void onSaveOrder(ActionEvent event) throws IOException {
+        // <editor-folds desc="set data">
+        this.orderData.setCustomerID(this.globalUser.getUserID());
+        this.orderData.setFileName(lblKet.getText().concat(".jpg"));
+        this.orderData.setStatus(false);
+        this.orderData.setDriverID("DUMMY".concat(String.valueOf(UUID.randomUUID())));
+        // </editor-folds>
+        System.out.println(this.orderData.toString());
+
         if (isUpload) {
             this.orderRepository = new OrderRepositoryImpl();
-            this.orderService = new OrderServiceImpl(this.orderRepository);
+            this.paramRepository = new ParamRepositoryImpl();
+            this.orderService = new OrderServiceImpl(this.orderRepository, this.paramRepository);
             ControlMessage<Order> response = this.orderService.onAddOrder(this.orderData);
             ServiceGlobalComponents.showAlertDialog(response);
             if (response.isSuccess) {
@@ -104,6 +120,7 @@ public class OrderStep3Controller implements Initializable {
                 this.orderController.orderContent.getChildren().setAll(loaderStep1.getAnchorPane());
                 this.step1Controller = loaderStep1.getController();
                 this.step1Controller.setParentController(this.orderController);
+                this.step1Controller.onSetAuth(this.globalUser);
                 this.orderController.pLv3.setStroke(Color.web("#D4CBD7"));
                 this.orderController.pLv2.setStroke(Color.web("#D4CBD7"));
                 this.orderController.icnCalendar.setFill(Color.web("#D4CBD7"));
@@ -122,5 +139,9 @@ public class OrderStep3Controller implements Initializable {
 
     public void onSetData(Order order) {
         this.orderData = order;
+    }
+
+    public void onSetAuth(Auth user) {
+        this.globalUser = user;
     }
 }

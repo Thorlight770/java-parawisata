@@ -1,5 +1,6 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.JavaParawisataApp;
 import com.java.parawisata.javaparawisata.Utils.Components.LoaderComponents;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
@@ -41,19 +42,26 @@ public class OrderController implements Initializable {
 
     private OrderStep1Controller step1Controller;
 
+    private Auth globalUser = new Auth();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void onSetAuth(Auth user) {
+        this.globalUser = user;
+    }
+
+    public void onStartStepperOrder() {
         try {
             LoaderComponents<OrderStep1Controller> loaderStep1 = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/order-step1-view.fxml");
             this.orderContent.getChildren().addAll(loaderStep1.getAnchorPane());
             this.step1Controller = loaderStep1.getController();
+            this.step1Controller.onSetAuth(this.globalUser);
             this.step1Controller.setParentController(this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void print() {
-        System.out.println("PRINT PARENT");
     }
 }

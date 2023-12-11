@@ -57,6 +57,7 @@ public class LoginController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(JavaParawisataApp.class.getResource("fxml/java-parawisata-view.fxml"));
             AnchorPane mainLayout = fxmlLoader.load();
             JavaParawisataController controller = fxmlLoader.getController();
+            controller.onSetUser(response.data);
             controller.setMenus(response.data.getRole(), response.data.getUsername());
             Scene scene = new Scene(mainLayout);
             Stage stage = new Stage();

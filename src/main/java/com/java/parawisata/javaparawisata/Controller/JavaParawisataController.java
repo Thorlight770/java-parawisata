@@ -1,11 +1,13 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
 import com.java.parawisata.javaparawisata.JavaParawisataApp;
 import com.java.parawisata.javaparawisata.Repository.IParamRepository;
 import com.java.parawisata.javaparawisata.Repository.Impl.ParamRepositoryImpl;
 import com.java.parawisata.javaparawisata.Service.IParamService;
 import com.java.parawisata.javaparawisata.Service.Impl.ParamServiceImpl;
+import com.java.parawisata.javaparawisata.Utils.Components.LoaderComponents;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -67,6 +69,7 @@ public class JavaParawisataController implements Initializable {
     private IParamRepository paramRepository;
     private IParamService paramService;
     private GlobalParameter menuRequest = new GlobalParameter();
+    private Auth globalUser = new Auth();
 
     public JavaParawisataController() {
     }
@@ -99,21 +102,28 @@ public class JavaParawisataController implements Initializable {
     }
 
     //<editor-fold desc="Customer Menus FXML">
-    public void onBtnDashboardClick(MouseEvent event) {
+    public void onBtnDashboardClick(MouseEvent event) throws IOException {
         this.lblHeader.setText("Dashboard");
-        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/dashboard-view.fxml"));
+        LoaderComponents<DashboardController> dashboard = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/dashboard-view.fxml");
+        dashboard.getController().onSetAuth(this.globalUser);
+        this.contentPane.getChildren().setAll(dashboard.getAnchorPane());
         this.contentPane.autosize();
     }
 
-    public void onBtnHistoryOrderClick(MouseEvent event) {
+    public void onBtnHistoryOrderClick(MouseEvent event) throws IOException {
         this.lblHeader.setText("History Order");
-        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/history-order-view.fxml"));
+        LoaderComponents<HistoryOrderController> historyOrder = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/history-order-view.fxml");
+        historyOrder.getController().onSetAuth(this.globalUser);
+        this.contentPane.getChildren().setAll(historyOrder.getAnchorPane());
         this.contentPane.autosize();
     }
 
-    public void onBtnOrderBusClick(MouseEvent event) {
+    public void onBtnOrderBusClick(MouseEvent event) throws IOException {
         this.lblHeader.setText("Order Bus Schedule");
-        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/order-view.fxml"));
+        LoaderComponents<OrderController> order = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/order-view.fxml");
+        order.getController().onSetAuth(this.globalUser);
+        order.getController().onStartStepperOrder();
+        this.contentPane.getChildren().setAll(order.getAnchorPane());
         this.contentPane.autosize();
     }
     //</editor-fold>
@@ -176,11 +186,23 @@ public class JavaParawisataController implements Initializable {
                     // SET ACTION MOUSE CLICK
                     menu.setOnMouseClicked(e -> {
                         if (x.getText().equalsIgnoreCase("DASHBOARD")) {
-                            this.onBtnDashboardClick(e);
+                            try {
+                                this.onBtnDashboardClick(e);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         } else if (x.getText().equalsIgnoreCase("ORDER BUS")) {
-                            this.onBtnOrderBusClick(e);
+                            try {
+                                this.onBtnOrderBusClick(e);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         } else if (x.getText().equalsIgnoreCase("HISTORY ORDER")) {
-                            this.onBtnHistoryOrderClick(e);
+                            try {
+                                this.onBtnHistoryOrderClick(e);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         } else if (x.getText().equalsIgnoreCase("CUSTOMER MAINTENANCE")) {
                             this.onBtnCustomerMaintenanceClick(e);
                         } else if (x.getText().equalsIgnoreCase("BUS MAINTENANCE")) {
@@ -237,4 +259,8 @@ public class JavaParawisataController implements Initializable {
         return response;
     }
     //</editor-fold>
+
+    public void onSetUser(Auth user) {
+        this.globalUser = user;
+    }
 }

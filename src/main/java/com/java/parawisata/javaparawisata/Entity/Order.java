@@ -6,37 +6,39 @@ import java.time.temporal.Temporal;
 public class Order {
     private String orderID;
     private Date orderDate;
-    private Date dateFrom;
-    private Date dateTo;
     private String customerID;
     private String busID;
     private String driverID;
     private String pickUpPoint;
     private String destination;
+    private Integer duration;
     private Boolean status;
     private Integer review;
     private String reviewDesc;
+    private String fileName;
     private Date createdDate;
     private Date updateDate;
+    private String administratorID;
 
     public Order() {
     }
 
-    public Order(String orderID, Date ordateDate, Date dateFrom, Date dateTo, String customerID, String busID, String driverID, String pickUpPoint, String destination, Boolean status, Integer review, String reviewDesc, Date createdDate, Date updateDate) {
+    public Order(String orderID, Date orderDate, String customerID, String busID, String driverID, String pickUpPoint, String destination, Integer duration, Boolean status, Integer review, String reviewDesc, String fileName, Date createdDate, Date updateDate, String administratorID) {
         this.orderID = orderID;
-        this.orderDate = ordateDate;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
+        this.orderDate = orderDate;
         this.customerID = customerID;
         this.busID = busID;
         this.driverID = driverID;
         this.pickUpPoint = pickUpPoint;
         this.destination = destination;
+        this.duration = duration;
         this.status = status;
         this.review = review;
         this.reviewDesc = reviewDesc;
+        this.fileName = fileName;
         this.createdDate = createdDate;
         this.updateDate = updateDate;
+        this.administratorID = administratorID;
     }
 
     public String getOrderID() {
@@ -47,20 +49,12 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public Date getDateFrom() {
-        return dateFrom;
+    public Date getOrderDate() {
+        return orderDate;
     }
 
-    public void setDateFrom(Date dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public Date getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(Date dateTo) {
-        this.dateTo = dateTo;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
     public String getCustomerID() {
@@ -103,6 +97,14 @@ public class Order {
         this.destination = destination;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
     public Boolean getStatus() {
         return status;
     }
@@ -127,6 +129,14 @@ public class Order {
         this.reviewDesc = reviewDesc;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -143,12 +153,12 @@ public class Order {
         this.updateDate = updateDate;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public String getAdministratorID() {
+        return administratorID;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setAdministratorID(String administratorID) {
+        this.administratorID = administratorID;
     }
 
     @Override
@@ -156,18 +166,19 @@ public class Order {
         return "Order{" +
                 "orderID='" + orderID + '\'' +
                 ", orderDate=" + orderDate +
-                ", dateFrom=" + dateFrom +
-                ", dateTo=" + dateTo +
                 ", customerID='" + customerID + '\'' +
                 ", busID='" + busID + '\'' +
                 ", driverID='" + driverID + '\'' +
                 ", pickUpPoint='" + pickUpPoint + '\'' +
                 ", destination='" + destination + '\'' +
+                ", duration=" + duration +
                 ", status=" + status +
                 ", review=" + review +
                 ", reviewDesc='" + reviewDesc + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", createdDate=" + createdDate +
                 ", updateDate=" + updateDate +
+                ", administratorID='" + administratorID + '\'' +
                 '}';
     }
 }

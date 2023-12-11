@@ -32,6 +32,8 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public ControlMessage<Order> onAddOrder(Order data) {
         ControlMessage<Order> response = new ControlMessage<>();
+        response.data = new Order();
+        response.isSuccess = true;
         try {
             ControlMessage validateRsp = onAddOrderValidate(data);
             if (!validateRsp.isSuccess) response.isSuccess = false;
@@ -59,18 +61,27 @@ public class OrderServiceImpl implements IOrderService {
                 throw new Exception("Inquiry Destination Param Failed!");
             }
 
-            if (data.getDestination().isEmpty() || data.getDestination().isBlank())
+            if (data.getDestination() == null || data.getDestination().isEmpty() || data.getDestination().isBlank())
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Destination Point Tidak Boleh Kosong !"));
             else {
                 destinationList.data.forEach(x -> {
                     if (x.getValue().equals(data.getDestination())) {
-                        long duration = Duration.between((Temporal) data.getDateFrom(), (Temporal) data.getDateTo()).toDays();
-                        if (duration > Long.parseLong(x.getInfo01())) {
-                            response.messages.add(new AdditionalMessage(MessageType.ERROR, "Durasi Tur Lebih Besar Dari Durasi Sewa Bus !"));
-                        }
+                        //long duration = Duration.between((Temporal) data.getDateFrom(), (Temporal) data.getDateTo()).toDays();
+                        //if (duration > Long.parseLong(x.getInfo01())) {
+                          //  response.messages.add(new AdditionalMessage(MessageType.ERROR, "Durasi Tur Lebih Besar Dari Durasi Sewa Bus !"));
+                        //}
                     }
                 });
             }
+
+            if (data.getCustomerID() == null || data.getCustomerID().isEmpty() || data.getCustomerID().isBlank())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Cutomer ID Tidak Boleh Kosong !"));
+
+            if (data.getBusID() == null || data.getBusID().isEmpty() || data.getBusID().isBlank())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Bus ID Tidak Boleh Kosong !"));
+
+            if (data.getDriverID() == null || data.getDriverID().isEmpty() || data.getDriverID().isBlank())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Driver ID Tidak Boleh Kosong !"));
 
             if (response.getMaxMessageType().getValue() >= MessageType.ERROR.getValue()) response.isSuccess = false;
             else response.isSuccess = true;

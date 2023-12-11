@@ -240,6 +240,10 @@ public class ServiceGlobalComponents {
                     destination.close();
                 }
             }
+            else {
+                response.isSuccess = false;
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Tidak Ada File Yang Dipilih !"));
+            }
         } catch (Exception ex) {
             response.isSuccess = false;
             response.data = false;

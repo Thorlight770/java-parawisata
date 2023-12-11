@@ -6,14 +6,16 @@ public class Auth {
     private String username;
     private String password;
     private String role;
+    private String userID;
 
     public Auth() {
     }
 
-    public Auth(String username, String password, String role) {
+    public Auth(String username, String password, String role, String userID) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.userID = userID;
     }
 
     public String getUsername() {
@@ -40,12 +42,21 @@ public class Auth {
         this.role = role;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
     @Override
     public String toString() {
         return "Auth{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", userID='" + userID + '\'' +
                 '}';
     }
 }

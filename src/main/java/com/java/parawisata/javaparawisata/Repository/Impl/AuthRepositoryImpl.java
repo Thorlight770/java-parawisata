@@ -36,7 +36,7 @@ public class AuthRepositoryImpl implements IAuthRepository {
                         RAISERROR('Invalid Username & Password', 16, 1)
                     END
                     
-                    SELECT Username, Password, Role FROM AuthenticateMs
+                    SELECT Username, Password, Role, ISNULL(CustomerID, AdminID) AS UserID FROM AuthenticateMs
                     WHERE Username = @username AND password = @password
                     """;
             // </editor-fold>

@@ -102,7 +102,10 @@
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></MFXButton>
-                        <MFXButton fx:id="saveBtn" buttonType="RAISED" onAction="#onSaveOrder" prefHeight="35.0" prefWidth="75.0" style="-fx-background-color: GREEN; -fx-background-radius: 10;" text="Save" textFill="WHITE" />
+                        <MFXButton fx:id="saveBtn" buttonType="RAISED" onAction="#onSaveOrder" prefHeight="35.0" prefWidth="75.0" style="-fx-background-color: GREEN; -fx-background-radius: 10;" text="Save" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXButton>
                      </children>
                      <padding>
                         <Insets right="20.0" />

@@ -1,5 +1,6 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
 import com.java.parawisata.javaparawisata.Entity.Order;
 import com.java.parawisata.javaparawisata.JavaParawisataApp;
@@ -30,10 +31,12 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
@@ -74,6 +77,8 @@ public class OrderStep1Controller implements Initializable {
 
     private OrderStep2Controller step2Controller;
 
+    private Auth globalUser = new Auth();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.dateFrom.setPopupAlignment(new Alignment(HPos.CENTER, VPos.TOP));
@@ -92,11 +97,8 @@ public class OrderStep1Controller implements Initializable {
             if (this.orderData.getDestination() == null || this.orderData.getDestination().isEmpty() || this.orderData.getDestination().isBlank())
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Destination Point Tidak Boleh Kosong !"));
 
-            if (this.orderData.getDateFrom() == null)
-                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Kosong !"));
-
-            if (this.orderData.getDateTo() == null)
-                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date To Tidak Boleh Kosong !"));
+            if (this.orderData.getDuration() < 0)
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Lebih Kecil Dari Date To !"));
 
             if (response.getMaxMessageType().getValue() == MessageType.ERROR.getValue()) response.isSuccess = false;
             else response.isSuccess = true;
@@ -117,6 +119,7 @@ public class OrderStep1Controller implements Initializable {
             this.orderController.pLv2.setStroke(Color.web("#01e419"));
             this.orderController.orderContent.getChildren().setAll(loaderStep2.getAnchorPane());
             this.step2Controller = loaderStep2.getController();
+            this.step2Controller.onSetAuth(this.globalUser);
             this.step2Controller.setParentController(this.orderController);
             this.step2Controller.setParentOrderData(this.orderData);
             this.step2Controller.getAllListBus(this.orderData.getDestination());
@@ -171,14 +174,33 @@ public class OrderStep1Controller implements Initializable {
 
     // <editor-folds desc="onChangeAction">
     public void onSetData() {
+        Date tmpDateFrom = null;
+        Date tmpDateTo = null;
         this.orderData = new Order();
         this.orderData.setOrderID(String.valueOf(UUID.randomUUID()));
-        if (dateTo.isValid() && dateTo.getValue() != null)
-            this.orderData.setDateTo(Date.valueOf(dateTo.getValue()));
+        if (dateTo.isValid() && dateTo.getValue() != null) {
+            tmpDateTo = Date.valueOf(dateTo.getValue());
+            this.orderData.setOrderDate(tmpDateTo);
+        }
         if (dateFrom.isValid() && dateFrom.getValue() != null)
-            this.orderData.setDateFrom(Date.valueOf(dateFrom.getValue()));
+            tmpDateFrom = Date.valueOf(dateFrom.getValue());
+        if (tmpDateTo != null && tmpDateFrom != null) {
+            long dateToTime = tmpDateTo.getTime();
+            long dateFromTime = tmpDateFrom.getTime();
+
+            long timeDiff = Math.abs(dateFromTime - dateToTime);
+
+            long daysDiff = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
+            if (daysDiff == 0)
+                this.orderData.setDuration(1);
+            else this.orderData.setDuration((int) daysDiff);
+        }
         this.orderData.setPickUpPoint(comboPoint.getSelectedItem());
         this.orderData.setDestination(comboDestination.getSelectedItem());
     }
     // </editor-folds>
+
+    public void onSetAuth(Auth user) {
+        this.globalUser = user;
+    }
 }
