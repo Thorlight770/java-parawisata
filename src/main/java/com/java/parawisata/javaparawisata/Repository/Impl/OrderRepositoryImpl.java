@@ -2,6 +2,7 @@ package com.java.parawisata.javaparawisata.Repository.Impl;
 
 import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
 import com.java.parawisata.javaparawisata.Entity.Order;
+import com.java.parawisata.javaparawisata.Entity.OrderApproval;
 import com.java.parawisata.javaparawisata.Repository.IOrderRepository;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
@@ -11,6 +12,7 @@ import com.java.parawisata.javaparawisata.Utils.Database.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderRepositoryImpl implements IOrderRepository {
@@ -119,4 +121,33 @@ public class OrderRepositoryImpl implements IOrderRepository {
     public ControlMessage<Order> update(Order data) {
         return null;
     }
+
+    // <editor-folds desc="Approval">
+    @Override
+    public ControlMessage<List<OrderApproval>> getAllOrderApproval() {
+        ControlMessage<List<OrderApproval>> response = new ControlMessage<>();
+        response.data = new ArrayList<>();
+        response.isSuccess = true;
+        try {
+            // <editor-folds desc="query">
+            String query = """
+                    SELECT TOP 100 * FROM OrderHist a
+                    JOIN CustomerMs b
+                    ON a. 
+                    """;
+            // </editor-folds>
+
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.data = null;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
+    }
+
+    @Override
+    public ControlMessage<OrderApproval> processOrderApproval(OrderApproval orderApproval, String status) {
+        return null;
+    }
+    // <editor-folds>
 }

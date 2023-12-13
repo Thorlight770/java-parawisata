@@ -83,17 +83,20 @@ public class JavaParawisataController implements Initializable {
         lblUsername.setText(username);
         menuRequest.setGroup("Menus");
         menuRequest.setCriteria(role);
-        this.rootMenus.getChildren().addAll(generateMenus(this.getMenus(menuRequest).data));
+        ControlMessage<List<GlobalParameter>> menus = this.getMenus(menuRequest);
+        if (menus.isSuccess) {
+            this.rootMenus.getChildren().addAll(generateMenus(menus.data));
 
-        if (menuRequest.getCriteria().equals("Administrator")) {
-            this.lblHeader.setText("Customer Maintenance");
-            this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/customer-maint-view.fxml"));
-            this.contentPane.autosize();
-        } else if (menuRequest.getCriteria().equals("Customer")) {
-            this.lblHeader.setText("Dashboard");
-            this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/dashboard-view.fxml"));
-            this.contentPane.autosize();
-        }
+            if (menuRequest.getCriteria().equals("Administrator")) {
+                this.lblHeader.setText("Driver Maintenance");
+                this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/driver-maint-view.fxml"));
+                this.contentPane.autosize();
+            } else if (menuRequest.getCriteria().equals("Customer")) {
+                this.lblHeader.setText("Dashboard");
+                this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/dashboard-view.fxml"));
+                this.contentPane.autosize();
+            }
+        } else ServiceGlobalComponents.showAlertDialog(menus);
     }
     public ControlMessage<List<GlobalParameter>> getMenus(GlobalParameter data) {
         paramRepository = new ParamRepositoryImpl();
@@ -152,9 +155,9 @@ public class JavaParawisataController implements Initializable {
     //</editor-fold>
 
     //<editor-fold desc="Administrator Menus FXML">
-    public void onBtnCustomerMaintenanceClick(MouseEvent event) {
-        this.lblHeader.setText("Customer Maintenance");
-        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/customer-maint-view.fxml"));
+    public void onBtnDriverMaintenanceClick(MouseEvent event) {
+        this.lblHeader.setText("Driver Maintenance");
+        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/driver-maint-view.fxml"));
         this.contentPane.autosize();
     }
     public void onBtnBusMaintenanceClick(MouseEvent event) {
@@ -203,8 +206,8 @@ public class JavaParawisataController implements Initializable {
                             } catch (IOException ex) {
                                 throw new RuntimeException(ex);
                             }
-                        } else if (x.getText().equalsIgnoreCase("CUSTOMER MAINTENANCE")) {
-                            this.onBtnCustomerMaintenanceClick(e);
+                        } else if (x.getText().equalsIgnoreCase("DRIVER MAINTENANCE")) {
+                            this.onBtnDriverMaintenanceClick(e);
                         } else if (x.getText().equalsIgnoreCase("BUS MAINTENANCE")) {
                             this.onBtnBusMaintenanceClick(e);
                         } else if (x.getText().equalsIgnoreCase("ORDER APPROVAL")) {

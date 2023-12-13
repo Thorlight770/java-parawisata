@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.CustomerDialogController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.DriverDialogController">
    <children>
       <Label fx:id="labelCustomerID" layoutX="154.0" layoutY="113.0" text="Label" />
       <Label fx:id="labelCustomerName" layoutX="154.0" layoutY="145.0" text="Label" />

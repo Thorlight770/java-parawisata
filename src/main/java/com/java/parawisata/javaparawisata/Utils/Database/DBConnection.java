@@ -3,6 +3,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
@@ -108,8 +110,16 @@ public class DBConnection {
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     for (int i = 1; i <= metaData.getColumnCount(); i++) {
                         if (metaData.getColumnName(i).equalsIgnoreCase(name)) {
-                            String value = resultSet.getString(name) == null ? "" : resultSet.getString(name);
-                            x.set(dto, x.getType().getConstructor(String.class).newInstance(value));
+                            if (x.getType().isNestmateOf(String.class))
+                                x.set(dto, x.getType().getConstructor(String.class).newInstance(resultSet.getString(name)));
+                            else if (x.getType().isNestmateOf(long.class) || x.getType().isNestmateOf(Long.class))
+                                x.set(dto, x.getType().getConstructor(long.class).newInstance(resultSet.getLong(name)));
+                            else if (x.getType().isNestmateOf(int.class) || x.getType().isNestmateOf(Integer.class))
+                                x.set(dto, x.getType().getConstructor(int.class).newInstance(resultSet.getInt(name)));
+                            else if (x.getType().isNestmateOf(java.sql.Date.class) || x.getType().isNestmateOf(java.util.Date.class) || x.getType().isNestmateOf(LocalDate.class))
+                                x.set(dto, resultSet.getDate(name));
+                            else if (x.getType().isNestmateOf(boolean.class) || x.getType().isNestmateOf(Boolean.class))
+                                x.set(dto, x.getType().getConstructor(boolean.class).newInstance(resultSet.getBoolean(name)));
                         }
                     }
                 } catch (Exception ex) {
