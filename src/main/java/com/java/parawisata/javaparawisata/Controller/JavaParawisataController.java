@@ -117,6 +117,7 @@ public class JavaParawisataController implements Initializable {
         this.lblHeader.setText("History Order");
         LoaderComponents<HistoryOrderController> historyOrder = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/history-order-view.fxml");
         historyOrder.getController().onSetAuth(this.globalUser);
+        historyOrder.getController().onSetTable();
         this.contentPane.getChildren().setAll(historyOrder.getAnchorPane());
         this.contentPane.autosize();
     }
@@ -165,9 +166,11 @@ public class JavaParawisataController implements Initializable {
         this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/bus-maint-view.fxml"));
         this.contentPane.autosize();
     }
-    public void onBtnOrderApprovalClick(MouseEvent event) {
+    public void onBtnOrderApprovalClick(MouseEvent event) throws IOException {
         this.lblHeader.setText("Order Approval");
-        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/order-approval-view.fxml"));
+        LoaderComponents<OrderApprovalController> loader = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/order-approval-view.fxml");
+        loader.getController().setAuth(this.globalUser);
+        this.contentPane.getChildren().setAll(loader.getAnchorPane());
         this.contentPane.autosize();
     }
     //</editor-fold>
@@ -211,7 +214,11 @@ public class JavaParawisataController implements Initializable {
                         } else if (x.getText().equalsIgnoreCase("BUS MAINTENANCE")) {
                             this.onBtnBusMaintenanceClick(e);
                         } else if (x.getText().equalsIgnoreCase("ORDER APPROVAL")) {
-                            this.onBtnOrderApprovalClick(e);
+                            try {
+                                this.onBtnOrderApprovalClick(e);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     });
 

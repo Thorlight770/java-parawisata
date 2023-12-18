@@ -4,20 +4,22 @@ import java.text.DecimalFormat;
 import java.util.Date;
 
 public class BusPrice {
+    private Long id;
     private String busPriceID;
     private String busName;
-    private DecimalFormat price;
+    private Double price;
     private Integer duration;
     private String destination;
     private String userID;
     private String supervisorID;
-    private Date cretedDate;
+    private Date createdDate;
     private Date updateDate;
 
     public BusPrice() {
     }
 
-    public BusPrice(String busPriceID, String busName, DecimalFormat price, Integer duration, String destination, String userID, String supervisorID, Date cretedDate, Date updateDate) {
+    public BusPrice(Long id, String busPriceID, String busName, Double price, Integer duration, String destination, String userID, String supervisorID, Date createdDate, Date updateDate) {
+        this.id = id;
         this.busPriceID = busPriceID;
         this.busName = busName;
         this.price = price;
@@ -25,8 +27,16 @@ public class BusPrice {
         this.destination = destination;
         this.userID = userID;
         this.supervisorID = supervisorID;
-        this.cretedDate = cretedDate;
+        this.createdDate = createdDate;
         this.updateDate = updateDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getBusPriceID() {
@@ -45,11 +55,11 @@ public class BusPrice {
         this.busName = busName;
     }
 
-    public DecimalFormat getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(DecimalFormat price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -85,12 +95,12 @@ public class BusPrice {
         this.supervisorID = supervisorID;
     }
 
-    public Date getCretedDate() {
-        return cretedDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCretedDate(Date cretedDate) {
-        this.cretedDate = cretedDate;
+    public void setCreatedDate(Date cretedDate) {
+        this.createdDate = cretedDate;
     }
 
     public Date getUpdateDate() {

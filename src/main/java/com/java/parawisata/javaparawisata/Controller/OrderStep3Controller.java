@@ -105,9 +105,8 @@ public class OrderStep3Controller implements Initializable {
         this.orderData.setCustomerID(this.globalUser.getUserID());
         this.orderData.setFileName(lblKet.getText().concat(".jpg"));
         this.orderData.setStatus(false);
-        this.orderData.setDriverID("DUMMY".concat(String.valueOf(UUID.randomUUID())));
+        this.orderData.setDriverID("87E725BB-79A9-4FBA-B7BC-A1D71EEBA056");
         // </editor-folds>
-        System.out.println(this.orderData.toString());
 
         if (isUpload) {
             this.orderRepository = new OrderRepositoryImpl();

@@ -10,6 +10,8 @@ import java.util.*;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 import com.microsoft.sqlserver.jdbc.SQLServerResultSet;
 
+import static java.time.LocalDate.MIN;
+
 public class DBConnection {
     private static Connection connection;
 
@@ -110,14 +112,22 @@ public class DBConnection {
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     for (int i = 1; i <= metaData.getColumnCount(); i++) {
                         if (metaData.getColumnName(i).equalsIgnoreCase(name)) {
-                            if (x.getType().isNestmateOf(String.class))
-                                x.set(dto, x.getType().getConstructor(String.class).newInstance(resultSet.getString(name)));
-                            else if (x.getType().isNestmateOf(long.class) || x.getType().isNestmateOf(Long.class))
-                                x.set(dto, x.getType().getConstructor(long.class).newInstance(resultSet.getLong(name)));
+                            if (x.getType().isNestmateOf(String.class)) {
+                                String value = resultSet.getString(name) == null ? "" : resultSet.getString(name);
+                                x.set(dto, x.getType().getConstructor(String.class).newInstance(value));
+                            }
+                            else if (x.getType().isNestmateOf(long.class) || x.getType().isNestmateOf(Long.class)) {
+                                long value = resultSet.getLong(name) == 0 ? 0 : resultSet.getLong(name);
+                                x.set(dto, x.getType().getConstructor(long.class).newInstance(value));
+                            }
                             else if (x.getType().isNestmateOf(int.class) || x.getType().isNestmateOf(Integer.class))
                                 x.set(dto, x.getType().getConstructor(int.class).newInstance(resultSet.getInt(name)));
-                            else if (x.getType().isNestmateOf(java.sql.Date.class) || x.getType().isNestmateOf(java.util.Date.class) || x.getType().isNestmateOf(LocalDate.class))
-                                x.set(dto, resultSet.getDate(name));
+                            else if (x.getType().isNestmateOf(java.sql.Date.class) || x.getType().isNestmateOf(java.util.Date.class) || x.getType().isNestmateOf(LocalDate.class)) {
+                                Date value = resultSet.getDate(name) == null ? Date.valueOf(MIN) : resultSet.getDate(name);
+                                if (!value.equals(Date.valueOf(MIN))) x.set(dto, value);
+                            }
+                            else if (x.getType().isNestmateOf(Double.class))
+                                x.set(dto, x.getType().getConstructor(double.class).newInstance(resultSet.getDouble(name)));
                             else if (x.getType().isNestmateOf(boolean.class) || x.getType().isNestmateOf(Boolean.class))
                                 x.set(dto, x.getType().getConstructor(boolean.class).newInstance(resultSet.getBoolean(name)));
                         }

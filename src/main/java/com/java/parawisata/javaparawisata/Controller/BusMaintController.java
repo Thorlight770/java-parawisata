@@ -1,18 +1,27 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.Bus;
 import com.java.parawisata.javaparawisata.Entity.Customer;
 import com.java.parawisata.javaparawisata.Repository.IBusRepository;
+import com.java.parawisata.javaparawisata.Repository.Impl.BusRepositoryImpl;
+import com.java.parawisata.javaparawisata.Service.IBusService;
 import com.java.parawisata.javaparawisata.Service.Impl.BusServiceImpl;
 import com.java.parawisata.javaparawisata.Service.Impl.CustomerServiceImpl;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -50,12 +59,21 @@ public class BusMaintController implements Initializable {
 
     private Bus bus;
     private IBusRepository busRepository;
+    private Auth globalUser = new Auth();
+    private BusMaintController busMaintController = this;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        this.onSetTable();
     }
 
-    public void setUpTableBus(ObservableList<Bus> list) {
+    public void onSetTable() {
+        ControlMessage<List<Bus>> buss = this.getAllBus();
+        if (buss.isSuccess) this.setUpTableBus(buss.data);
+        else ServiceGlobalComponents.showAlertDialog(buss);
+    }
+    public void setUpTableBus(List<Bus> buss) {
+        ObservableList<Bus> list = FXCollections.observableArrayList(buss);
+
         this.colBusID.setCellValueFactory(new PropertyValueFactory<Bus, String>("busID"));
         this.colBusName.setCellValueFactory(new PropertyValueFactory<Bus, String>("busName"));
         this.colFasilitas.setCellValueFactory(new PropertyValueFactory<Bus, String>("fasilitas"));
@@ -103,9 +121,14 @@ public class BusMaintController implements Initializable {
                 //<editor-fold desc="Anon Method">
                 private void onUpdateBus(Bus data) {
                     FXMLLoader loader = ServiceGlobalComponents.generateFXMLLoader("fxml/bus-dialog-view.fxml");
+                    ServiceGlobalComponents.showPopUpDialog(loader, "Update Bus".concat("-" + data.getBusName()));
                     BusDialogController controller = loader.getController();
+                    controller.accordionMenus.setDisable(true);
+                    controller.menuBtnProcess.setVisible(true);
+                    controller.setParentController(busMaintController);
                     controller.setDataBus(data);
-                    ServiceGlobalComponents.showPopUpDialog(loader, "Update Customer".concat("-" + data.getBusName()));
+                    controller.setAuth(globalUser);
+                    controller.onSetTable();
                 }
 
                 private boolean onDeleteBus(Bus bus) {
@@ -124,5 +147,15 @@ public class BusMaintController implements Initializable {
         };
         colAction.setCellFactory(cellAction);
         tableBus.setItems(list);
+    }
+
+    public ControlMessage<List<Bus>> getAllBus() {
+        this.busRepository = new BusRepositoryImpl();
+        IBusService busService = new BusServiceImpl(this.busRepository);
+        return busService.getAllBus();
+    }
+
+    public void setAuth(Auth auth) {
+        this.globalUser = auth;
     }
 }

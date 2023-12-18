@@ -1,7 +1,9 @@
 package com.java.parawisata.javaparawisata.Service.Impl;
 
 import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
+import com.java.parawisata.javaparawisata.Entity.HistoryOrder;
 import com.java.parawisata.javaparawisata.Entity.Order;
+import com.java.parawisata.javaparawisata.Entity.OrderApproval;
 import com.java.parawisata.javaparawisata.Repository.IOrderRepository;
 import com.java.parawisata.javaparawisata.Repository.IParamRepository;
 import com.java.parawisata.javaparawisata.Service.IOrderService;
@@ -95,5 +97,15 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public ControlMessage<Order> onUpdateOrder(Order data) {
         return null;
+    }
+
+    @Override
+    public ControlMessage<List<HistoryOrder>> getAllHistoryOrderByUserID(String userID) {
+        return orderRepository.getHistoryOrdersByUserID(userID);
+    }
+
+    @Override
+    public ControlMessage<List<OrderApproval>> getAllOrderPendingApproval() {
+        return this.orderRepository.getAllOrderApproval();
     }
 }

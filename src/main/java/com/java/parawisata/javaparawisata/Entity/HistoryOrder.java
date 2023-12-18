@@ -6,34 +6,26 @@ public class HistoryOrder {
     private Long idHist;
     private String orderID;
     private Date orderDate;
-    private String customerID;
-    private String busID;
-    private String driverID;
+    private String busName;
+    private String driverName;
     private String pickUpPoint;
     private String destination;
-    private Boolean status;
-    private Integer review;
-    private String reviewDesc;
-    private Date createdDate;
-    private Date updateDate;
+    private String status;
+    private String reason;
 
     public HistoryOrder() {
     }
 
-    public HistoryOrder(Long idHist, String orderID, Date orderDate, String customerID, String busID, String driverID, String pickUpPoint, String destination, Boolean status, Integer review, String reviewDesc, Date createdDate, Date updateDate) {
+    public HistoryOrder(Long idHist, String orderID, Date orderDate, String busName, String driverName, String pickUpPoint, String destination, String status, String reason) {
         this.idHist = idHist;
         this.orderID = orderID;
         this.orderDate = orderDate;
-        this.customerID = customerID;
-        this.busID = busID;
-        this.driverID = driverID;
+        this.busName = busName;
+        this.driverName = driverName;
         this.pickUpPoint = pickUpPoint;
         this.destination = destination;
         this.status = status;
-        this.review = review;
-        this.reviewDesc = reviewDesc;
-        this.createdDate = createdDate;
-        this.updateDate = updateDate;
+        this.reason = reason;
     }
 
     public Long getIdHist() {
@@ -60,28 +52,20 @@ public class HistoryOrder {
         this.orderDate = orderDate;
     }
 
-    public String getCustomerID() {
-        return customerID;
+    public String getBusName() {
+        return busName;
     }
 
-    public void setCustomerID(String customerID) {
-        this.customerID = customerID;
+    public void setBusName(String busName) {
+        this.busName = busName;
     }
 
-    public String getBusID() {
-        return busID;
+    public String getDriverName() {
+        return driverName;
     }
 
-    public void setBusID(String busID) {
-        this.busID = busID;
-    }
-
-    public String getDriverID() {
-        return driverID;
-    }
-
-    public void setDriverID(String driverID) {
-        this.driverID = driverID;
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
     public String getPickUpPoint() {
@@ -100,43 +84,34 @@ public class HistoryOrder {
         this.destination = destination;
     }
 
-    public Boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Integer getReview() {
-        return review;
+    public String getReason() {
+        return reason;
     }
 
-    public void setReview(Integer review) {
-        this.review = review;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
-    public String getReviewDesc() {
-        return reviewDesc;
-    }
-
-    public void setReviewDesc(String reviewDesc) {
-        this.reviewDesc = reviewDesc;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    @Override
+    public String toString() {
+        return "HistoryOrder{" +
+                "idHist=" + idHist +
+                ", orderID='" + orderID + '\'' +
+                ", orderDate=" + orderDate +
+                ", busName='" + busName + '\'' +
+                ", driverName='" + driverName + '\'' +
+                ", pickUpPoint='" + pickUpPoint + '\'' +
+                ", destination='" + destination + '\'' +
+                ", status='" + status + '\'' +
+                ", reason='" + reason + '\'' +
+                '}';
     }
 }

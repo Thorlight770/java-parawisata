@@ -2,7 +2,14 @@ package com.java.parawisata.javaparawisata.Controller;
 
 import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.HistoryOrder;
+import com.java.parawisata.javaparawisata.Repository.IOrderRepository;
+import com.java.parawisata.javaparawisata.Repository.Impl.OrderRepositoryImpl;
+import com.java.parawisata.javaparawisata.Service.IOrderService;
+import com.java.parawisata.javaparawisata.Service.Impl.OrderServiceImpl;
+import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,21 +25,25 @@ import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
 public class HistoryOrderController implements Initializable {
     @FXML
-    public TableColumn<HistoryOrder, String> colAction;
+    public TableColumn<HistoryOrder, String> colReason;
 
     @FXML
-    public TableColumn<HistoryOrder, String> colBusID;
+    public TableColumn<HistoryOrder, String> colBusType;
 
     @FXML
     public TableColumn<HistoryOrder, Date> colDateOrder;
 
     @FXML
-    public TableColumn<HistoryOrder, String> colDriverID;
+    public TableColumn<HistoryOrder, String> colDestination;
+
+    @FXML
+    public TableColumn<HistoryOrder, String> colDriverName;
 
     @FXML
     public TableColumn<HistoryOrder, Long> colID;
@@ -41,57 +52,53 @@ public class HistoryOrderController implements Initializable {
     public TableColumn<HistoryOrder, String> colOrderID;
 
     @FXML
+    public TableColumn<HistoryOrder, String> colPickUpPoint;
+
+    @FXML
+    public TableColumn<HistoryOrder, String> colStatus;
+
+    @FXML
     public TableView<HistoryOrder> tableHistoryOrder;
 
+    private IOrderRepository orderRepository;
+    private HistoryOrder historyOrderData;
     private Auth globalUser = new Auth();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // this.setUpTableHistoryOrder();
     }
 
-    private void setUpTableHistoryOrder() {
+    public void onSetTable() {
+        ControlMessage<List<HistoryOrder>> historyOrders = this.getAllHistoryOrderCustomer();
+        if (historyOrders.isSuccess) {
+            this.setUpTableHistoryOrder(historyOrders.data);
+        } else ServiceGlobalComponents.showAlertDialog(historyOrders);
+    }
+    private void setUpTableHistoryOrder(List<HistoryOrder> historyOrders) {
+        ObservableList<HistoryOrder> list = FXCollections.observableArrayList(historyOrders);
+
         colID.setCellValueFactory(new PropertyValueFactory<HistoryOrder, Long>("idHist"));
         colOrderID.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("orderID"));
-        colBusID.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("busID"));
-        colDriverID.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("driverID"));
-        colDateOrder.setCellValueFactory(new PropertyValueFactory<HistoryOrder, Date>("createdDate"));
-        Callback<TableColumn<HistoryOrder, String>, TableCell<HistoryOrder, String>> cellAction = (TableColumn<HistoryOrder, String> param) -> {
-          final TableCell<HistoryOrder, String> cell = new TableCell<HistoryOrder, String>() {
-              @Override
-              protected void updateItem(String s, boolean b) {
-                  super.updateItem(s, b);
-                  if (b) {
-                      setGraphic(null);
-                      setItem(null);
-                  } else {
-                      FontAwesomeIconView edit = new FontAwesomeIconView();
-                      edit.setSize("15");
-                      edit.setFill(Color.web("Black"));
-                      edit.setGlyphName("EDIT");
-                      edit.setOnMouseClicked((MouseEvent event) -> {
-                          // nanti set stage view dialog edit
-                      });
+        colBusType.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("busName"));
+        colDriverName.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("driverName"));
+        colPickUpPoint.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("pickUpPoint"));
+        colDestination.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("destination"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("status"));
+        colDateOrder.setCellValueFactory(new PropertyValueFactory<HistoryOrder, Date>("orderDate"));
+        colReason.setCellValueFactory(new PropertyValueFactory<HistoryOrder, String>("reason"));
 
-                      HBox managebtn = new HBox(edit);
-                      managebtn.setStyle("-fx-alignment:center");
-                      HBox.setMargin(edit, new Insets(2, 3, 0, 5));
-
-                      setGraphic(managebtn);
-
-                      setText(null);
-                  }
-              }
-          };
-            return cell;
-        };
-        colAction.setCellFactory(cellAction);
+        tableHistoryOrder.setItems(list);
     }
 
     private void updateHistoryOrder() {
         System.out.println("Masuk Method");
     }
 
+    private ControlMessage<List<HistoryOrder>> getAllHistoryOrderCustomer() {
+        this.orderRepository = new OrderRepositoryImpl();
+        IOrderService orderService = new OrderServiceImpl(this.orderRepository);
+        return orderService.getAllHistoryOrderByUserID(this.globalUser.getUserID());
+    }
     public void onSetAuth(Auth user) {
         this.globalUser = user;
     }
