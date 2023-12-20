@@ -95,6 +95,13 @@ public class ServiceGlobalComponents {
         stage.show();
     }
 
+    public static void showAlertDialog(String headerText, MessageType type, List<String> listMessage) {
+        ControlMessage responseMessage = new ControlMessage();
+        listMessage.forEach(x -> {
+            responseMessage.messages.add(new AdditionalMessage(type, x));
+        });
+        showAlertDialog(headerText, responseMessage);
+    }
     public static void showAlertDialog(ControlMessage response) {
         if (response.getMaxMessageType().getName().equals("DEFAULT") || response.getMaxMessageType().getName().equals("SUCCESS"))
             showAlertDialog("Success", response);

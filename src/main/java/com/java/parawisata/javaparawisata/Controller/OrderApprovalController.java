@@ -224,9 +224,6 @@ public class OrderApprovalController implements Initializable {
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
         }
 
-        ControlMessage response = new ControlMessage();
-        response.isSuccess = true;
-        response.messages.add(new AdditionalMessage(MessageType.SUCCESS, "Success Download Image - " + file.getName()));
-        ServiceGlobalComponents.showAlertDialog(response);
+        ServiceGlobalComponents.showAlertDialog("Success", MessageType.SUCCESS, List.of("Success Download Image - " + file.getName()));
     }
 }
