@@ -2,37 +2,45 @@ package com.java.parawisata.javaparawisata.Controller;
 
 import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.Bus;
-import com.java.parawisata.javaparawisata.Entity.Order;
 import com.java.parawisata.javaparawisata.Entity.OrderApproval;
+import com.java.parawisata.javaparawisata.JavaParawisataApp;
 import com.java.parawisata.javaparawisata.Repository.IOrderRepository;
 import com.java.parawisata.javaparawisata.Repository.Impl.OrderRepositoryImpl;
 import com.java.parawisata.javaparawisata.Service.IOrderService;
-import com.java.parawisata.javaparawisata.Service.Impl.BusServiceImpl;
 import com.java.parawisata.javaparawisata.Service.Impl.OrderServiceImpl;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.enums.ButtonType;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
+import io.github.palexdev.materialfx.utils.SwingFXUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-
-import java.net.URL;
-import java.sql.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class OrderApprovalController implements Initializable {
     @FXML
@@ -82,6 +90,12 @@ public class OrderApprovalController implements Initializable {
 
     @FXML
     public TableView<OrderApproval> tableOrderApv;
+
+    @FXML
+    public ImageView imgView;
+
+    @FXML
+    public MenuItem downloadImage;
 
     private IOrderRepository orderRepository;
     private OrderApproval orderApprovalData;
@@ -172,7 +186,47 @@ public class OrderApprovalController implements Initializable {
         return orderService.getAllOrderPendingApproval();
     }
 
+    @FXML
+    public void onMouseClickTable(MouseEvent event) {
+        this.orderApprovalData = this.tableOrderApv.getSelectionModel().getSelectedItem();
+        this.lblCustomerName.setText(this.orderApprovalData.getCustomerName());
+        this.lblOrderID.setText(this.orderApprovalData.getIdHist().toString());
+        this.lblPickUpPoint.setText(this.orderApprovalData.getPickUpPoint());
+        this.lblDestination.setText(this.orderApprovalData.getDestination());
+        this.lblStatusPayment.setText(this.orderApprovalData.getStatusPayment());
+        Path path = Paths.get("src/main/resources/com/java/parawisata/javaparawisata/fileTransfer/".concat(this.orderApprovalData.getFileName())).toAbsolutePath();
+        Image file = new Image(String.valueOf(path));
+        if (!file.isError()) {
+            this.imgView.setImage(file);
+            this.downloadImage.setOnAction(e -> {
+                try {
+                    this.onSaveAsImage(file);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+        }
+    }
+
     public void setAuth(Auth user) {
         this.globalUser = user;
+    }
+
+    public void onSaveAsImage(Image image) throws IOException {
+        FileChooser fc = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image File","*.png");
+        fc.getExtensionFilters().add(extFilter);
+
+        Stage stage = new Stage();
+        File file = fc.showSaveDialog(stage);
+
+        if (file != null) {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+        }
+
+        ControlMessage response = new ControlMessage();
+        response.isSuccess = true;
+        response.messages.add(new AdditionalMessage(MessageType.SUCCESS, "Success Download Image - " + file.getName()));
+        ServiceGlobalComponents.showAlertDialog(response);
     }
 }

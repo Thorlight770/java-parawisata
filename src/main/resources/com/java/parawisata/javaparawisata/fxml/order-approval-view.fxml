@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -20,88 +25,109 @@
                   <Insets />
                </VBox.margin>
                <children>
-                  <GridPane layoutX="62.0" layoutY="40.0" prefHeight="200.0" prefWidth="762.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="NEVER" maxWidth="361.0" minWidth="10.0" prefWidth="173.0" />
-                        <ColumnConstraints hgrow="NEVER" maxWidth="520.0" minWidth="10.0" prefWidth="12.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="550.0" minWidth="10.0" prefWidth="550.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label prefHeight="32.0" prefWidth="367.0" text="Approval Details">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="55.0" prefWidth="214.0" text="OrderID" GridPane.rowIndex="1">
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
-                        </Label>
-                        <Label prefHeight="55.0" prefWidth="214.0" text="Customer Name" GridPane.rowIndex="2">
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
-                        </Label>
-                        <Label prefHeight="55.0" prefWidth="214.0" text="Pick Up Point" GridPane.rowIndex="3">
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
-                        </Label>
-                        <Label prefHeight="55.0" prefWidth="214.0" text="Destination" GridPane.rowIndex="4">
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
-                        </Label>
-                        <Label prefHeight="55.0" prefWidth="214.0" text="Status Payment" GridPane.rowIndex="5">
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label fx:id="lblOrderID" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="lblCustomerName" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label fx:id="lblPickUpPoint" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Label fx:id="lblDestination" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <Label fx:id="lblStatusPayment" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <GridPane prefHeight="200.0" prefWidth="518.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" maxWidth="361.0" minWidth="10.0" prefWidth="173.0" />
+                              <ColumnConstraints hgrow="NEVER" maxWidth="520.0" minWidth="10.0" prefWidth="12.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="550.0" minWidth="10.0" prefWidth="196.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label prefHeight="32.0" prefWidth="367.0" text="Approval Details">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label prefHeight="55.0" prefWidth="214.0" text="OrderID" GridPane.rowIndex="1">
+                                 <padding>
+                                    <Insets left="40.0" />
+                                 </padding>
+                              </Label>
+                              <Label prefHeight="55.0" prefWidth="214.0" text="Customer Name" GridPane.rowIndex="2">
+                                 <padding>
+                                    <Insets left="40.0" />
+                                 </padding>
+                              </Label>
+                              <Label prefHeight="55.0" prefWidth="214.0" text="Pick Up Point" GridPane.rowIndex="3">
+                                 <padding>
+                                    <Insets left="40.0" />
+                                 </padding>
+                              </Label>
+                              <Label prefHeight="55.0" prefWidth="214.0" text="Destination" GridPane.rowIndex="4">
+                                 <padding>
+                                    <Insets left="40.0" />
+                                 </padding>
+                              </Label>
+                              <Label prefHeight="55.0" prefWidth="214.0" text="Status Payment" GridPane.rowIndex="5">
+                                 <padding>
+                                    <Insets left="40.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER" prefHeight="34.0" prefWidth="25.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label fx:id="lblOrderID" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label fx:id="lblCustomerName" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <Label fx:id="lblPickUpPoint" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                              <Label fx:id="lblDestination" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                              <Label fx:id="lblStatusPayment" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                           </children>
+                        </GridPane>
+                        <MFXScrollPane prefHeight="200.0" prefWidth="549.0" style="-fx-background-color: #D6D5EA;" HBox.hgrow="ALWAYS">
+                           <content>
+                              <ImageView fx:id="imgView" pickOnBounds="true" preserveRatio="true" />
+                           </content>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                  <MenuItem fx:id="downloadImage" mnemonicParsing="false" text="Download Image" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
+                        </MFXScrollPane>
                      </children>
-                  </GridPane>
+                  </HBox>
                </children>
             </AnchorPane>
-            <TableView fx:id="tableOrderApv" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/Table.css" VBox.vgrow="ALWAYS">
-              <columns>
-                <TableColumn fx:id="colCreatedDate" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Created Date" />
-                <TableColumn fx:id="colOrderID" prefWidth="44.0" style="-fx-alignment: CENTER;" text="OrderID" />
-                  <TableColumn fx:id="colCustomerName" prefWidth="102.0" style="-fx-alignment: CENTER;" text="Customer Name" />
-                  <TableColumn fx:id="colBusName" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Bus Name" />
-                  <TableColumn fx:id="colDriverName" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Driver Name" />
-                  <TableColumn fx:id="colPickUpPoint" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Pick Up Point" />
-                  <TableColumn fx:id="colDestination" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Destination" />
-                  <TableColumn fx:id="colDuration" prefWidth="43.0" style="-fx-alignment: CENTER;" text="Duration" />
-                  <TableColumn fx:id="colStatusPayment" prefWidth="73.0" style="-fx-alignment: CENTER;" text="Status Payment" />
-                  <TableColumn fx:id="colAction" prefWidth="104.0" style="-fx-alignment: CENTER;" text="Action" />
-              </columns>
-               <VBox.margin>
-                  <Insets left="14.0" right="14.0" top="30.0" />
-               </VBox.margin>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <MFXScrollPane fitToHeight="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                        <TableView fx:id="tableOrderApv" onMouseClicked="#onMouseClickTable" prefHeight="200.0" prefWidth="1500.0" stylesheets="@../css/Table.css">
+                          <columns>
+                            <TableColumn fx:id="colCreatedDate" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Created Date" />
+                            <TableColumn fx:id="colOrderID" prefWidth="44.0" style="-fx-alignment: CENTER;" text="OrderID" />
+                              <TableColumn fx:id="colCustomerName" prefWidth="102.0" style="-fx-alignment: CENTER;" text="Customer Name" />
+                              <TableColumn fx:id="colBusName" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Bus Name" />
+                              <TableColumn fx:id="colDriverName" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Driver Name" />
+                              <TableColumn fx:id="colPickUpPoint" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Pick Up Point" />
+                              <TableColumn fx:id="colDestination" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Destination" />
+                              <TableColumn fx:id="colDuration" prefWidth="43.0" style="-fx-alignment: CENTER;" text="Duration" />
+                              <TableColumn fx:id="colStatusPayment" prefWidth="73.0" style="-fx-alignment: CENTER;" text="Status Payment" />
+                              <TableColumn fx:id="colAction" prefWidth="104.0" style="-fx-alignment: CENTER;" text="Action" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </content>
+                  </MFXScrollPane>
+               </children>
+            </AnchorPane>
          </children>
       </VBox>
    </children>
