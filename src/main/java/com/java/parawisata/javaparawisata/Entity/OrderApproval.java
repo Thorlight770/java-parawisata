@@ -17,11 +17,13 @@ public class OrderApproval {
     private Long duration;
     private String statusPayment;
     private String fileName;
+    private String administratorID;
+    private String reason;
 
     public OrderApproval() {
     }
 
-    public OrderApproval(Date orderDate, Long idHist, String customerID, String customerName, String busID, String busName, String driverID, String driverName, String pickUpPoint, String destination, Long duration, String statusPayment, String fileName) {
+    public OrderApproval(Date orderDate, Long idHist, String customerID, String customerName, String busID, String busName, String driverID, String driverName, String pickUpPoint, String destination, Long duration, String statusPayment, String fileName, String administratorID, String reason) {
         this.orderDate = orderDate;
         this.idHist = idHist;
         this.customerID = customerID;
@@ -35,6 +37,8 @@ public class OrderApproval {
         this.duration = duration;
         this.statusPayment = statusPayment;
         this.fileName = fileName;
+        this.administratorID = administratorID;
+        this.reason = reason;
     }
 
     public Date getOrderDate() {
@@ -141,6 +145,22 @@ public class OrderApproval {
         this.fileName = fileName;
     }
 
+    public String getAdministratorID() {
+        return administratorID;
+    }
+
+    public void setAdministratorID(String administratorID) {
+        this.administratorID = administratorID;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     @Override
     public String toString() {
         return "OrderApproval{" +
@@ -157,6 +177,8 @@ public class OrderApproval {
                 ", duration=" + duration +
                 ", statusPayment='" + statusPayment + '\'' +
                 ", fileName='" + fileName + '\'' +
+                ", administratorID='" + administratorID + '\'' +
+                ", reason='" + reason + '\'' +
                 '}';
     }
 }

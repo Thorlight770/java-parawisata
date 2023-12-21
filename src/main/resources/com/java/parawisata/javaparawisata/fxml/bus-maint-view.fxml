@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="482.0" prefWidth="762.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.BusMaintController">
    <children>
       <VBox layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
@@ -28,11 +27,6 @@
                <children>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="367.0" spacing="20.0" GridPane.columnIndex="1">
                      <children>
-                        <MFXButton buttonType="RAISED" prefHeight="30.0" prefWidth="105.0" style="-fx-background-radius: 5;" text="Add">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </MFXButton>
                         <MFXButton buttonType="RAISED" prefHeight="30.0" prefWidth="105.0" style="-fx-background-radius: 5;" text="Print">
                            <font>
                               <Font name="System Bold" size="12.0" />

@@ -108,4 +108,48 @@ public class OrderServiceImpl implements IOrderService {
     public ControlMessage<List<OrderApproval>> getAllOrderPendingApproval() {
         return this.orderRepository.getAllOrderApproval();
     }
+
+    @Override
+    public ControlMessage<OrderApproval> processOrderApproval(OrderApproval orderApproval, String status) {
+        ControlMessage<OrderApproval> response = new ControlMessage<>();
+        response.data = new OrderApproval();
+        response.isSuccess = true;
+        try {
+            ControlMessage validate = this.processOrderApprovalValidate(orderApproval, status);
+            if (!validate.isSuccess) response.isSuccess = false;
+            if (!validate.getMessages().isEmpty()) response.messages.addAll(validate.getMessages());
+
+            if (response.isSuccess)
+                response = this.orderRepository.processOrderApproval(orderApproval, status);
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.data = null;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
+    }
+
+    public ControlMessage processOrderApprovalValidate(OrderApproval orderApproval, String status) {
+        ControlMessage response = new ControlMessage();
+        response.isSuccess = true;
+        try {
+            if (status.isEmpty() || status.isBlank())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Status Approval Tidak Boleh Kosong !"));
+
+            if (orderApproval.getIdHist() <= 0)
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "ID Approval Tidak Boleh Kosong !"));
+
+            if (orderApproval.getAdministratorID().isBlank() || orderApproval.getAdministratorID().isEmpty())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "User NIK Tidak Boleh Kosong !"));
+
+            if (status.equals("REJECTED") && (orderApproval.getReason().isEmpty() || orderApproval.getReason().isBlank()))
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Reason Tidak Boleh Kosong !"));
+
+            if (response.getMaxMessageType().getValue() >= MessageType.ERROR.getValue()) response.isSuccess = false;
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
+    }
 }

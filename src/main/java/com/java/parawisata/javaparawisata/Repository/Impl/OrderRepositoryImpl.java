@@ -224,7 +224,71 @@ public class OrderRepositoryImpl implements IOrderRepository {
 
     @Override
     public ControlMessage<OrderApproval> processOrderApproval(OrderApproval orderApproval, String status) {
-        return null;
+        ControlMessage<OrderApproval> response = new ControlMessage<>();
+        response.data = new OrderApproval();
+        response.isSuccess = true;
+        try {
+            // <editor-folds desc="query">
+            String query = """
+                    DECLARE
+                    @IDHist BIGINT,
+                    @Status VARCHAR(10),
+                    @UserNIK VARCHAR(100),
+                    @Reason VARCHAR(100)
+                                        
+                    SET @IDHist = ?
+                    SET @Status = ?
+                    SET @UserNIK = ?
+                    SET @Reason = ?
+                                        
+                    IF EXISTS(SELECT TOP 1 1 FROM OrderBusHist WHERE IDHist = @IDHist AND ISNULL(AuthStatus, '') <> '')
+                    	RAISERROR('Data Has Been Authenticate !', 16, 1)
+                                        
+                    IF (ISNULL(@UserNIK, '') = '')
+                    	RAISERROR('User NIK Not Null !', 16, 1)
+                                        
+                    IF (ISNULL(@Status, '') = '')
+                    	RAISERROR('Status Not Null !', 16, 1)
+                                        
+                    IF (UPPER(@Status) = 'R' AND ISNULL(@Reason, '') = '')
+                    	RAISERROR('Rejected Must Be Reasonable !', 16, 1)
+                                        
+                    UPDATE OrderBusHist
+                    SET
+                    UpdateDate = GETDATE(),
+                    AdministratorID = @UserNIK,
+                    AuthStatus = @Status,
+                    Reason = @Reason
+                    WHERE IDHist = @IDHist
+                    
+                    IF (@Status = 'A')
+                    BEGIN
+                        INSERT INTO OrderBusMs
+                        (OrderID,OrderDate,CustomerID,BusID,DriverID,PickUpPoint,Destination,Duration,[Status],
+                        Review,ReviewDesc,[FileName],CreatedDate,AdministratorID)
+                        SELECT
+                        OrderID,OrderDate,CustomerID,BusID,DriverID,PickUpPoint,Destination,Duration,[Status],
+                        Review,ReviewDesc,[FileName],UpdateDate,AdministratorID
+                        FROM OrderBusHist WHERE IDHist = @IDHist
+                    END
+                    """;
+            // </editor-folds>
+
+            Connection connection = DBConnection.GetConnection();
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setLong(1, orderApproval.getIdHist());
+            pst.setString(2, status);
+            pst.setString(3, orderApproval.getAdministratorID());
+            pst.setString(4, orderApproval.getReason());
+
+            boolean result = pst.execute();
+            if (result) response.data = orderApproval;
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.data = null;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
     }
     // </editor-folds>
 }

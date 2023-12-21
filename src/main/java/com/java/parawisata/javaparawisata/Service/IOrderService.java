@@ -14,5 +14,6 @@ public interface IOrderService {
 
     // <editor-folds desc="Approval">
     ControlMessage<List<OrderApproval>> getAllOrderPendingApproval();
+    ControlMessage<OrderApproval> processOrderApproval(OrderApproval orderApproval, String status);
     // </editor-folds>
 }

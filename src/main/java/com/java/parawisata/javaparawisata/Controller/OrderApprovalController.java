@@ -41,6 +41,7 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OrderApprovalController implements Initializable {
     @FXML
@@ -115,67 +116,95 @@ public class OrderApprovalController implements Initializable {
     public void setUpTableOrderApproval(List<OrderApproval> orderApprovals) {
         ObservableList<OrderApproval> list = FXCollections.observableArrayList(orderApprovals);
 
-        this.colCreatedDate.setCellValueFactory(new PropertyValueFactory<OrderApproval, Date>("orderDate"));
-        this.colOrderID.setCellValueFactory(new PropertyValueFactory<OrderApproval, Long>("idHist"));
-        this.colCustomerName.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("customerName"));
-        this.colBusName.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("busName"));
-        this.colDriverName.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("driverName"));
-        this.colPickUpPoint.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("pickUpPoint"));
-        this.colDestination.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("destination"));
-        this.colDuration.setCellValueFactory(new PropertyValueFactory<OrderApproval, Integer>("duration"));
-        this.colStatusPayment.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("statusPayment"));
+        if (!list.isEmpty()) {
+            this.colCreatedDate.setCellValueFactory(new PropertyValueFactory<OrderApproval, Date>("orderDate"));
+            this.colOrderID.setCellValueFactory(new PropertyValueFactory<OrderApproval, Long>("idHist"));
+            this.colCustomerName.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("customerName"));
+            this.colBusName.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("busName"));
+            this.colDriverName.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("driverName"));
+            this.colPickUpPoint.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("pickUpPoint"));
+            this.colDestination.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("destination"));
+            this.colDuration.setCellValueFactory(new PropertyValueFactory<OrderApproval, Integer>("duration"));
+            this.colStatusPayment.setCellValueFactory(new PropertyValueFactory<OrderApproval, String>("statusPayment"));
 
-        Callback<TableColumn<OrderApproval, String>, TableCell<OrderApproval, String>> cellAction = (TableColumn<OrderApproval, String> param) -> {
-            final TableCell<OrderApproval, String> cell = new TableCell<OrderApproval, String>() {
-                @Override
-                protected void updateItem(String s, boolean b) {
-                    super.updateItem(s, b);
-                    if (b) {
-                        setGraphic(null);
-                        setItem(null);
-                    } else {
-                        Button approve = new Button("Approve");
-                        // approve.setButtonType(ButtonType.RAISED);
-                        approve.setStyle("-fx-background-radius: 5px;-fx-background-color:  #7a0ed9");
-                        // approve.setRippleColor(Color.web("GREEN"));
-                        approve.setCursor(Cursor.HAND);
-                        approve.setTextFill(Color.web("WHITE"));
-                        approve.setMinSize(70, 30);
-                        approve.setMaxSize(70, 30);
+            Callback<TableColumn<OrderApproval, String>, TableCell<OrderApproval, String>> cellAction = (TableColumn<OrderApproval, String> param) -> {
+                final TableCell<OrderApproval, String> cell = new TableCell<OrderApproval, String>() {
+                    @Override
+                    protected void updateItem(String s, boolean b) {
+                        super.updateItem(s, b);
+                        if (b) {
+                            setGraphic(null);
+                            setItem(null);
+                        } else {
+                            Button approve = new Button("Approve");
+                            approve.setStyle("-fx-background-radius: 5px;-fx-background-color:  #7a0ed9");
+                            approve.setCursor(Cursor.HAND);
+                            approve.setTextFill(Color.web("WHITE"));
+                            approve.setMinSize(70, 30);
+                            approve.setMaxSize(70, 30);
+                            approve.setOnAction(e -> {
+                                onApproveOrder(tableOrderApv.getSelectionModel().getSelectedItem());
+                            });
 
-                        Button reject = new Button("Reject");
-                        // reject.setButtonType(ButtonType.RAISED);
-                        reject.setStyle("-fx-background-radius: 5px;-fx-background-color:  #7a0ed9");
-                        // reject.setRippleColor(Color.web("RED"));
-                        reject.setCursor(Cursor.HAND);
-                        reject.setTextFill(Color.web("WHITE"));
-                        reject.setMinSize(50, 30);
-                        reject.setMaxSize(50, 30);
+                            Button reject = new Button("Reject");
+                            reject.setStyle("-fx-background-radius: 5px;-fx-background-color:  #7a0ed9");
+                            reject.setCursor(Cursor.HAND);
+                            reject.setTextFill(Color.web("WHITE"));
+                            reject.setMinSize(50, 30);
+                            reject.setMaxSize(50, 30);
+                            reject.setOnAction(e -> {
+                                onRejectOrder(tableOrderApv.getSelectionModel().getSelectedItem());
+                            });
 
-                        HBox managebtn = new HBox(approve, reject);
-                        managebtn.setAlignment(Pos.CENTER_RIGHT);
-                        HBox.setMargin(approve, new Insets(2, 3, 0, 5));
-                        HBox.setMargin(reject, new Insets(2, 3, 0, 5));
+                            HBox managebtn = new HBox(approve, reject);
+                            managebtn.setAlignment(Pos.CENTER_RIGHT);
+                            HBox.setMargin(approve, new Insets(2, 3, 0, 5));
+                            HBox.setMargin(reject, new Insets(2, 3, 0, 5));
 
-                        setGraphic(managebtn);
+                            setGraphic(managebtn);
 
-                        setText(null);
+                            setText(null);
+                        }
                     }
-                }
 
-                //<editor-fold desc="Anon Method">
-                private void onUpdateBus(Bus data) {
+                    //<editor-fold desc="Anon Method">
+                    private void onApproveOrder(OrderApproval data) {
+                        AtomicBoolean result = ServiceGlobalComponents.showConfirmationDialog("Confirmation", "Yakin Ingin Approve Order ?");
+                        if (result.get()) {
+                            data.setAdministratorID(globalUser.getUserID());
+                            orderRepository = new OrderRepositoryImpl();
+                            IOrderService orderService = new OrderServiceImpl(orderRepository);
+                            ControlMessage<OrderApproval> response = orderService.processOrderApproval(data, "A");
+                            ServiceGlobalComponents.showAlertDialog(response);
+                            if (response.isSuccess) {
+                                onResetDetails();
+                                setTableOrderApv();
+                            }
+                        }
+                    }
 
-                }
-
-                private boolean onDeleteBus(Bus bus) {
-                    return true;
-                }
-                //</editor-fold>
+                    private void onRejectOrder(OrderApproval data) {
+                        AtomicBoolean result = ServiceGlobalComponents.showConfirmationDialog("Confirmation", "Yakin Ingin Reject Order ?");
+                        if (result.get()) {
+                            data.setAdministratorID(globalUser.getUserID());
+                            data.setReason("AUTO REJECT SYSTEM !");
+                            orderRepository = new OrderRepositoryImpl();
+                            IOrderService orderService = new OrderServiceImpl(orderRepository);
+                            ControlMessage<OrderApproval> response = orderService.processOrderApproval(data, "R");
+                            ServiceGlobalComponents.showAlertDialog(response);
+                            if (response.isSuccess) {
+                                onResetDetails();
+                                setTableOrderApv();
+                            }
+                        }
+                    }
+                    //</editor-fold>
+                };
+                return cell;
             };
-            return cell;
-        };
-        colAction.setCellFactory(cellAction);
+            colAction.setCellFactory(cellAction);
+        }
+
         tableOrderApv.setFixedCellSize(50.0);
         tableOrderApv.setItems(list);
     }
@@ -225,5 +254,14 @@ public class OrderApprovalController implements Initializable {
         }
 
         ServiceGlobalComponents.showAlertDialog("Success", MessageType.SUCCESS, List.of("Success Download Image - " + file.getName()));
+    }
+
+    public void onResetDetails() {
+        this.lblDestination.setText("");
+        this.lblStatusPayment.setText("");
+        this.lblOrderID.setText("");
+        this.lblCustomerName.setText("");
+        this.lblPickUpPoint.setText("");
+        this.imgView.setImage(null);
     }
 }
