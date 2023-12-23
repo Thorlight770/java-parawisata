@@ -105,7 +105,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label text="SignUp" textFill="#7a0ed9">
+                              <Label onMouseClicked="#onSignUpClick" text="SignUp" textFill="#7a0ed9">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>

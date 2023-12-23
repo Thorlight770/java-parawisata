@@ -22,8 +22,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.swing.*;
 
@@ -62,10 +64,24 @@ public class LoginController implements Initializable {
             Scene scene = new Scene(mainLayout);
             Stage stage = new Stage();
             stage.setTitle("JavaParawisata");
-            stage.setTitle("Login");
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
         }
+    }
+
+    @FXML
+    public void onSignUpClick(MouseEvent event) throws IOException {
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(JavaParawisataApp.class.getResource("fxml/sign-up-view.fxml"));
+        AnchorPane mainLayout = fxmlLoader.load();
+        Scene scene = new Scene(mainLayout);
+        Stage stage = new Stage();
+        stage.setTitle("Sign Up");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        // stage.initStyle(StageStyle.UNDECORATED);
+        stage.show();
     }
 }
