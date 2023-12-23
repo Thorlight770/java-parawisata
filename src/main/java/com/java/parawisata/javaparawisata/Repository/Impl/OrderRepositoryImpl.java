@@ -65,6 +65,18 @@ public class OrderRepositoryImpl implements IOrderRepository {
                     	SET @ErrMsg = 'Driver ID Null !'
                     	RAISERROR(@ErrMsg, 16, 1)
                     END
+                    
+                    IF (CONVERT(DATE, @OrderDate) < CONVERT(DATE, GETDATE()))
+                    BEGIN
+                        SET @ErrMsg = 'Order Date Cant Be Back Date'
+                        RAISERROR(@ErrMsg, 16, 1)
+                    END
+                    
+                    IF (@Duration < 0 )
+                    BEGIN
+                        SET @ErrMsg = 'Date To Can't Be Back Date'
+                        RAISERROR(@ErrMsg, 16, 1)
+                    END
                                         
                     IF EXISTS (SELECT TOP 1 1 FROM OrderBusHist
                     			WHERE CustomerID = @CustomerID
@@ -180,7 +192,7 @@ public class OrderRepositoryImpl implements IOrderRepository {
         try {
             // <editor-folds desc="query">
             String query = """
-                    DECLARE @CustomerID VARCHAR(100),
+                 DECLARE @CustomerID VARCHAR(100),
                  @CountSchedule FLOAT
                  
                  SET @CustomerID = ?
@@ -192,12 +204,21 @@ public class OrderRepositoryImpl implements IOrderRepository {
                  FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate >= CONVERT(DATE, GETDATE())
                                  
                  SET @CountSchedule = (SELECT CONVERT(FLOAT, COUNT(1)) FROM OrderBusMs WHERE CustomerID = @CustomerID)
-                                    
-                 SELECT COUNT(1) AS totalTrip, ((100 / @CountSchedule) * CONVERT(FLOAT, COUNT(1))) / 100 AS totalPercentTrip
-                 FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate < GETDATE()
-                                    
-                 SELECT COUNT(1) AS totalPending, ((100 / @CountSchedule) * COUNT(1)) / 100 AS totalPercentPending\s
-                 FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate >= GETDATE()
+                   
+                 IF (@CountSchedule > 0)
+                 BEGIN
+                     SELECT COUNT(1) AS totalTrip, ((100 / @CountSchedule) * CONVERT(FLOAT, COUNT(1))) / 100 AS totalPercentTrip
+                     FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate < GETDATE()
+                                        
+                     SELECT COUNT(1) AS totalPending, ((100 / @CountSchedule) * COUNT(1)) / 100 AS totalPercentPending
+                     FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate >= GETDATE()
+                 END
+                 ELSE
+                 BEGIN
+                    SELECT 0 AS totalTrip, 0.0 AS totalPercentTrip
+                    
+                    SELECT 0 AS totalPending, 0.0 AS totalPercentPending
+                 END
                     """;
             // </editor-folds>
 

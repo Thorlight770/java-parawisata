@@ -25,12 +25,12 @@
                            </font>
                         </Label>
                      </children></AnchorPane>
-                  <MFXProgressSpinner fx:id="progressTotalTrip" layoutX="34.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.46" startingAngle="90.0" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
+                  <MFXProgressSpinner fx:id="progressTotalTrip" layoutX="34.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.0" startingAngle="90.0" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
                      <color4>
                         <Color red="0.062745101749897" green="0.6117647290229797" blue="0.33725491166114807" />
                      </color4>
                   </MFXProgressSpinner>
-                  <Label fx:id="lblTotalTrip" alignment="CENTER" layoutX="71.0" layoutY="194.0" text="34" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <Label fx:id="lblTotalTrip" alignment="CENTER" layoutX="71.0" layoutY="194.0" text="0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -46,7 +46,7 @@
                            </font>
                         </Label>
                      </children></AnchorPane>
-                  <MFXProgressSpinner fx:id="ProgressTotalPendingTrip" layoutX="35.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.14" startingAngle="90.0" styleClass="track" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
+                  <MFXProgressSpinner fx:id="ProgressTotalPendingTrip" layoutX="35.0" layoutY="77.0" prefHeight="100.0" prefWidth="101.0" progress="0.0" startingAngle="90.0" styleClass="track" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="77.0">
                      <color4>
                         <Color green="0.3843137323856354" blue="1.0" />
                      </color4>
@@ -60,7 +60,7 @@
                         <Color green="0.3843137323856354" blue="1.0" />
                      </color3>
                   </MFXProgressSpinner>
-                  <Label fx:id="lblTotalPendingTrip" alignment="CENTER" layoutX="72.0" layoutY="195.0" text="5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <Label fx:id="lblTotalPendingTrip" alignment="CENTER" layoutX="72.0" layoutY="195.0" text="0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

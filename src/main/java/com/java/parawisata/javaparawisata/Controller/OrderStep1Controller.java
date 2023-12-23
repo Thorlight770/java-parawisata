@@ -29,6 +29,7 @@ import javafx.fxml.Initializable;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
@@ -96,6 +97,9 @@ public class OrderStep1Controller implements Initializable {
 
             if (this.orderData.getDestination() == null || this.orderData.getDestination().isEmpty() || this.orderData.getDestination().isBlank())
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Destination Point Tidak Boleh Kosong !"));
+
+            if (this.orderData.getOrderDate().toLocalDate().isBefore(LocalDate.now()))
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Back Date !"));
 
             if (this.orderData.getDuration() < 0)
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Lebih Kecil Dari Date To !"));
@@ -174,27 +178,15 @@ public class OrderStep1Controller implements Initializable {
 
     // <editor-folds desc="onChangeAction">
     public void onSetData() {
-        Date tmpDateFrom = null;
-        Date tmpDateTo = null;
         this.orderData = new Order();
         this.orderData.setOrderID(String.valueOf(UUID.randomUUID()));
-        if (dateTo.isValid() && dateTo.getValue() != null) {
-            tmpDateTo = Date.valueOf(dateTo.getValue());
-            this.orderData.setOrderDate(tmpDateTo);
-        }
         if (dateFrom.isValid() && dateFrom.getValue() != null)
-            tmpDateFrom = Date.valueOf(dateFrom.getValue());
-        if (tmpDateTo != null && tmpDateFrom != null) {
-            long dateToTime = tmpDateTo.getTime();
-            long dateFromTime = tmpDateFrom.getTime();
+            this.orderData.setOrderDate(Date.valueOf(dateFrom.getValue()));
+        if (dateFrom.isValid() && dateFrom.getValue() != null
+        && dateTo.isValid() && dateTo.getValue() != null)
+            this.orderData.setDuration(
+                    Date.valueOf(dateTo.getValue()).compareTo(Date.valueOf(dateFrom.getValue())));
 
-            long timeDiff = Math.abs(dateFromTime - dateToTime);
-
-            long daysDiff = TimeUnit.DAYS.convert(timeDiff, TimeUnit.MILLISECONDS);
-            if (daysDiff == 0)
-                this.orderData.setDuration(1);
-            else this.orderData.setDuration((int) daysDiff);
-        }
         this.orderData.setPickUpPoint(comboPoint.getSelectedItem());
         this.orderData.setDestination(comboDestination.getSelectedItem());
     }

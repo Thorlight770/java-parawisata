@@ -10,7 +10,10 @@ import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,6 +85,12 @@ public class OrderServiceImpl implements IOrderService {
             if (data.getDriverID() == null || data.getDriverID().isEmpty() || data.getDriverID().isBlank())
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Driver ID Tidak Boleh Kosong !"));
 
+            if (data.getOrderDate().before(Date.from(Instant.now())))
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Back Date !"));
+
+            if (data.getDuration() < 0)
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date To Tidak Boleh Back Date !"));
+
             if (response.getMaxMessageType().getValue() >= MessageType.ERROR.getValue()) response.isSuccess = false;
             else response.isSuccess = true;
         } catch (Exception ex) {
@@ -108,18 +117,6 @@ public class OrderServiceImpl implements IOrderService {
         response.isSuccess = true;
         try {
             response = orderRepository.getAllDataDashboard(userID);
-
-//            if (response.data.getTotalTrip() == 0) response.data.setPercentTrip(0);
-//            else {
-//                double percentTrip = (((100.0 / (double) response.data.getSchedules().size()) * (double) response.data.getTotalTrip()) / 100.0);
-//                response.data.setPercentTrip(percentTrip);
-//            }
-//
-//            if (response.data.getTotalPendingTrip() == 0) response.data.setPercentPendingTrip(0);
-//            else {
-//                double percentPendingTrip = (((100.0 / (double) response.data.getSchedules().size()) * (double) response.data.getTotalPendingTrip()) / 100.0);
-//                response.data.setPercentPendingTrip(percentPendingTrip);
-//            }
         } catch (Exception ex) {
             response.isSuccess = false;
             response.data = null;
@@ -160,13 +157,22 @@ public class OrderServiceImpl implements IOrderService {
             if (status.isEmpty() || status.isBlank())
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Status Approval Tidak Boleh Kosong !"));
 
-            if (orderApproval.getIdHist() <= 0)
-                response.messages.add(new AdditionalMessage(MessageType.ERROR, "ID Approval Tidak Boleh Kosong !"));
+            if (!status.equals("R")) {
+                if (orderApproval.getIdHist() <= 0)
+                    response.messages.add(new AdditionalMessage(MessageType.ERROR, "ID Approval Tidak Boleh Kosong !"));
 
-            if (orderApproval.getAdministratorID().isBlank() || orderApproval.getAdministratorID().isEmpty())
-                response.messages.add(new AdditionalMessage(MessageType.ERROR, "User NIK Tidak Boleh Kosong !"));
+                if (orderApproval.getAdministratorID().isBlank() || orderApproval.getAdministratorID().isEmpty())
+                    response.messages.add(new AdditionalMessage(MessageType.ERROR, "User NIK Tidak Boleh Kosong !"));
 
-            if (status.equals("REJECTED") && (orderApproval.getReason().isEmpty() || orderApproval.getReason().isBlank()))
+                if (orderApproval.getOrderDate().before(Date.from(Instant.now())))
+                    response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Back Date !"));
+
+                if (orderApproval.getDuration() < 0)
+                    response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date To Tidak Boleh Back Date !"));
+
+            }
+
+            if (status.equals("R") && (orderApproval.getReason().isEmpty() || orderApproval.getReason().isBlank()))
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Reason Tidak Boleh Kosong !"));
 
             if (response.getMaxMessageType().getValue() >= MessageType.ERROR.getValue()) response.isSuccess = false;
