@@ -73,7 +73,8 @@
                <children>
                   <TableView fx:id="tableSchedule" layoutX="28.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/Table.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn fx:id="colBookedDate" prefWidth="75.0" text="BOOKED DATE" />
+                      <TableColumn fx:id="colDateFrom" prefWidth="75.0" text="DATE FROM" />
+                        <TableColumn fx:id="colDateTo" prefWidth="75.0" text="DATE TO" />
                       <TableColumn fx:id="colPickUpPoint" prefWidth="75.0" text="PICK UP POINT" />
                         <TableColumn fx:id="colDestination" prefWidth="75.0" text="DESTINATION" />
                     </columns>

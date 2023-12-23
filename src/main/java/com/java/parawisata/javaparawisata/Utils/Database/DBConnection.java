@@ -54,7 +54,8 @@ public class DBConnection {
                     response.add(MappingResultSet(resultSet, listMapping.get(classCounter)));
                     classCounter++;
                 }
-                result = statement.getMoreResults();
+                if (listMapping.size() == classCounter) break;
+                else result = statement.getMoreResults();
             } while (result) ;
         } catch (Exception ex) {
             throw ex;

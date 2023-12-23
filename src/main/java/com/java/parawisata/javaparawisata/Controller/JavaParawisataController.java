@@ -79,7 +79,7 @@ public class JavaParawisataController implements Initializable {
 
     }
 
-    public void setMenus(String role, String username) {
+    public void setMenus(String role, String username) throws IOException {
         lblUsername.setText(username);
         menuRequest.setGroup("Menus");
         menuRequest.setCriteria(role);
@@ -93,7 +93,10 @@ public class JavaParawisataController implements Initializable {
                 this.contentPane.autosize();
             } else if (menuRequest.getCriteria().equals("Customer")) {
                 this.lblHeader.setText("Dashboard");
-                this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/dashboard-view.fxml"));
+                LoaderComponents<DashboardController> loader = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/dashboard-view.fxml");
+                loader.getController().onSetAuth(this.globalUser);
+                loader.getController().onSetDashboard();
+                this.contentPane.getChildren().setAll(loader.getAnchorPane());
                 this.contentPane.autosize();
             }
         } else ServiceGlobalComponents.showAlertDialog(menus);
@@ -109,6 +112,7 @@ public class JavaParawisataController implements Initializable {
         this.lblHeader.setText("Dashboard");
         LoaderComponents<DashboardController> dashboard = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/dashboard-view.fxml");
         dashboard.getController().onSetAuth(this.globalUser);
+        dashboard.getController().onSetDashboard();
         this.contentPane.getChildren().setAll(dashboard.getAnchorPane());
         this.contentPane.autosize();
     }

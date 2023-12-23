@@ -1,5 +1,6 @@
 package com.java.parawisata.javaparawisata.Repository;
 
+import com.java.parawisata.javaparawisata.Entity.Dashboard;
 import com.java.parawisata.javaparawisata.Entity.HistoryOrder;
 import com.java.parawisata.javaparawisata.Entity.Order;
 import com.java.parawisata.javaparawisata.Entity.OrderApproval;
@@ -11,6 +12,7 @@ public interface IOrderRepository {
     ControlMessage<Order> add(Order data);
     ControlMessage<Order> update(Order data);
     ControlMessage<List<HistoryOrder>> getHistoryOrdersByUserID(String userID);
+    ControlMessage<Dashboard> getAllDataDashboard(String userID);
 
     // <editor-folds desc="Approval">
     ControlMessage<List<OrderApproval>> getAllOrderApproval();

@@ -1,9 +1,6 @@
 package com.java.parawisata.javaparawisata.Repository.Impl;
 
-import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
-import com.java.parawisata.javaparawisata.Entity.HistoryOrder;
-import com.java.parawisata.javaparawisata.Entity.Order;
-import com.java.parawisata.javaparawisata.Entity.OrderApproval;
+import com.java.parawisata.javaparawisata.Entity.*;
 import com.java.parawisata.javaparawisata.Repository.IOrderRepository;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
@@ -167,6 +164,67 @@ public class OrderRepositoryImpl implements IOrderRepository {
                     response.data.add((HistoryOrder) x);
                 });
             } else response.messages.add(new AdditionalMessage(MessageType.WARNING, "Data Order Tidak Di Temukan !"));
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.data = null;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
+    }
+
+    @Override
+    public ControlMessage<Dashboard> getAllDataDashboard(String userID) {
+        ControlMessage<Dashboard> response = new ControlMessage<>();
+        response.data = new Dashboard();
+        response.isSuccess = true;
+        try {
+            // <editor-folds desc="query">
+            String query = """
+                    DECLARE @CustomerID VARCHAR(100),
+                 @CountSchedule FLOAT
+                 
+                 SET @CustomerID = ?
+                 
+                 IF (ISNULL(@CustomerID, '') = '')
+                     RAISERROR('Customer ID Not Null !', 16, 1)
+                     
+                 SELECT OrderID AS IDSchedule, DATEADD(DAY, -Duration, CAST(OrderDate AS DATE)) AS DateFrom, OrderDate AS DateTo, PickUpPoint, Destination AS DestinationTour
+                 FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate >= CONVERT(DATE, GETDATE())
+                                 
+                 SET @CountSchedule = (SELECT CONVERT(FLOAT, COUNT(1)) FROM OrderBusMs WHERE CustomerID = @CustomerID)
+                                    
+                 SELECT COUNT(1) AS totalTrip, ((100 / @CountSchedule) * CONVERT(FLOAT, COUNT(1))) / 100 AS totalPercentTrip
+                 FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate < GETDATE()
+                                    
+                 SELECT COUNT(1) AS totalPending, ((100 / @CountSchedule) * COUNT(1)) / 100 AS totalPercentPending\s
+                 FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate >= GETDATE()
+                    """;
+            // </editor-folds>
+
+            Connection connection = DBConnection.GetConnection();
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setString(1, userID);
+
+            boolean result = pst.execute();
+            List<List<Object>> resultObj = DBConnection.MappingStatement(result, pst, List.of(Schedule.class));
+            if (result && !resultObj.isEmpty()) {
+                resultObj.get(0).forEach(x -> {
+                    response.data.getSchedules().add((Schedule) x);
+                });
+
+                pst.getMoreResults();
+                ResultSet set1 = pst.getResultSet();
+                while (set1.next()) {
+                    response.data.setTotalTrip(set1.getInt("totalTrip"));
+                    response.data.setPercentTrip(set1.getFloat("totalPercentTrip"));
+                }
+                pst.getMoreResults();
+                ResultSet set2 = pst.getResultSet();
+                while (set2.next()) {
+                    response.data.setTotalPendingTrip(set2.getInt("totalPending"));
+                    response.data.setPercentPendingTrip(set2.getFloat("totalPercentPending"));
+                }
+            }
         } catch (Exception ex) {
             response.isSuccess = false;
             response.data = null;

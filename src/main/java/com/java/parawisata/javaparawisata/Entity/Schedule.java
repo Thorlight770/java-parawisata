@@ -5,16 +5,18 @@ import java.util.Date;
 
 public class Schedule {
     private String idSchedule;
-    private Date scheduleDate;
+    private Date dateFrom;
+    private Date dateTo;
     private String pickUpPoint;
     private String destinationTour;
 
     public Schedule() {
     }
 
-    public Schedule(String idSchedule, Date scheduleDate, String pickUpPoint, String destinationTour) {
+    public Schedule(String idSchedule, Date dateFrom, Date dateTo, String pickUpPoint, String destinationTour) {
         this.idSchedule = idSchedule;
-        this.scheduleDate = scheduleDate;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
         this.pickUpPoint = pickUpPoint;
         this.destinationTour = destinationTour;
     }
@@ -27,12 +29,20 @@ public class Schedule {
         this.idSchedule = idSchedule;
     }
 
-    public Date getScheduleDate() {
-        return scheduleDate;
+    public Date getDateFrom() {
+        return dateFrom;
     }
 
-    public void setScheduleDate(Date scheduleDate) {
-        this.scheduleDate = scheduleDate;
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
+    }
+
+    public Date getDateTo() {
+        return dateTo;
+    }
+
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
     }
 
     public String getPickUpPoint() {
@@ -49,5 +59,16 @@ public class Schedule {
 
     public void setDestinationTour(String destinationTour) {
         this.destinationTour = destinationTour;
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "idSchedule='" + idSchedule + '\'' +
+                ", dateFrom=" + dateFrom +
+                ", dateTo=" + dateTo +
+                ", pickUpPoint='" + pickUpPoint + '\'' +
+                ", destinationTour='" + destinationTour + '\'' +
+                '}';
     }
 }

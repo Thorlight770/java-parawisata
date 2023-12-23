@@ -1,9 +1,6 @@
 package com.java.parawisata.javaparawisata.Service.Impl;
 
-import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
-import com.java.parawisata.javaparawisata.Entity.HistoryOrder;
-import com.java.parawisata.javaparawisata.Entity.Order;
-import com.java.parawisata.javaparawisata.Entity.OrderApproval;
+import com.java.parawisata.javaparawisata.Entity.*;
 import com.java.parawisata.javaparawisata.Repository.IOrderRepository;
 import com.java.parawisata.javaparawisata.Repository.IParamRepository;
 import com.java.parawisata.javaparawisata.Service.IOrderService;
@@ -102,6 +99,33 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public ControlMessage<List<HistoryOrder>> getAllHistoryOrderByUserID(String userID) {
         return orderRepository.getHistoryOrdersByUserID(userID);
+    }
+
+    @Override
+    public ControlMessage<Dashboard> getAllDataDashboard(String userID) {
+        ControlMessage<Dashboard> response = new ControlMessage<>();
+        response.data = new Dashboard();
+        response.isSuccess = true;
+        try {
+            response = orderRepository.getAllDataDashboard(userID);
+
+//            if (response.data.getTotalTrip() == 0) response.data.setPercentTrip(0);
+//            else {
+//                double percentTrip = (((100.0 / (double) response.data.getSchedules().size()) * (double) response.data.getTotalTrip()) / 100.0);
+//                response.data.setPercentTrip(percentTrip);
+//            }
+//
+//            if (response.data.getTotalPendingTrip() == 0) response.data.setPercentPendingTrip(0);
+//            else {
+//                double percentPendingTrip = (((100.0 / (double) response.data.getSchedules().size()) * (double) response.data.getTotalPendingTrip()) / 100.0);
+//                response.data.setPercentPendingTrip(percentPendingTrip);
+//            }
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.data = null;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
     }
 
     @Override
