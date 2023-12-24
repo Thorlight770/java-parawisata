@@ -18,11 +18,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -95,7 +98,11 @@ public class BusMaintController implements Initializable {
                         edit.setGlyphName("EDIT");
                         edit.setCursor(Cursor.HAND);
                         edit.setOnMouseClicked((MouseEvent event) -> {
-                            this.onUpdateBus(tableBus.getSelectionModel().getSelectedItem());
+                            try {
+                                this.onUpdateBus(tableBus.getSelectionModel().getSelectedItem());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         });
 
                         FontAwesomeIconView delete = new FontAwesomeIconView();
@@ -104,7 +111,7 @@ public class BusMaintController implements Initializable {
                         delete.setGlyphName("TRASH");
                         delete.setCursor(Cursor.HAND);
                         delete.setOnMouseClicked((MouseEvent event) -> {
-                            this.onDeleteBus(bus);
+                            this.onDeleteBus(tableBus.getSelectionModel().getSelectedItem());
                         });
 
                         HBox managebtn = new HBox(edit, delete);
@@ -119,7 +126,7 @@ public class BusMaintController implements Initializable {
                 }
 
                 //<editor-fold desc="Anon Method">
-                private void onUpdateBus(Bus data) {
+                private void onUpdateBus(Bus data) throws IOException {
                     FXMLLoader loader = ServiceGlobalComponents.generateFXMLLoader("fxml/bus-dialog-view.fxml");
                     ServiceGlobalComponents.showPopUpDialog(loader, "Update Bus".concat("-" + data.getBusName()));
                     BusDialogController controller = loader.getController();
@@ -131,15 +138,18 @@ public class BusMaintController implements Initializable {
                     controller.onSetTable();
                 }
 
-                private boolean onDeleteBus(Bus bus) {
-                    boolean response = false;
-                    try {
-                        BusServiceImpl service = new BusServiceImpl(busRepository);
-                        response = service.onDeleteBus(bus);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                private void onDeleteBus(Bus bus) {
+                    bus.setUserID(globalUser.getUserID());
+                    AtomicBoolean result = ServiceGlobalComponents.showConfirmationDialog("Confirmation", "Yakin Ingin Hapus ?");
+                    if (result.get()) {
+                        busRepository = new BusRepositoryImpl();
+                        IBusService busService = new BusServiceImpl(busRepository);
+                        ControlMessage<Bus> response = busService.onDeleteBus(bus);
+                        if (response.isSuccess) {
+                            onSetTable();
+                        }
+                        ServiceGlobalComponents.showAlertDialog(response);
                     }
-                    return response;
                 }
                 //</editor-fold>
             };

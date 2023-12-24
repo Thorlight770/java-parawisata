@@ -54,10 +54,6 @@
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></FontAwesomeIconView>
-                        <FontAwesomeIconView fx:id="btnSetting" glyphName="GEAR" onMouseClicked="#onBtnSettingClick" size="20">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></FontAwesomeIconView>
                         <Line endY="20.0" strokeLineCap="ROUND" strokeWidth="2.0" />
                         <Label fx:id="lblUsername" text="muhammad.gunawan">
                            <font>

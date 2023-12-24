@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.DriverDialogController">
+<AnchorPane prefHeight="326.0" prefWidth="489.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.DriverDialogController">
    <children>
-      <Label fx:id="labelCustomerID" layoutX="154.0" layoutY="113.0" text="Label" />
-      <Label fx:id="labelCustomerName" layoutX="154.0" layoutY="145.0" text="Label" />
+      <GridPane layoutX="200.0" layoutY="110.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="100.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="7.0" prefWidth="7.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="259.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="119.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="DriverID" />
+            <Label text="Name" GridPane.rowIndex="1" />
+            <Label text=":" GridPane.columnIndex="1" />
+            <Label text=":" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <children>
+                  <MFXButton buttonType="RAISED" maxHeight="30.0" minHeight="30.0" onAction="#onSaveAction" prefHeight="30.0" style="-fx-background-color: #7a0ed9;" text="Save" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </MFXButton>
+                  <MFXButton buttonType="RAISED" maxHeight="30.0" minHeight="30.0" onAction="#onCancelAction" prefHeight="30.0" style="-fx-background-color: #7a0ed9;" text="Cancel" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </MFXButton>
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </HBox>
+            <MFXTextField fx:id="txtDriverID" disable="true" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="2" />
+            <MFXTextField fx:id="txtDriverName" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="250.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

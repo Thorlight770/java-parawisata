@@ -1,6 +1,8 @@
 package com.java.parawisata.javaparawisata.Controller;
 
+import com.java.parawisata.javaparawisata.Entity.Auth;
 import com.java.parawisata.javaparawisata.Entity.Driver;
+import com.java.parawisata.javaparawisata.JavaParawisataApp;
 import com.java.parawisata.javaparawisata.Repository.IDriverRepository;
 import com.java.parawisata.javaparawisata.Repository.Impl.DriverRepositoryImpl;
 import com.java.parawisata.javaparawisata.Service.IDriverService;
@@ -26,10 +28,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DriverMaintController implements Initializable {
     @FXML
@@ -61,7 +65,9 @@ public class DriverMaintController implements Initializable {
 
     private IDriverRepository driverRepository;
 
-    private Driver driverData;
+    private Driver driverData = new Driver();
+    private Auth globalUser = new Auth();
+    private DriverMaintController driverMaintController = this;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -90,7 +96,11 @@ public class DriverMaintController implements Initializable {
                         edit.setGlyphName("EDIT");
                         edit.setCursor(Cursor.HAND);
                         edit.setOnMouseClicked((MouseEvent event) -> {
-                            this.onUpdateDriver((Driver) tableDriver.getSelectionModel().getSelectedItem());
+                            try {
+                                this.onUpdateDriver(tableDriver.getSelectionModel().getSelectedItem());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         });
 
                         FontAwesomeIconView delete = new FontAwesomeIconView();
@@ -100,6 +110,7 @@ public class DriverMaintController implements Initializable {
                         delete.setCursor(Cursor.HAND);
                         delete.setOnMouseClicked((MouseEvent event) -> {
                             this.onDeleteDriver(tableDriver.getSelectionModel().getSelectedItem());
+                            onGetAllDataDriver();
                         });
 
                         HBox managebtn = new HBox(edit, delete);
@@ -114,18 +125,24 @@ public class DriverMaintController implements Initializable {
                 }
 
                 //<editor-fold desc="Anon Method">
-                private void onUpdateDriver(Driver data) {
+                private void onUpdateDriver(Driver data) throws IOException {
                     FXMLLoader loader = ServiceGlobalComponents.generateFXMLLoader("fxml/driver-dialog-view.fxml");
-                    DriverDialogController controller = loader.getController();
-                    controller.setDataDriver(data);
                     ServiceGlobalComponents.showPopUpDialog(loader, "Update Driver".concat("-" + data.getDriverName()));
+                    DriverDialogController controller = loader.getController();
+                    controller.setAuth(globalUser);
+                    controller.setParentController(driverMaintController);
+                    controller.setDataDriver(data);
                 }
 
                 private void onDeleteDriver(Driver data) {
-                    IDriverRepository repository = new DriverRepositoryImpl();
-                    IDriverService serviceDriver = new DriverServiceImpl(repository);
-                    ControlMessage<Driver> responseDelete = serviceDriver.deleteDriver(data.getDriverID());
-                    ServiceGlobalComponents.showAlertDialog(responseDelete);
+                    data.setUserID(globalUser.getUserID());
+                    AtomicBoolean result = ServiceGlobalComponents.showConfirmationDialog("Confirmation", "Yakin Ingin Hapus ?");
+                    if (result.get()) {
+                        IDriverRepository repository = new DriverRepositoryImpl();
+                        IDriverService serviceDriver = new DriverServiceImpl(repository);
+                        ControlMessage<Driver> responseDelete = serviceDriver.deleteDriver(data);
+                        ServiceGlobalComponents.showAlertDialog(responseDelete);
+                    }
                 }
                 //</editor-fold>
             };
@@ -135,7 +152,7 @@ public class DriverMaintController implements Initializable {
         tableDriver.setItems(list);
     }
 
-    private void onGetAllDataDriver() {
+    public void onGetAllDataDriver() {
         this.driverRepository = new DriverRepositoryImpl();
         IDriverService driverService = new DriverServiceImpl(this.driverRepository);
         ControlMessage<List<Driver>> drivers = driverService.getDrivers();
@@ -145,12 +162,20 @@ public class DriverMaintController implements Initializable {
     }
 
     @FXML
-    public void onBtnAdd(ActionEvent event) {
-
+    public void onBtnAdd(ActionEvent event) throws IOException {
+        FXMLLoader loader = ServiceGlobalComponents.generateFXMLLoader("fxml/driver-dialog-view.fxml");
+        ServiceGlobalComponents.showPopUpDialog(loader, "Create Driver");
+        DriverDialogController controller = loader.getController();
+        controller.setParentController(this);
+        controller.setAuth(globalUser);
     }
 
     @FXML
     public void onBtnPrintProcess(ActionEvent event) {
 
+    }
+
+    public void setAuth(Auth user) {
+        this.globalUser = user;
     }
 }

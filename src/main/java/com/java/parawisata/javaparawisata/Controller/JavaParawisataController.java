@@ -89,7 +89,9 @@ public class JavaParawisataController implements Initializable {
 
             if (menuRequest.getCriteria().equals("Administrator")) {
                 this.lblHeader.setText("Driver Maintenance");
-                this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/driver-maint-view.fxml"));
+                LoaderComponents<DriverMaintController> loader = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/driver-maint-view.fxml");
+                loader.getController().setAuth(this.globalUser);
+                this.contentPane.getChildren().setAll(loader.getAnchorPane());
                 this.contentPane.autosize();
             } else if (menuRequest.getCriteria().equals("Customer")) {
                 this.lblHeader.setText("Dashboard");
@@ -160,14 +162,18 @@ public class JavaParawisataController implements Initializable {
     //</editor-fold>
 
     //<editor-fold desc="Administrator Menus FXML">
-    public void onBtnDriverMaintenanceClick(MouseEvent event) {
+    public void onBtnDriverMaintenanceClick(MouseEvent event) throws IOException {
         this.lblHeader.setText("Driver Maintenance");
-        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/driver-maint-view.fxml"));
+        LoaderComponents<DriverMaintController> loader = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/driver-maint-view.fxml");
+        loader.getController().setAuth(this.globalUser);
+        this.contentPane.getChildren().setAll(loader.getAnchorPane());
         this.contentPane.autosize();
     }
-    public void onBtnBusMaintenanceClick(MouseEvent event) {
+    public void onBtnBusMaintenanceClick(MouseEvent event) throws IOException {
         this.lblHeader.setText("Bus Maintenance");
-        this.contentPane.getChildren().setAll(this.generateFXMLPage("fxml/bus-maint-view.fxml"));
+        LoaderComponents<BusMaintController> loader = ServiceGlobalComponents.generateLoaderFXMLPage("fxml/bus-maint-view.fxml");
+        loader.getController().setAuth(this.globalUser);
+        this.contentPane.getChildren().setAll(loader.getAnchorPane());
         this.contentPane.autosize();
     }
     public void onBtnOrderApprovalClick(MouseEvent event) throws IOException {
@@ -214,9 +220,17 @@ public class JavaParawisataController implements Initializable {
                                 throw new RuntimeException(ex);
                             }
                         } else if (x.getText().equalsIgnoreCase("DRIVER MAINTENANCE")) {
-                            this.onBtnDriverMaintenanceClick(e);
+                            try {
+                                this.onBtnDriverMaintenanceClick(e);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         } else if (x.getText().equalsIgnoreCase("BUS MAINTENANCE")) {
-                            this.onBtnBusMaintenanceClick(e);
+                            try {
+                                this.onBtnBusMaintenanceClick(e);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         } else if (x.getText().equalsIgnoreCase("ORDER APPROVAL")) {
                             try {
                                 this.onBtnOrderApprovalClick(e);

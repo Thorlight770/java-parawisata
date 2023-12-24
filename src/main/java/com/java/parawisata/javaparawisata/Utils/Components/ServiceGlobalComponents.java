@@ -83,12 +83,11 @@ public class ServiceGlobalComponents {
         return loader;
     }
 
-    public static void showPopUpDialog(FXMLLoader loader, String title) {
+    public static void showPopUpDialog(FXMLLoader loader, String title) throws IOException {
         Parent parent = loader.getRoot();
         Stage stage = new Stage();
         Scene scene = new Scene(parent);
         stage.initModality(Modality.WINDOW_MODAL);
-        // stage.getIcons().add(new Image("/image/icon.png"));
         stage.setTitle(title);
         stage.setResizable(false);
         stage.setScene(scene);

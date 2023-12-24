@@ -24,7 +24,7 @@ public class BusServiceImpl implements IBusService {
     }
 
     @Override
-    public boolean onDeleteBus(Bus data) {
+    public ControlMessage<Bus> onDeleteBus(Bus data) {
         return this.busRepository.delete(data);
     }
 

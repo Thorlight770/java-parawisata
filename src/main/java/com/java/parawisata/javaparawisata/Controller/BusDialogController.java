@@ -221,7 +221,6 @@ public class BusDialogController implements Initializable {
         model.setValue(10);
 
         this.spinnerDurationGrid.setSpinnerModel(model);
-        // this.spinnerDurationGrid.setGraphicTextGap(-100);
     }
     public ControlMessage<List<GlobalParameter>> getDestinationParam(){
         this.paramRepository = new ParamRepositoryImpl();
@@ -248,7 +247,19 @@ public class BusDialogController implements Initializable {
 
     @FXML
     public void onBtnSaveProcess(ActionEvent event) {
+        AtomicBoolean result = ServiceGlobalComponents.showConfirmationDialog("Confirmation", "Yakin Ingin Simpan ?");
+        if (result.get()) {
+            ControlMessage<Bus> response = onUpdateBusProcess();
+            if (response.isSuccess) {
+                ((Stage)(((Button) event.getSource()).getScene().getWindow())).hide();
+                this.parentController.onSetTable();
+            }
+            ServiceGlobalComponents.showAlertDialog(response);
+        }
+    }
 
+    public ControlMessage<Bus> onUpdateBusProcess() {
+        return null;
     }
 
     @FXML

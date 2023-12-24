@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IBusRepository {
     ControlMessage<Bus> update(Bus data);
-    boolean delete(Bus data);
+    ControlMessage<Bus> delete(Bus data);
     ControlMessage<List<Bus>> getBuss();
     ControlMessage<List<BusPrice>> getBusDetailsByID(String busID);
     ControlMessage<BusPrice> add(BusPrice data);

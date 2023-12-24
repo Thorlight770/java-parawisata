@@ -16,12 +16,48 @@ import java.util.List;
 public class BusRepositoryImpl implements IBusRepository {
     @Override
     public ControlMessage<Bus> update(Bus data) {
-        return null;
+        ControlMessage<Bus> response = new ControlMessage<>();
+        response.data = new Bus();
+        response.isSuccess = true;
+        try {
+            // <editor-folds desc="query">
+            String query = """
+                    """;
+            // </editor-folds>
+
+            Connection connection = DBConnection.GetConnection();
+            PreparedStatement pst = connection.prepareStatement(query);
+
+            response.messages.add(new AdditionalMessage(MessageType.SUCCESS, "Update Bus Success !"));
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.data = null;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
     }
 
     @Override
-    public boolean delete(Bus data) {
-        return false;
+    public ControlMessage<Bus> delete(Bus data) {
+        ControlMessage<Bus> response = new ControlMessage<>();
+        response.data = new Bus();
+        response.isSuccess = true;
+        try {
+            // <editor-folds desc="query">
+            String query = """
+                    """;
+            // </editor-folds>
+
+            Connection connection = DBConnection.GetConnection();
+            PreparedStatement pst = connection.prepareStatement(query);
+
+            response.messages.add(new AdditionalMessage(MessageType.SUCCESS, "Delete Bus Success !"));
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.data = null;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
     }
 
     @Override

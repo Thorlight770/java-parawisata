@@ -10,5 +10,5 @@ public interface IDriverRepository {
     ControlMessage<Driver> getDriverByID(String driverID);
     ControlMessage<Driver> add(Driver driver);
     ControlMessage<Driver> update(Driver driver);
-    ControlMessage<Driver> delete(String driverID);
+    ControlMessage<Driver> delete(String driverID, String userID);
 }

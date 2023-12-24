@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="768.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.java.parawisata.javaparawisata.Controller.BusDialogController">
    <children>
@@ -70,21 +71,27 @@
                                           </MFXSpinner>
                                           <MFXTextField fx:id="txtBusNameGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" />
                                           <MFXTextField fx:id="txtPriceGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                          <MFXButton buttonType="RAISED" maxHeight="30.0" minHeight="30.0" minWidth="55.0" onAction="#onBtnSaveGrid" prefHeight="30.0" rippleColor="#00fc26" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9; -fx-border-radius: 5;" text="SAVE" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                          <MFXButton buttonType="RAISED" maxHeight="30.0" minHeight="30.0" minWidth="55.0" onAction="#onBtnSaveGrid" prefHeight="30.0" rippleColor="#00fc26" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9; -fx-border-radius: 5;" text="Save" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                              <GridPane.margin>
                                                 <Insets left="40.0" />
                                              </GridPane.margin>
                                              <cursor>
                                                 <Cursor fx:constant="HAND" />
                                              </cursor>
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
                                           </MFXButton>
-                                          <MFXButton buttonType="RAISED" maxHeight="30.0" minHeight="30.0" minWidth="55.0" onAction="#onBtnCancelGrid" prefHeight="30.0" rippleColor="RED" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9; -fx-border-radius: 5;" text="CANCEL" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                          <MFXButton buttonType="RAISED" maxHeight="30.0" minHeight="30.0" minWidth="55.0" onAction="#onBtnCancelGrid" prefHeight="30.0" rippleColor="RED" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9; -fx-border-radius: 5;" text="Cancel" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                              <GridPane.margin>
                                                 <Insets left="100.0" />
                                              </GridPane.margin>
                                              <cursor>
                                                 <Cursor fx:constant="HAND" />
                                              </cursor>
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
                                           </MFXButton>
                                        </children>
                                     </GridPane>
@@ -127,7 +134,7 @@
                   <Label minHeight="30.0" text="Fasilitas" GridPane.rowIndex="1" />
                   <Label minHeight="30.0" text=":" GridPane.columnIndex="1" />
                   <Label minHeight="30.0" text=":" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <MFXTextField fx:id="txtBusName" minHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" />
+                  <MFXTextField fx:id="txtBusName" disable="true" minHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" />
                   <HBox alignment="CENTER_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
                         <MFXCheckbox fx:id="cBoxAC" text="AC" />
@@ -140,10 +147,13 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <children>
-                        <MFXButton fx:id="btnAddGrid" buttonType="RAISED" maxHeight="30.0" onAction="#onBtnAddGrid" rippleColor="#00ff44" style="-fx-background-color: #7a0ed9; -fx-background-radius: 5;" text="NEW" textFill="WHITE">
+                        <MFXButton fx:id="btnAddGrid" buttonType="RAISED" maxHeight="30.0" onAction="#onBtnAddGrid" rippleColor="#00ff44" style="-fx-background-color: #7a0ed9; -fx-background-radius: 5;" text="New" textFill="WHITE">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
                         </MFXButton>
                      </children>
                   </HBox>
@@ -151,15 +161,21 @@
             </GridPane>
             <HBox fx:id="menuBtnProcess" alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="718.0" spacing="5.0" GridPane.rowIndex="3">
                <children>
-                  <MFXButton buttonType="RAISED" maxHeight="30.0" minWidth="30.0" onAction="#onBtnSaveProcess" prefHeight="30.0" rippleColor="#00fc26" style="-fx-background-color: #7a0ed9; -fx-background-radius: 5;" text="SAVE" textFill="WHITE">
+                  <MFXButton buttonType="RAISED" maxHeight="30.0" minWidth="30.0" onAction="#onBtnSaveProcess" prefHeight="30.0" rippleColor="#00fc26" style="-fx-background-color: #7a0ed9; -fx-background-radius: 5;" text="Save" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </MFXButton>
-                  <MFXButton buttonType="RAISED" maxHeight="30.0" minWidth="30.0" onAction="#onBtnCancelProcess" prefHeight="30.0" rippleColor="RED" style="-fx-background-color: #7a0ed9; -fx-background-radius: 5;" text="CANCLE" textFill="WHITE">
+                  <MFXButton buttonType="RAISED" maxHeight="30.0" minWidth="30.0" onAction="#onBtnCancelProcess" prefHeight="30.0" rippleColor="RED" style="-fx-background-color: #7a0ed9; -fx-background-radius: 5;" text="Cancel" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </MFXButton>
                </children>
             </HBox>

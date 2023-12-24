@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IBusService {
     ControlMessage<Bus> onUpdateBus(Bus data);
-    boolean onDeleteBus(Bus data);
+    ControlMessage<Bus> onDeleteBus(Bus data);
     ControlMessage<List<Bus>> getAllBus();
     ControlMessage<List<BusPrice>> getBusDetailsPriceByID(String busID);
     ControlMessage<BusPrice> addBusPrice(BusPrice data);

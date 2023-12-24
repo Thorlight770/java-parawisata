@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -27,15 +28,21 @@
                     <children>
                         <HBox alignment="BOTTOM_RIGHT" prefHeight="160.0" prefWidth="367.0" spacing="20.0" GridPane.columnIndex="1">
                             <children>
-                                <MFXButton fx:id="btnAdd" buttonType="RAISED" onAction="#onBtnAdd" prefHeight="30.0" prefWidth="105.0" style="-fx-background-radius: 5;" text="Add">
+                                <MFXButton fx:id="btnAdd" buttonType="RAISED" onAction="#onBtnAdd" prefHeight="30.0" prefWidth="105.0" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9;" text="Add" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="12.0" />
                                     </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                                 </MFXButton>
-                                <MFXButton fx:id="btnPrint" buttonType="RAISED" onAction="#onBtnPrintProcess" prefHeight="30.0" prefWidth="105.0" style="-fx-background-radius: 5;" text="Print">
+                                <MFXButton fx:id="btnPrint" buttonType="RAISED" onAction="#onBtnPrintProcess" prefHeight="30.0" prefWidth="105.0" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9;" text="Print" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="12.0" />
                                     </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                                 </MFXButton>
                             </children>
                             <padding>
