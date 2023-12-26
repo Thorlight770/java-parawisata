@@ -1,9 +1,6 @@
 package com.java.parawisata.javaparawisata.Controller;
 
-import com.java.parawisata.javaparawisata.Entity.Auth;
-import com.java.parawisata.javaparawisata.Entity.Bus;
-import com.java.parawisata.javaparawisata.Entity.BusPrice;
-import com.java.parawisata.javaparawisata.Entity.GlobalParameter;
+import com.java.parawisata.javaparawisata.Entity.*;
 import com.java.parawisata.javaparawisata.Repository.IBusRepository;
 import com.java.parawisata.javaparawisata.Repository.IParamRepository;
 import com.java.parawisata.javaparawisata.Repository.Impl.BusRepositoryImpl;
@@ -13,20 +10,20 @@ import com.java.parawisata.javaparawisata.Service.IParamService;
 import com.java.parawisata.javaparawisata.Service.Impl.BusServiceImpl;
 import com.java.parawisata.javaparawisata.Service.Impl.ParamServiceImpl;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
+import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import io.github.palexdev.materialfx.controls.*;
 import io.github.palexdev.materialfx.controls.models.spinner.IntegerSpinnerModel;
 import io.github.palexdev.materialfx.controls.models.spinner.SpinnerModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -34,12 +31,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.modelmapper.ModelMapper;
 
 import java.net.URL;
 import java.sql.Date;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -117,8 +115,12 @@ public class BusDialogController implements Initializable {
     private BusMaintController parentController;
     private IBusRepository busRepository;
     private IParamRepository paramRepository;
-    private Bus busData;
+    private Bus busData = new Bus();
+    private BusMaint busMaint = new BusMaint();
+    private BusPrice busPrice = new BusPrice();
+    private List<BusPrice> busPrices = new ArrayList<>();
     private Auth globalUser = new Auth();
+    private String action = "";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.onSetAllParam();
@@ -131,6 +133,7 @@ public class BusDialogController implements Initializable {
     }
 
     public void onSetUpTableBusPrice(List<BusPrice> busPrices) {
+        this.busPrices = busPrices;
         ObservableList<BusPrice> list = FXCollections.observableArrayList(busPrices);
         this.colID.setCellValueFactory(new PropertyValueFactory<BusPrice, Long>("id"));
         this.colPrice.setCellValueFactory(new PropertyValueFactory<BusPrice, Double>("price"));
@@ -180,17 +183,19 @@ public class BusDialogController implements Initializable {
                 //<editor-fold desc="Anon Method">
                 private void onUpdateBus(BusPrice data) {
                     onSetDisable(true);
+                    action = "U";
+                    busPrice = data;
                     txtPriceGrid.setText(String.valueOf(data.getPrice()));
                     spinnerDurationGrid.setValue(data.getDuration());
+                    cmbBoxDestination.setValue(data.getDestination());
+                    txtBusNameGrid.setText(data.getBusName());
                 }
 
                 private void onDeleteBus(BusPrice data) {
                     AtomicBoolean result = ServiceGlobalComponents.showConfirmationDialog("Confirmation", "Yakin Untuk Menghapus ?");
                     if (result.get()) {
-                        busRepository = new BusRepositoryImpl();
-                        IBusService busService = new BusServiceImpl(busRepository);
-                        ControlMessage<BusPrice> response = busService.deleteBusPrice(data);
-                        ServiceGlobalComponents.showAlertDialog(response);
+                        tableBusPrice.getItems().remove(data);
+                        ServiceGlobalComponents.showAlertDialog("Success", MessageType.SUCCESS, List.of("Success Delete Bus Price - " + data.getBusPriceID()));
                     }
                 }
                 //</editor-fold>
@@ -237,31 +242,141 @@ public class BusDialogController implements Initializable {
 
     @FXML
     public void onBtnSaveGrid(ActionEvent event) {
-        this.onSetDisable(false);
+        ControlMessage validateProc = this.onGridActionValidate();
+        if (validateProc.isSuccess) {
+            this.onSetDisable(false);
+            if (action.equals("I")) {
+                tableBusPrice.getItems().add(onSetDataGrid());
+                ServiceGlobalComponents.showAlertDialog("Success", MessageType.SUCCESS, List.of("Success Insert Bus Price !"));
+            } else if (action.equals("U")) {
+                int index = tableBusPrice.getItems().indexOf(busPrice);
+                tableBusPrice.getItems().set(index, onSetDataGrid());
+                ServiceGlobalComponents.showAlertDialog("Success", MessageType.SUCCESS, List.of("Success Update Bus Price !"));
+            }
+        } else ServiceGlobalComponents.showAlertDialog(validateProc);
     }
+    private ControlMessage onGridActionValidate() {
+        ControlMessage response = new ControlMessage();
+        response.isSuccess = true;
+        try {
+            if (!txtBusNameGrid.isValid() || txtBusNameGrid.getText().isEmpty() || txtBusNameGrid.getText().isBlank())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Bus Name Tidak Boleh Kosong !"));
 
+            if (!txtPriceGrid.isValid() || txtPriceGrid.getText().isEmpty() || txtPriceGrid.getText().isBlank())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Price Tidak Boleh Kosong !"));
+            else if (!txtPriceGrid.getText().matches("[0-9]+"))
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Price Tidak Boleh Mengandung Karakter !"));
+
+            if (spinnerDurationGrid.isSelectable() && spinnerDurationGrid.getValue() <= 0)
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Duration Harus Lebih Besar Dari 0 !"));
+
+            if (!cmbBoxDestination.isValid() || cmbBoxDestination.getValue().isBlank() || cmbBoxDestination.getValue().isEmpty())
+                response.messages.add(new AdditionalMessage(MessageType.ERROR, "Destination Tidak Boleh Kosong !"));
+
+            if (response.getMaxMessageType().getValue() >= MessageType.ERROR.getValue()) response.isSuccess = false;
+        } catch (Exception ex) {
+            response.isSuccess = false;
+            response.messages.add(new AdditionalMessage(MessageType.ERROR, ex.getMessage()));
+        }
+        return response;
+    }
+    private BusPrice onSetDataGrid() {
+        if (action.equals("I")) {
+            BusPrice response = new BusPrice();
+            response.setBusPriceID("-1");
+            response.setBusName(txtBusNameGrid.getText());
+            response.setDestination(cmbBoxDestination.getValue());
+            response.setDuration(spinnerDurationGrid.getValue());
+            response.setPrice(Double.valueOf(txtPriceGrid.getText()));
+            response.setAction(this.action);
+            response.setUserID(this.globalUser.getUserID());
+            return response;
+        } else {
+            busPrice.setDestination(cmbBoxDestination.getValue());
+            busPrice.setDuration(spinnerDurationGrid.getValue());
+            busPrice.setPrice(Double.valueOf(txtPriceGrid.getText()));
+            busPrice.setAction(this.action);
+            busPrice.setUserID(this.globalUser.getUserID());
+            return busPrice;
+        }
+    }
     @FXML
     public void onBtnAddGrid(ActionEvent event){
+        this.action = "I";
         this.onSetDisable(true);
     }
 
     @FXML
     public void onBtnSaveProcess(ActionEvent event) {
+        this.onSetDataMaint();
+        System.out.println(this.busMaint);
+
         AtomicBoolean result = ServiceGlobalComponents.showConfirmationDialog("Confirmation", "Yakin Ingin Simpan ?");
         if (result.get()) {
-            ControlMessage<Bus> response = onUpdateBusProcess();
+            ControlMessage<BusMaint> response = onUpdateBusProcess(this.busMaint);
             if (response.isSuccess) {
-                ((Stage)(((Button) event.getSource()).getScene().getWindow())).hide();
                 this.parentController.onSetTable();
+                ((Stage)(((Button) event.getSource()).getScene().getWindow())).hide();
             }
             ServiceGlobalComponents.showAlertDialog(response);
         }
     }
 
-    public ControlMessage<Bus> onUpdateBusProcess() {
-        return null;
+    public ControlMessage<BusMaint> onUpdateBusProcess(BusMaint data) {
+        this.busRepository = new BusRepositoryImpl();
+        IBusService busService = new BusServiceImpl(busRepository);
+        return busService.onUpdateBus(data);
     }
 
+    private void onSetDataMaint() {
+        this.busMaint.setBusID(busData.getBusID());
+        this.busMaint.setBusName(busData.getBusName());
+        // <editor-folds desc="build fasilitas">
+        StringBuilder sb = new StringBuilder();
+        String fasilitas = "";
+        if (cBoxAC.isSelected())
+            sb.append("AC|");
+        if (cBoxMicrophone.isSelected())
+            sb.append("MICROPHONE|");
+        if (cBoxLuggage.isSelected())
+            sb.append("LUGGAGE|");
+        if (cBoxEat.isSelected())
+            sb.append("EAT|");
+        if (cBoxWifi.isSelected())
+            sb.append("WIFI|");
+        if (cBoxCharge.isSelected())
+            sb.append("CHARGE|");
+        if (!sb.isEmpty() && sb.toString().endsWith("|"))
+            fasilitas = sb.substring(0, sb.length()-1);
+        // </editor-folds>
+        this.busMaint.setFasilitas(fasilitas);
+        this.busMaint.setUserID(globalUser.getUserID());
+        // <editor-folds desc="build list price">
+        this.tableBusPrice.getItems().forEach(x -> {
+            if (x.getBusPriceID().equals("-1")) {
+                this.busPrices.add(x);
+            } else {
+                for (BusPrice data: busPrices) {
+                    if (x.getBusPriceID().equals(data.getBusPriceID())) {
+                        x.setAction(data.getAction());
+                        break;
+                    }
+                }
+            }
+        });
+        this.busPrices.forEach(x -> {
+            if (this.tableBusPrice.getItems().stream().noneMatch(y -> y.getBusPriceID().equals(x.getBusPriceID()))) {
+                x.setAction("D");
+            }
+        });
+
+        this.busPrices.forEach(x -> {
+            ModelMapper map = new ModelMapper();
+            BusPriceMaint busPriceMaint = map.map(x, BusPriceMaint.class);
+            this.busMaint.getBusPrices().add(busPriceMaint);
+        });
+        // </editor-folds>
+    }
     @FXML
     public void onBtnCancelProcess(ActionEvent event) {
         ((Stage)(((Button) event.getSource()).getScene().getWindow())).hide();

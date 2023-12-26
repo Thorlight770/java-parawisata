@@ -1,6 +1,7 @@
 package com.java.parawisata.javaparawisata.Service.Impl;
 
 import com.java.parawisata.javaparawisata.Entity.Bus;
+import com.java.parawisata.javaparawisata.Entity.BusMaint;
 import com.java.parawisata.javaparawisata.Entity.BusPrice;
 import com.java.parawisata.javaparawisata.Repository.IBusRepository;
 import com.java.parawisata.javaparawisata.Service.IBusService;
@@ -19,7 +20,7 @@ public class BusServiceImpl implements IBusService {
     }
 
     @Override
-    public ControlMessage<Bus> onUpdateBus(Bus data) {
+    public ControlMessage<BusMaint> onUpdateBus(BusMaint data) {
         return this.busRepository.update(data);
     }
 

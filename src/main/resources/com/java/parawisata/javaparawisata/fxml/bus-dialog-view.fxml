@@ -137,12 +137,30 @@
                   <MFXTextField fx:id="txtBusName" disable="true" minHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" />
                   <HBox alignment="CENTER_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
-                        <MFXCheckbox fx:id="cBoxAC" text="AC" />
-                        <MFXCheckbox fx:id="cBoxMicrophone" text="MICROPHONE" />
-                        <MFXCheckbox fx:id="cBoxLuggage" text="LUGGAGE" />
-                        <MFXCheckbox fx:id="cBoxEat" text="EAT" />
-                        <MFXCheckbox fx:id="cBoxWifi" text="WIFI" />
-                        <MFXCheckbox fx:id="cBoxCharge" text="CHARGE" />
+                        <MFXCheckbox fx:id="cBoxAC" text="AC">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXCheckbox>
+                        <MFXCheckbox fx:id="cBoxMicrophone" text="MICROPHONE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXCheckbox>
+                        <MFXCheckbox fx:id="cBoxLuggage" text="LUGGAGE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXCheckbox>
+                        <MFXCheckbox fx:id="cBoxEat" text="EAT">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXCheckbox>
+                        <MFXCheckbox fx:id="cBoxWifi" text="WIFI">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXCheckbox>
+                        <MFXCheckbox fx:id="cBoxCharge" text="CHARGE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></MFXCheckbox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">

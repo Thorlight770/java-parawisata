@@ -8,8 +8,8 @@ module com.java.parawisata.javaparawisata {
     requires com.microsoft.sqlserver.jdbc;
     requires de.jensd.fx.glyphs.fontawesome;
     requires MaterialFX;
-//    requires java.common.lib;
     requires com.google.common;
+    requires modelmapper;
 
     opens com.java.parawisata.javaparawisata to javafx.fxml;
     exports com.java.parawisata.javaparawisata;

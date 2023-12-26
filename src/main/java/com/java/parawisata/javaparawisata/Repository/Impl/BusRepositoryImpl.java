@@ -1,32 +1,141 @@
 package com.java.parawisata.javaparawisata.Repository.Impl;
 
 import com.java.parawisata.javaparawisata.Entity.Bus;
+import com.java.parawisata.javaparawisata.Entity.BusMaint;
 import com.java.parawisata.javaparawisata.Entity.BusPrice;
 import com.java.parawisata.javaparawisata.Repository.IBusRepository;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
 import com.java.parawisata.javaparawisata.Utils.Database.DBConnection;
+import com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BusRepositoryImpl implements IBusRepository {
     @Override
-    public ControlMessage<Bus> update(Bus data) {
-        ControlMessage<Bus> response = new ControlMessage<>();
-        response.data = new Bus();
+    public ControlMessage<BusMaint> update(BusMaint data) {
+        ControlMessage<BusMaint> response = new ControlMessage<>();
+        response.data = new BusMaint();
         response.isSuccess = true;
         try {
             // <editor-folds desc="query">
             String query = """
+                    DECLARE @InputTable TABLE (
+                    	BusPriceID varchar(100),
+                    	BusName varchar(100),
+                    	Price decimal(20, 2),
+                    	Duration int,
+                    	Destination	varchar(100),
+                    	UserID	varchar(100),
+                    	[Action] VARCHAR(1)
+                    )
+                    INSERT INTO @InputTable
+                    SELECT * FROM ?
+                    
+                    DECLARE
+                    @BusID INT,
+                    @Fasilitas VARCHAR(100),
+                    @UserID VARCHAR(100),
+                    @ErrMsg VARCHAR(100)
+                                        
+                    SET @BusID = ?
+                    SET @Fasilitas = ?
+                    SET @UserID = ?
+                    SET @ErrMsg = ''
+                                        
+                    -----------------------------------------------------------
+                    --VALIDATE
+                    -----------------------------------------------------------
+                    IF (@BusID <= 0)
+                    BEGIN
+                    	SET @ErrMsg = 'Bus ID Not Null !'
+                    	RAISERROR(@ErrMsg, 16, 1)
+                    END
+                                        
+                    IF (ISNULL(@UserID, '') = '')
+                    BEGIN
+                    	SET @ErrMsg = 'User ID Not Null !'
+                    	RAISERROR(@ErrMsg, 16, 1)
+                    END
+                                        
+                    IF EXISTS(SELECT TOP 1 1 FROM @InputTable a
+                    		  JOIN OrderBusMs b ON a.BusPriceID = b.BusID
+                    		  WHERE a.[Action] = 'D')
+                    BEGIN
+                    	SET @ErrMsg = 'Cant Delete Bus Price ID (Bus Price Already In Use) !'
+                    	RAISERROR(@ErrMsg, 16, 1)
+                    END
+                    -----------------------------------------------------------
+                    --PROCESS
+                    -----------------------------------------------------------
+                    IF (ISNULL(@ErrMsg, '') = '')
+                    BEGIN
+                    	IF EXISTS(SELECT TOP 1 1 FROM @InputTable WHERE [Action] = 'I')
+                    	BEGIN
+                    		INSERT INTO BusPrice_TR (BusPriceID,BusName,Price,Duration,Destination,UserID,CreatedDate)
+                    		SELECT NEWID(), BusName, Price, Duration, Destination, UserID, GETDATE() FROM @InputTable WHERE [Action] = 'I'
+                    	END
+                                        
+                    	IF EXISTS(SELECT TOP 1 1 FROM @InputTable WHERE [Action] = 'U')
+                    	BEGIN
+                    		INSERT INTO BusPriceHist_TR(BusPriceID,BusName,Price,Duration,Destination,UserID,SupervisorID,CreatedDate,UpdateDate)
+                    		SELECT a.BusPriceID,a.BusName,a.Price,a.Duration,a.Destination,a.UserID,a.SupervisorID,a.CreatedDate,a.UpdateDate
+                    		FROM BusPrice_TR a
+                    		JOIN @InputTable b
+                    		ON a.BusPriceID = b.BusPriceID
+                    		WHERE b.[Action] = 'U'
+                                        
+                    		UPDATE a
+                    		SET
+                    		a.Price = b.Price,
+                    		a.Duration = b.Duration,
+                    		a.Destination = b.Destination,
+                    		a.UpdateDate = GETDATE()
+                    		FROM BusPrice_TR a
+                    		JOIN @InputTable b
+                    		ON a.BusPriceID = b.BusPriceID
+                    		WHERE b.[Action] = 'U'
+                    	END
+                                        
+                    	IF EXISTS(SELECT TOP 1 1 FROM @InputTable WHERE [Action] = 'D')
+                    	BEGIN
+                    		INSERT INTO BusPriceHist_TR(BusPriceID,BusName,Price,Duration,Destination,UserID,SupervisorID,CreatedDate,UpdateDate)
+                    		SELECT a.BusPriceID,a.BusName,a.Price,a.Duration,a.Destination,a.UserID,a.SupervisorID,a.CreatedDate,a.UpdateDate
+                    		FROM BusPrice_TR a
+                    		JOIN @InputTable b
+                    		ON a.BusPriceID = b.BusPriceID
+                    		WHERE b.[Action] = 'D'
+                                        
+                    		DELETE a
+                    		FROM BusPrice_TR a
+                    		JOIN @InputTable b
+                    		ON a.BusPriceID = b.BusPriceID
+                    		WHERE b.[Action] = 'D'
+                    	END
+                                        
+                    	UPDATE JavaParawisataParam_TR
+                    	SET
+                    	Info02 = @Fasilitas,
+                    	UpdateDate = GETDATE(),
+                    	UserID = @UserID
+                    	WHERE [Group] = 'Bus' AND Sort = @BusID
+                    END
                     """;
             // </editor-folds>
 
             Connection connection = DBConnection.GetConnection();
-            PreparedStatement pst = connection.prepareStatement(query);
+            SQLServerPreparedStatement pst = (SQLServerPreparedStatement) connection.prepareStatement(query);
+            pst.setStructured(1, "dbo.BusPriceProcess", DBConnection.MappingListToTable(data.getBusPrices()));
+            pst.setString(2, data.getBusID());
+            pst.setString(3, data.getFasilitas());
+            pst.setString(4, data.getUserID());
+
+            ResultSet result = pst.executeQuery();
 
             response.messages.add(new AdditionalMessage(MessageType.SUCCESS, "Update Bus Success !"));
         } catch (Exception ex) {

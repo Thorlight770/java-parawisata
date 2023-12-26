@@ -7,7 +7,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
+import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.microsoft.sqlserver.jdbc.SQLServerResultSet;
 
 import static java.time.LocalDate.MIN;
@@ -139,6 +141,25 @@ public class DBConnection {
             }
             response.add(dto);
         }
+        return response;
+    }
+    public static <T> SQLServerDataTable MappingListToTable(List<T> list) throws SQLServerException {
+        SQLServerDataTable response = new SQLServerDataTable();
+        List<Field> fields = List.of(list.getClass().getDeclaredFields());
+        fields.forEach(x -> x.setAccessible(true));
+        for (Field field: fields) {
+            if (field.getType().isNestmateOf(String.class))
+                response.addColumnMetadata(field.getName(), Types.VARCHAR);
+            else if (field.getType().isNestmateOf(int.class) || field.getType().isNestmateOf(Integer.class))
+                response.addColumnMetadata(field.getName(), Types.INTEGER);
+            else if (field.getType().isNestmateOf(double.class) || field.getType().isNestmateOf(Double.class))
+                response.addColumnMetadata(field.getName(), Types.DECIMAL);
+            else if (field.getType().isNestmateOf(Date.class) || field.getType().isNestmateOf(java.util.Date.class))
+                response.addColumnMetadata(field.getName(), Types.DATE);
+            else if (field.getType().isNestmateOf(boolean.class) || field.getType().isNestmateOf(Boolean.class))
+                response.addColumnMetadata(field.getName(), Types.BOOLEAN);
+        }
+
         return response;
     }
 }

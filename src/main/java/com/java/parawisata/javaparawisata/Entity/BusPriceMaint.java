@@ -1,44 +1,27 @@
 package com.java.parawisata.javaparawisata.Entity;
 
-import java.text.DecimalFormat;
-import java.util.Date;
+import java.sql.Date;
 
-public class BusPrice {
-    private Long id;
+public class BusPriceMaint {
     private String busPriceID;
     private String busName;
     private Double price;
     private Integer duration;
     private String destination;
     private String userID;
-    private String supervisorID;
-    private Date createdDate;
-    private Date updateDate;
     private String action;
 
-    public BusPrice() {
+    public BusPriceMaint() {
     }
 
-    public BusPrice(Long id, String busPriceID, String busName, Double price, Integer duration, String destination, String userID, String supervisorID, Date createdDate, Date updateDate, String action) {
-        this.id = id;
+    public BusPriceMaint(String busPriceID, String busName, Double price, Integer duration, String destination, String userID, String action) {
         this.busPriceID = busPriceID;
         this.busName = busName;
         this.price = price;
         this.duration = duration;
         this.destination = destination;
         this.userID = userID;
-        this.supervisorID = supervisorID;
-        this.createdDate = createdDate;
-        this.updateDate = updateDate;
         this.action = action;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getBusPriceID() {
@@ -89,35 +72,24 @@ public class BusPrice {
         this.userID = userID;
     }
 
-    public String getSupervisorID() {
-        return supervisorID;
-    }
-
-    public void setSupervisorID(String supervisorID) {
-        this.supervisorID = supervisorID;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date cretedDate) {
-        this.createdDate = cretedDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
     public String getAction() {
         return action;
     }
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    @Override
+    public String toString() {
+        return "BusPriceMaint{" +
+                "busPriceID='" + busPriceID + '\'' +
+                ", busName='" + busName + '\'' +
+                ", price=" + price +
+                ", duration=" + duration +
+                ", destination='" + destination + '\'' +
+                ", userID='" + userID + '\'' +
+                ", action='" + action + '\'' +
+                '}';
     }
 }
