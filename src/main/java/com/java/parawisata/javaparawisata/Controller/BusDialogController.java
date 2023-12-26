@@ -303,6 +303,9 @@ public class BusDialogController implements Initializable {
     @FXML
     public void onBtnAddGrid(ActionEvent event){
         this.action = "I";
+        this.txtPriceGrid.setText("0");
+        this.spinnerDurationGrid.setValue(0);
+        this.cmbBoxDestination.setValue("");
         this.onSetDisable(true);
     }
 

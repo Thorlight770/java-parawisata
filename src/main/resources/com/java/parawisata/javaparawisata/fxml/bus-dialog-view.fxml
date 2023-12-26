@@ -69,7 +69,7 @@
                                                 <Insets left="30.0" />
                                              </GridPane.margin>
                                           </MFXSpinner>
-                                          <MFXTextField fx:id="txtBusNameGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" />
+                                          <MFXTextField fx:id="txtBusNameGrid" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" />
                                           <MFXTextField fx:id="txtPriceGrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                           <MFXButton buttonType="RAISED" maxHeight="30.0" minHeight="30.0" minWidth="55.0" onAction="#onBtnSaveGrid" prefHeight="30.0" rippleColor="#00fc26" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9; -fx-border-radius: 5;" text="Save" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                              <GridPane.margin>

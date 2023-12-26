@@ -145,11 +145,13 @@ public class DBConnection {
     }
     public static <T> SQLServerDataTable MappingListToTable(List<T> list) throws SQLServerException {
         SQLServerDataTable response = new SQLServerDataTable();
-        List<Field> fields = List.of(list.getClass().getDeclaredFields());
+        List<Field> fields = List.of(list.get(0).getClass().getDeclaredFields());
         fields.forEach(x -> x.setAccessible(true));
         for (Field field: fields) {
             if (field.getType().isNestmateOf(String.class))
                 response.addColumnMetadata(field.getName(), Types.VARCHAR);
+            else if (field.getType().isNestmateOf(long.class) || field.getType().isNestmateOf(Long.class))
+                response.addColumnMetadata(field.getName(), Types.BIGINT);
             else if (field.getType().isNestmateOf(int.class) || field.getType().isNestmateOf(Integer.class))
                 response.addColumnMetadata(field.getName(), Types.INTEGER);
             else if (field.getType().isNestmateOf(double.class) || field.getType().isNestmateOf(Double.class))

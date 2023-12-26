@@ -3,16 +3,20 @@ package com.java.parawisata.javaparawisata.Repository.Impl;
 import com.java.parawisata.javaparawisata.Entity.Bus;
 import com.java.parawisata.javaparawisata.Entity.BusMaint;
 import com.java.parawisata.javaparawisata.Entity.BusPrice;
+import com.java.parawisata.javaparawisata.Entity.BusPriceMaint;
 import com.java.parawisata.javaparawisata.Repository.IBusRepository;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
 import com.java.parawisata.javaparawisata.Utils.Database.DBConnection;
+import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,13 +82,13 @@ public class BusRepositoryImpl implements IBusRepository {
                     	IF EXISTS(SELECT TOP 1 1 FROM @InputTable WHERE [Action] = 'I')
                     	BEGIN
                     		INSERT INTO BusPrice_TR (BusPriceID,BusName,Price,Duration,Destination,UserID,CreatedDate)
-                    		SELECT NEWID(), BusName, Price, Duration, Destination, UserID, GETDATE() FROM @InputTable WHERE [Action] = 'I'
+                    		SELECT NEWID(), UPPER(BusName), Price, Duration, Destination, UserID, GETDATE() FROM @InputTable WHERE [Action] = 'I'
                     	END
                                         
                     	IF EXISTS(SELECT TOP 1 1 FROM @InputTable WHERE [Action] = 'U')
                     	BEGIN
                     		INSERT INTO BusPriceHist_TR(BusPriceID,BusName,Price,Duration,Destination,UserID,SupervisorID,CreatedDate,UpdateDate)
-                    		SELECT a.BusPriceID,a.BusName,a.Price,a.Duration,a.Destination,a.UserID,a.SupervisorID,a.CreatedDate,a.UpdateDate
+                    		SELECT a.BusPriceID,UPPER(a.BusName),a.Price,a.Duration,a.Destination,a.UserID,a.SupervisorID,a.CreatedDate,a.UpdateDate
                     		FROM BusPrice_TR a
                     		JOIN @InputTable b
                     		ON a.BusPriceID = b.BusPriceID
@@ -105,7 +109,7 @@ public class BusRepositoryImpl implements IBusRepository {
                     	IF EXISTS(SELECT TOP 1 1 FROM @InputTable WHERE [Action] = 'D')
                     	BEGIN
                     		INSERT INTO BusPriceHist_TR(BusPriceID,BusName,Price,Duration,Destination,UserID,SupervisorID,CreatedDate,UpdateDate)
-                    		SELECT a.BusPriceID,a.BusName,a.Price,a.Duration,a.Destination,a.UserID,a.SupervisorID,a.CreatedDate,a.UpdateDate
+                    		SELECT a.BusPriceID,UPPER(a.BusName),a.Price,a.Duration,a.Destination,a.UserID,a.SupervisorID,a.CreatedDate,a.UpdateDate
                     		FROM BusPrice_TR a
                     		JOIN @InputTable b
                     		ON a.BusPriceID = b.BusPriceID
@@ -128,14 +132,30 @@ public class BusRepositoryImpl implements IBusRepository {
                     """;
             // </editor-folds>
 
+            // <editor-folds desc="Create Data Table">
+            SQLServerDataTable dataTable = new SQLServerDataTable();
+            dataTable.addColumnMetadata("BusPriceID", Types.VARCHAR);
+            dataTable.addColumnMetadata("BusName", Types.VARCHAR);
+            dataTable.addColumnMetadata("Price", Types.DECIMAL);
+            dataTable.addColumnMetadata("Duration", Types.INTEGER);
+            dataTable.addColumnMetadata("Destination", Types.VARCHAR);
+            dataTable.addColumnMetadata("UserID", Types.VARCHAR);
+            dataTable.addColumnMetadata("Action", Types.VARCHAR);
+
+            for (BusPriceMaint price : data.getBusPrices()) {
+                dataTable.addRow(price.getBusPriceID(), price.getBusName(), price.getPrice(), price.getDuration(), price.getDestination(), price.getUserID(), price.getAction());
+            }
+            // </editor-folds>
+
             Connection connection = DBConnection.GetConnection();
             SQLServerPreparedStatement pst = (SQLServerPreparedStatement) connection.prepareStatement(query);
-            pst.setStructured(1, "dbo.BusPriceProcess", DBConnection.MappingListToTable(data.getBusPrices()));
+
+            pst.setStructured(1, "dbo.BusPriceProcess", dataTable);
             pst.setString(2, data.getBusID());
             pst.setString(3, data.getFasilitas());
             pst.setString(4, data.getUserID());
 
-            ResultSet result = pst.executeQuery();
+            boolean result = pst.execute();
 
             response.messages.add(new AdditionalMessage(MessageType.SUCCESS, "Update Bus Success !"));
         } catch (Exception ex) {
