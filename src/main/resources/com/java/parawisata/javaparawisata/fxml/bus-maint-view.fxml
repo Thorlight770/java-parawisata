@@ -27,7 +27,7 @@
                <children>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="367.0" spacing="20.0" GridPane.columnIndex="1">
                      <children>
-                        <MFXButton buttonType="RAISED" prefHeight="30.0" prefWidth="105.0" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9;" text="Print" textFill="WHITE">
+                        <MFXButton buttonType="RAISED" onAction="#onBtnPrintAction" prefHeight="30.0" prefWidth="105.0" style="-fx-background-radius: 5; -fx-background-color: #7a0ed9;" text="Print" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>

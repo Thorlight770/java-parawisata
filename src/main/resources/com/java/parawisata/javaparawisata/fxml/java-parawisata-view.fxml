@@ -26,6 +26,9 @@
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
                         </Label>
                      </children>
                      <cursor>
@@ -71,7 +74,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #7a0ed9;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label layoutX="14.0" layoutY="27.0" text="Java Parawisata" textFill="WHITE">
+                  <Label layoutX="14.0" layoutY="27.0" text="Performa Trans" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

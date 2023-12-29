@@ -70,6 +70,7 @@ public class OrderStep3Controller implements Initializable {
             this.orderController.orderContent.getChildren().setAll(loaderStep1.getAnchorPane());
             this.step1Controller = loaderStep1.getController();
             this.step1Controller.setParentController(this.orderController);
+            this.step1Controller.onSetAuth(this.globalUser);
             this.orderController.pLv3.setStroke(Color.web("#D4CBD7"));
             this.orderController.pLv2.setStroke(Color.web("#D4CBD7"));
             this.orderController.icnCalendar.setFill(Color.web("#D4CBD7"));

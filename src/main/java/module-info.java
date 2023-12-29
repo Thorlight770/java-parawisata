@@ -10,6 +10,7 @@ module com.java.parawisata.javaparawisata {
     requires MaterialFX;
     requires com.google.common;
     requires modelmapper;
+    requires jasperreports;
 
     opens com.java.parawisata.javaparawisata to javafx.fxml;
     exports com.java.parawisata.javaparawisata;

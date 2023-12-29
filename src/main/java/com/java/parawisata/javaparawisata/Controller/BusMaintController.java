@@ -12,9 +12,11 @@ import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponen
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
+import com.java.parawisata.javaparawisata.Utils.Helper.Helper;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
@@ -37,6 +39,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import net.sf.jasperreports.engine.JRException;
 
 public class BusMaintController implements Initializable {
     @FXML
@@ -165,6 +168,10 @@ public class BusMaintController implements Initializable {
         return busService.getAllBus();
     }
 
+    @FXML
+    public void onBtnPrintAction(ActionEvent event) throws JRException {
+        Helper.printReport("bus-maint-report");
+    }
     public void setAuth(Auth auth) {
         this.globalUser = auth;
     }

@@ -9,6 +9,7 @@ import com.java.parawisata.javaparawisata.Service.IDriverService;
 import com.java.parawisata.javaparawisata.Service.Impl.DriverServiceImpl;
 import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponents;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
+import com.java.parawisata.javaparawisata.Utils.Helper.Helper;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.collections.FXCollections;
@@ -27,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import net.sf.jasperreports.engine.JRException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -171,8 +173,8 @@ public class DriverMaintController implements Initializable {
     }
 
     @FXML
-    public void onBtnPrintProcess(ActionEvent event) {
-
+    public void onBtnPrintProcess(ActionEvent event) throws JRException {
+        Helper.printReport("driver-maint-report.jrxml");
     }
 
     public void setAuth(Auth user) {

@@ -65,17 +65,19 @@ public class DashboardController implements Initializable {
     }
 
     private void setUpTableSchedule(List<Schedule> schedule) {
-        ObservableList<Schedule> list =FXCollections.observableArrayList(schedule);
-        colDateFrom.setCellValueFactory(new PropertyValueFactory<Schedule, Date>("dateFrom"));
-        colDateTo.setCellValueFactory(new PropertyValueFactory<Schedule, Date>("dateTo"));
-        colPickUpPoint.setCellValueFactory(new PropertyValueFactory<Schedule, String>("pickUpPoint"));
-        colDestination.setCellValueFactory(new PropertyValueFactory<Schedule, String>("destinationTour"));
-        tableSchedule.setItems(list);
+        if (!schedule.isEmpty()) {
+            ObservableList<Schedule> list =FXCollections.observableArrayList(schedule);
+            colDateFrom.setCellValueFactory(new PropertyValueFactory<Schedule, Date>("dateFrom"));
+            colDateTo.setCellValueFactory(new PropertyValueFactory<Schedule, Date>("dateTo"));
+            colPickUpPoint.setCellValueFactory(new PropertyValueFactory<Schedule, String>("pickUpPoint"));
+            colDestination.setCellValueFactory(new PropertyValueFactory<Schedule, String>("destinationTour"));
+            tableSchedule.setItems(list);
+        }
     }
 
     public void onSetDashboard() {
         ControlMessage<Dashboard> response = getCompleteDashboardContent(this.globalUser.getUserID());
-        if (response.isSuccess && !response.data.getSchedules().isEmpty()) {
+        if (response.isSuccess) {
             this.setUpTableSchedule(response.data.getSchedules());
             this.lblTotalTrip.setText(String.valueOf(response.data.getTotalTrip()));
             this.lblTotalPendingTrip.setText(String.valueOf(response.data.getTotalPendingTrip()));
@@ -86,7 +88,7 @@ public class DashboardController implements Initializable {
                     new PieChart.Data("Total OnSchedule Trip", response.data.getTotalPendingTrip())
             );
             this.diagReview.setData(datas);
-        } else if (!response.isSuccess) ServiceGlobalComponents.showAlertDialog(response);
+        } else ServiceGlobalComponents.showAlertDialog(response);
     }
     private ControlMessage<Dashboard> getCompleteDashboardContent(String userID) {
         this.orderRepository = new OrderRepositoryImpl();
