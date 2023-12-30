@@ -170,7 +170,7 @@ public class BusMaintController implements Initializable {
 
     @FXML
     public void onBtnPrintAction(ActionEvent event) throws JRException {
-        Helper.printReport("bus-maint-report");
+        Helper.printReport("bus-maint-report.jrxml");
     }
     public void setAuth(Auth auth) {
         this.globalUser = auth;

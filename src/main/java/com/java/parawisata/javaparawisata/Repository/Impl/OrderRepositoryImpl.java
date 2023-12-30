@@ -74,7 +74,7 @@ public class OrderRepositoryImpl implements IOrderRepository {
                     
                     IF (@Duration < 0 )
                     BEGIN
-                        SET @ErrMsg = 'Date To Can't Be Back Date'
+                        SET @ErrMsg = 'Date To Cant Be Back Date'
                         RAISERROR(@ErrMsg, 16, 1)
                     END
                                         
@@ -148,10 +148,19 @@ public class OrderRepositoryImpl implements IOrderRepository {
                     SELECT ROW_NUMBER() OVER(ORDER BY IDHist ASC) AS IDHist, a.OrderID, b.BusName, c.DriverName,
                     a.OrderDate, a.PickUpPoint, a.Destination,
                     CASE
-                    	WHEN a.OrderDate < GETDATE() AND a.AuthStatus = 'A' THEN 'Done'
-                    	WHEN a.OrderDate > GETDATE() AND a.AuthStatus = 'A' THEN 'On Schedule'
-                    	WHEN a.AuthStatus = 'R' THEN 'Reject'
-                    	WHEN ISNULL(a.AuthStatus, '') = '' THEN 'Pending Approval'
+                       WHEN
+                        CONVERT(DATE, DATEADD(DAY, a.Duration, a.OrderDate)) < CONVERT(DATE, GETDATE())
+                        AND a.AuthStatus = 'A' THEN 'Done'
+                       WHEN
+                        CONVERT(DATE, a.OrderDate) <= CONVERT(DATE, GETDATE())
+                        AND CONVERT(DATE, DATEADD(DAY, a.Duration, a.OrderDate)) >= CONVERT(DATE, GETDATE())
+                        AND a.AuthStatus = 'A'THEN 'On Proggres'
+                       WHEN
+                        CONVERT(DATE, DATEADD(DAY, a.Duration, a.OrderDate)) > CONVERT(DATE, GETDATE())
+                        AND CONVERT(DATE, a.OrderDate) > CONVERT(DATE, GETDATE())
+                        AND a.AuthStatus = 'A' THEN 'On Schedule'
+                       WHEN a.AuthStatus = 'R' THEN 'Reject'
+                       WHEN ISNULL(a.AuthStatus, '') = '' THEN 'Pending Approval'
                     END AS [Status],
                     a.Reason
                     FROM OrderBusHist a
@@ -192,34 +201,34 @@ public class OrderRepositoryImpl implements IOrderRepository {
         try {
             // <editor-folds desc="query">
             String query = """
-                 DECLARE @CustomerID VARCHAR(100),
-                 @CountSchedule FLOAT
-                 
-                 SET @CustomerID = ?
-                 
-                 IF (ISNULL(@CustomerID, '') = '')
-                     RAISERROR('Customer ID Not Null !', 16, 1)
-                     
-                 SELECT OrderID AS IDSchedule, DATEADD(DAY, -Duration, CAST(OrderDate AS DATE)) AS DateFrom, OrderDate AS DateTo, PickUpPoint, Destination AS DestinationTour
-                 FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate >= CONVERT(DATE, GETDATE())
-                                 
-                 SET @CountSchedule = (SELECT CONVERT(FLOAT, COUNT(1)) FROM OrderBusMs WHERE CustomerID = @CustomerID)
-                   
-                 IF (@CountSchedule > 0)
-                 BEGIN
-                     SELECT COUNT(1) AS totalTrip, ((100 / @CountSchedule) * CONVERT(FLOAT, COUNT(1))) / 100 AS totalPercentTrip
-                     FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate < GETDATE()
-                                        
-                     SELECT COUNT(1) AS totalPending, ((100 / @CountSchedule) * COUNT(1)) / 100 AS totalPercentPending
-                     FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate >= GETDATE()
-                 END
-                 ELSE
-                 BEGIN
-                    SELECT 0 AS totalTrip, 0.0 AS totalPercentTrip
-                    
-                    SELECT 0 AS totalPending, 0.0 AS totalPercentPending
-                 END
-                    """;
+                    DECLARE @CustomerID VARCHAR(100),
+                    @CountSchedule FLOAT
+                                     
+                    SET @CustomerID = ?
+                                     
+                    IF (ISNULL(@CustomerID, '') = '')
+                        RAISERROR('Customer ID Not Null !', 16, 1)
+                        
+                    SELECT OrderID AS IDSchedule, DATEADD(DAY, -Duration, CAST(OrderDate AS DATE)) AS DateFrom, OrderDate AS DateTo, PickUpPoint, Destination AS DestinationTour
+                    FROM OrderBusMs WHERE CustomerID = @CustomerID AND OrderDate >= CONVERT(DATE, GETDATE())
+                                    
+                    SET @CountSchedule = (SELECT CONVERT(FLOAT, COUNT(1)) FROM OrderBusMs WHERE CustomerID = @CustomerID)
+                      
+                    IF (@CountSchedule > 0)
+                    BEGIN
+                        SELECT COUNT(1) AS totalTrip, ((100 / @CountSchedule) * CONVERT(FLOAT, COUNT(1))) / 100 AS totalPercentTrip
+                        FROM OrderBusMs WHERE CustomerID = @CustomerID AND CONVERT(DATE, OrderDate) < CONVERT(DATE, GETDATE())
+                                                         
+                        SELECT COUNT(1) AS totalPending, ((100 / @CountSchedule) * COUNT(1)) / 100 AS totalPercentPending
+                        FROM OrderBusMs WHERE CustomerID = @CustomerID AND CONVERT(DATE, OrderDate) >= CONVERT(DATE, GETDATE())
+                    END
+                    ELSE
+                    BEGIN
+                       SELECT 0 AS totalTrip, 0.0 AS totalPercentTrip
+                       
+                       SELECT 0 AS totalPending, 0.0 AS totalPercentPending
+                    END
+                       """;
             // </editor-folds>
 
             Connection connection = DBConnection.GetConnection();

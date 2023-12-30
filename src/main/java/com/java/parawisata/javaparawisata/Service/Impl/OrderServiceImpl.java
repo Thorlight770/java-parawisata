@@ -11,6 +11,7 @@ import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.util.Date;
@@ -85,7 +86,7 @@ public class OrderServiceImpl implements IOrderService {
             if (data.getDriverID() == null || data.getDriverID().isEmpty() || data.getDriverID().isBlank())
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Driver ID Tidak Boleh Kosong !"));
 
-            if (data.getOrderDate().before(Date.from(Instant.now())))
+            if (data.getOrderDate().toLocalDate().isBefore(LocalDate.now()))
                 response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Back Date !"));
 
             if (data.getDuration() < 0)
@@ -164,12 +165,11 @@ public class OrderServiceImpl implements IOrderService {
                 if (orderApproval.getAdministratorID().isBlank() || orderApproval.getAdministratorID().isEmpty())
                     response.messages.add(new AdditionalMessage(MessageType.ERROR, "User NIK Tidak Boleh Kosong !"));
 
-                if (orderApproval.getOrderDate().before(Date.from(Instant.now())))
+                if (orderApproval.getOrderDate().toLocalDate().isBefore(LocalDate.now()))
                     response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date From Tidak Boleh Back Date !"));
 
                 if (orderApproval.getDuration() < 0)
                     response.messages.add(new AdditionalMessage(MessageType.ERROR, "Date To Tidak Boleh Back Date !"));
-
             }
 
             if (status.equals("R") && (orderApproval.getReason().isEmpty() || orderApproval.getReason().isBlank()))
