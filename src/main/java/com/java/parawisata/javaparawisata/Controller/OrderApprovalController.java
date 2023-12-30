@@ -12,6 +12,7 @@ import com.java.parawisata.javaparawisata.Utils.Components.ServiceGlobalComponen
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
+import com.java.parawisata.javaparawisata.Utils.Helper.Helper;
 import io.github.palexdev.materialfx.utils.SwingFXUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import net.sf.jasperreports.engine.JRException;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -254,6 +256,21 @@ public class OrderApprovalController implements Initializable {
         }
 
         ServiceGlobalComponents.showAlertDialog("Success", MessageType.SUCCESS, List.of("Success Download Image - " + file.getName()));
+    }
+
+    @FXML
+    public void onBtnPrintOrderApprove(ActionEvent event) throws JRException {
+        Helper.printReport("order-approve-report.jrxml");
+    }
+
+    @FXML
+    public void onBtnPrintOrderOnSchedule(ActionEvent event) throws JRException {
+        Helper.printReport("order-onschedule-report.jrxml");
+    }
+
+    @FXML
+    public void onBtnPrintOrderReject(ActionEvent event) throws JRException {
+        Helper.printReport("order-reject-report.jrxml");
     }
 
     public void onResetDetails() {

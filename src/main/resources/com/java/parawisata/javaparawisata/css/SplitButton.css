@@ -1,0 +1,22 @@
+.split-menu-button .arrow {
+    -fx-background-color:  'WHITE' ;
+}
+
+.split-menu-button .arrow-button {
+    -fx-background-color:  '#7a0ed9' ;
+}
+
+.split-menu-button {
+    -fx-background-color: 'WHITE';
+    -fx-border-color: '#7a0ed9';
+    -fx-border-radius: 5;
+    -fx-background-radius: 10;
+}
+
+.split-menu-button .label {
+    -fx-background-color:  '#7a0ed9' ;
+}
+
+.split-menu-button .menu-item .label {
+    -fx-background-color: none;
+}
