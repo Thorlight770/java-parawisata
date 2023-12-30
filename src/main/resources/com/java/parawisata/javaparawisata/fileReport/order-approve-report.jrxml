@@ -16,9 +16,8 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<subDataset name="PieChartDataset" uuid="21b70311-b650-4678-a39c-887917366bf0"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT a.OrderDate, b.CustomerName, d.BusName, c.DriverName, a.PickUpPoint, a.Destination, a.Duration 
+		<![CDATA[SELECT CONVERT(DATE, a.OrderDate) AS OrderDate, b.CustomerName, d.BusName, c.DriverName, a.PickUpPoint, REPLACE(a.Destination,'|',',') AS Destination, a.Duration 
 FROM OrderBusHist a
 JOIN CustomerMs b
 ON a.CustomerID = b.CustomerID
@@ -28,7 +27,7 @@ JOIN BusPrice_TR d
 ON a.BusID = d.BusPriceID
 WHERE a.AuthStatus = 'A']]>
 	</queryString>
-	<field name="OrderDate" class="java.sql.Timestamp">
+	<field name="OrderDate" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="OrderDate"/>
 		<property name="com.jaspersoft.studio.field.label" value="OrderDate"/>
 	</field>
