@@ -18,6 +18,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -89,7 +90,8 @@ public class ServiceGlobalComponents {
         Parent parent = loader.getRoot();
         Stage stage = new Stage();
         Scene scene = new Scene(parent);
-        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.getIcons().add(new Image(JavaParawisataApp.class.getResourceAsStream("icons/bus.png")));
         stage.setTitle(title);
         stage.setResizable(false);
         stage.setScene(scene);

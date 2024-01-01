@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -65,6 +66,7 @@ public class LoginController implements Initializable {
             Stage stage = new Stage();
             stage.setTitle("JavaParawisata");
             stage.setScene(scene);
+            stage.getIcons().add(new Image(JavaParawisataApp.class.getResourceAsStream("icons/bus.png")));
             stage.setMaximized(true);
             stage.show();
         }
@@ -81,7 +83,8 @@ public class LoginController implements Initializable {
         stage.setTitle("Sign Up");
         stage.setScene(scene);
         stage.setResizable(false);
-        // stage.initStyle(StageStyle.UNDECORATED);
+        stage.getIcons().add(new Image(JavaParawisataApp.class.getResourceAsStream("icons/bus.png")));
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
     }
 }

@@ -32,6 +32,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -91,6 +92,7 @@ public class SignUpController implements Initializable {
             Scene scene = new Scene(mainLayout);
             Stage stage = new Stage();
             stage.setTitle("Login");
+            stage.getIcons().add(new Image(JavaParawisataApp.class.getResourceAsStream("icons/bus.png")));
             stage.setScene(scene);
             stage.setResizable(false);
             // stage.initStyle(StageStyle.UNDECORATED);
@@ -110,6 +112,7 @@ public class SignUpController implements Initializable {
             AnchorPane mainLayout = fxmlLoader.load();
             Scene scene = new Scene(mainLayout);
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(JavaParawisataApp.class.getResourceAsStream("icons/bus.png")));
             stage.setTitle("Login");
             stage.setScene(scene);
             stage.setResizable(false);

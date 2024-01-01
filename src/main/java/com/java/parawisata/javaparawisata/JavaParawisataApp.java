@@ -3,6 +3,7 @@ package com.java.parawisata.javaparawisata;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -16,6 +17,7 @@ public class JavaParawisataApp extends Application {
         stage.setTitle("Login");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.getIcons().add(new Image(JavaParawisataApp.class.getResourceAsStream("icons/bus.png")));
         // stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
     }
