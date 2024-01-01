@@ -37,6 +37,7 @@ import net.sf.jasperreports.engine.JRException;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -225,7 +226,7 @@ public class OrderApprovalController implements Initializable {
         this.lblPickUpPoint.setText(this.orderApprovalData.getPickUpPoint());
         this.lblDestination.setText(this.orderApprovalData.getDestination());
         this.lblStatusPayment.setText(this.orderApprovalData.getStatusPayment());
-        Path path = Paths.get("src/main/resources/com/java/parawisata/javaparawisata/fileTransfer/".concat(this.orderApprovalData.getFileName())).toAbsolutePath();
+        Path path = Paths.get("fileTransfer/".concat(this.orderApprovalData.getFileName())).toAbsolutePath();
         Image file = new Image(String.valueOf(path));
         if (!file.isError()) {
             this.imgView.setImage(file);
@@ -259,17 +260,17 @@ public class OrderApprovalController implements Initializable {
     }
 
     @FXML
-    public void onBtnPrintOrderApprove(ActionEvent event) throws JRException {
+    public void onBtnPrintOrderApprove(ActionEvent event) throws JRException, URISyntaxException {
         Helper.printReport("order-approve-report.jrxml");
     }
 
     @FXML
-    public void onBtnPrintOrderOnSchedule(ActionEvent event) throws JRException {
+    public void onBtnPrintOrderOnSchedule(ActionEvent event) throws JRException, URISyntaxException {
         Helper.printReport("order-onschedule-report.jrxml");
     }
 
     @FXML
-    public void onBtnPrintOrderReject(ActionEvent event) throws JRException {
+    public void onBtnPrintOrderReject(ActionEvent event) throws JRException, URISyntaxException {
         Helper.printReport("order-reject-report.jrxml");
     }
 

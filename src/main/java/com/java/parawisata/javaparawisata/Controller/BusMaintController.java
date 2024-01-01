@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -169,7 +170,7 @@ public class BusMaintController implements Initializable {
     }
 
     @FXML
-    public void onBtnPrintAction(ActionEvent event) throws JRException {
+    public void onBtnPrintAction(ActionEvent event) throws JRException, URISyntaxException {
         Helper.printReport("bus-maint-report.jrxml");
     }
     public void setAuth(Auth auth) {

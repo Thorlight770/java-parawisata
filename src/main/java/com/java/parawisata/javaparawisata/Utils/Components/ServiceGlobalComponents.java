@@ -5,6 +5,7 @@ import com.java.parawisata.javaparawisata.JavaParawisataApp;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.AdditionalMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.ControlMessage;
 import com.java.parawisata.javaparawisata.Utils.ControlMessage.MessageType;
+import com.java.parawisata.javaparawisata.Utils.Helper.Helper;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Provider;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -225,8 +227,14 @@ public class ServiceGlobalComponents {
                     response.messages.add(new AdditionalMessage(MessageType.ERROR, "File Not Exists !"));
                 }
 
-                Path path = Paths.get("src/main/resources/com/java/parawisata/javaparawisata/fileTransfer/".concat(fileName)).toAbsolutePath();
-                File destFile = new File(String.valueOf(path));
+                Path pathFolder = Paths.get("fileTransfer").toAbsolutePath();
+                File folder = new File(String.valueOf(pathFolder));
+
+                if (!folder.exists())
+                    folder.mkdir();
+
+                Path pathFile = Paths.get("fileTransfer/".concat(fileName)).toAbsolutePath();
+                File destFile = new File(String.valueOf(pathFile));
 
                 if (!destFile.exists()) {
                     Files.touch(destFile);

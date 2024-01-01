@@ -31,6 +31,7 @@ import javafx.util.Callback;
 import net.sf.jasperreports.engine.JRException;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.List;
@@ -173,7 +174,7 @@ public class DriverMaintController implements Initializable {
     }
 
     @FXML
-    public void onBtnPrintProcess(ActionEvent event) throws JRException {
+    public void onBtnPrintProcess(ActionEvent event) throws JRException, URISyntaxException {
         Helper.printReport("driver-maint-report.jrxml");
     }
 
